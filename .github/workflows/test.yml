@@ -17,13 +17,14 @@ jobs:
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: tournament-test
+          POSTGRES_DB: testing
+          POSTGRES_HOST: postgres
         ports:
           - 5432:5432
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install PHP with extensions
         uses: shivammathur/setup-php@v2
@@ -31,12 +32,19 @@ jobs:
           php-version: 8.3
           tools: composer:v2
 
-      - name: Install Composer dependencies
-        uses: ramsey/composer-install@v2
+      - name: Install npm packages
+        uses: bahmutov/npm-install@v1
 
-      - name: Generate application key
+      - name: Build vite assets
+        run: npm run build
+
+      - name: Install Composer dependencies
+        uses: ramsey/composer-install@v3
+
+      - name: Setup application key and database
         run: |
           cp .env-ci .env
+          php artisan migrate --env=testing
           php artisan key:generate --env=testing
 
       - name: Run tests
