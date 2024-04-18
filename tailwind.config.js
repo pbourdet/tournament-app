@@ -12,7 +12,16 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+                body: ['"Comic Sans MS"', 'cursive', 'sans-serif'],
+            },
+            boxShadow: {
+                soft: '4px 4px 8px 0 rgba(0, 0, 0, 0.1)',
+            },
+            borderRadius: {
+                xl: '1rem',
+            },
+            spacing: {
+                18: '4.5rem',
             },
         },
     },
