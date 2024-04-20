@@ -1,6 +1,11 @@
 {
     "preset": "symfony",
     "rules":  {
-        "declare_strict_types": true
+        "declare_strict_types": true,
+        "phpdoc_line_span": {
+            "property": "single",
+            "const": "single",
+            "method": "single"
+        }
     }
 }

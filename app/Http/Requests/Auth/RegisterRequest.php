@@ -17,9 +17,7 @@ class RegisterRequest extends FormRequest
         return true;
     }
 
-    /**
-     * @return array<string, ValidationRule|array<int, mixed>|string>
-     */
+    /** @return array<string, ValidationRule|array<int, mixed>|string> */
     public function rules(): array
     {
         return [

@@ -11,9 +11,7 @@ use Illuminate\Validation\Rules\Unique;
 
 class ProfileUpdateRequest extends FormRequest
 {
-    /**
-     * @return array<string, array<int, Unique|string>>
-     */
+    /** @return array<string, array<int, Unique|string>> */
     public function rules(): array
     {
         return [
