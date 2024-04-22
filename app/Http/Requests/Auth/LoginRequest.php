@@ -19,9 +19,7 @@ class LoginRequest extends FormRequest
         return true;
     }
 
-    /**
-     * @return array<string, Rule|string[]|string>
-     */
+    /** @return array<string, Rule|string[]|string> */
     public function rules(): array
     {
         return [
@@ -30,9 +28,7 @@ class LoginRequest extends FormRequest
         ];
     }
 
-    /**
-     * @throws ValidationException
-     */
+    /** @throws ValidationException */
     public function authenticate(): void
     {
         $this->ensureIsNotRateLimited();
@@ -46,9 +42,7 @@ class LoginRequest extends FormRequest
         RateLimiter::clear($this->throttleKey());
     }
 
-    /**
-     * @throws ValidationException
-     */
+    /** @throws ValidationException */
     public function ensureIsNotRateLimited(): void
     {
         if (!RateLimiter::tooManyAttempts($this->throttleKey(), 5)) {

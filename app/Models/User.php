@@ -23,26 +23,20 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Tournament::class, 'organizer_id');
     }
 
-    /**
-     * @var array<int, string>
-     */
+    /** @var array<int, string> */
     protected $fillable = [
         'name',
         'email',
         'password',
     ];
 
-    /**
-     * @var array<int, string>
-     */
+    /** @var array<int, string> */
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    /**
-     * @return array<string, string>
-     */
+    /** @return array<string, string> */
     protected function casts(): array
     {
         return [

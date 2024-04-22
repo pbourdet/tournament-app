@@ -22,9 +22,7 @@ class NewPasswordController extends Controller
         return view('auth.reset-password', ['request' => $request]);
     }
 
-    /**
-     * @throws ValidationException
-     */
+    /** @throws ValidationException */
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
