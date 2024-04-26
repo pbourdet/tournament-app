@@ -11,16 +11,13 @@ return new class() extends Migration {
     {
         Schema::create('tournaments', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->uuid('organizer_id');
+            $table->foreignUuid('organizer_id')
+                ->constrained('users')
+                ->onDelete('cascade');
+            $table->index(['organizer_id']);
             $table->string('name');
             $table->text('description')->nullable();
             $table->timestamps();
-
-            $table->foreign('organizer_id')
-                ->references('id')
-                ->on('users')
-                ->onDelete('cascade')
-            ;
         });
     }
 
