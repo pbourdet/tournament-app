@@ -9,6 +9,7 @@ use App\Http\Requests\Auth\RegisterRequest;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\View\View;
@@ -29,6 +30,7 @@ class RegisteredUserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($password),
+            'profile_picture' => $this->extractFile($request)?->store('profile_pictures'),
         ]);
 
         event(new Registered($user));
@@ -36,5 +38,16 @@ class RegisteredUserController extends Controller
         Auth::login($user);
 
         return redirect(route('dashboard', absolute: false));
+    }
+
+    private function extractFile(RegisterRequest $request): ?UploadedFile
+    {
+        $file = $request->file('profile_picture');
+
+        if (is_array($file)) {
+            $file = $file[0] ?? null;
+        }
+
+        return $file;
     }
 }
