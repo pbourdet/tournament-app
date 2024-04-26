@@ -28,6 +28,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'name',
         'email',
         'password',
+        'profile_picture',
     ];
 
     /** @var array<int, string> */
@@ -35,6 +36,11 @@ class User extends Authenticatable implements MustVerifyEmail
         'password',
         'remember_token',
     ];
+
+    public function getProfilePicture(): string
+    {
+        return $this->profile_picture ?? 'user-picture-placeholder.jpeg';
+    }
 
     /** @return array<string, string> */
     protected function casts(): array

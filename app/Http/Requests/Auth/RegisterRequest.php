@@ -24,6 +24,7 @@ class RegisterRequest extends FormRequest
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', Rule::unique(User::class, 'email')],
             'password' => ['required', 'confirmed', Password::defaults()],
+            'profile_picture' => ['file', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:3072'],
         ];
     }
 }
