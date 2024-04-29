@@ -7,6 +7,7 @@ namespace App\Models;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -18,9 +19,15 @@ class User extends Authenticatable implements MustVerifyEmail
     use HasUuids;
 
     /** @return HasMany<Tournament> */
-    public function tournaments(): HasMany
+    public function managedTournaments(): HasMany
     {
         return $this->hasMany(Tournament::class, 'organizer_id');
+    }
+
+    /** @return BelongsToMany<Tournament> */
+    public function tournaments(): BelongsToMany
+    {
+        return $this->belongsToMany(Tournament::class, 'tournament_user');
     }
 
     /** @var array<int, string> */

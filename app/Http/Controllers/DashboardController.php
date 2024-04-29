@@ -15,8 +15,11 @@ class DashboardController extends Controller
         /** @var User $user */
         $user = Auth::user();
 
-        $tournaments = $user->tournaments;
+        $managedTournaments = $user->managedTournaments()->get();
+        $tournaments = $user->tournaments()
+            ->whereNotIn('id', $managedTournaments->pluck('id'))
+            ->get();
 
-        return view('dashboard', compact('tournaments'));
+        return view('dashboard.index', compact('managedTournaments', 'tournaments'));
     }
 }

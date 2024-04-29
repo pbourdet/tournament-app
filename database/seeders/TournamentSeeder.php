@@ -16,6 +16,14 @@ class TournamentSeeder extends Seeder
             Tournament::factory(2)->create([
                 'organizer_id' => $user->id,
             ]);
+
+            $user->managedTournaments()->each(function (Tournament $tournament) {
+                $players = User::inRandomOrder()
+                    ->take(5)
+                    ->get();
+
+                $tournament->players()->attach($players);
+            });
         });
     }
 }
