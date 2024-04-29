@@ -36,7 +36,7 @@
     "name": "nom",
     "New Password": "Nouveau mot de passe",
     "Not Found": "Non trouvé",
-    "No tournaments": "Vous n'avez aucun tournoi, créez ou rejoignez en un !",
+    "No tournaments": "Vous n'avez aucun tournoi, créez ou rejoignez-en un !",
     "of": "de",
     "Once your account is deleted, all of its resources and data will be permanently deleted. Before deleting your account, please download any data or information that you wish to retain.": "Une fois que votre compte est supprimé, toutes vos données sont supprimées définitivement. Avant de supprimer votre compte, veuillez télécharger vos données.",
     "Once your account is deleted, all of its resources and data will be permanently deleted. Please enter your password to confirm you would like to permanently delete your account.": "Une fois que votre compte est supprimé, toutes les données associées seront supprimées définitivement. Pour confirmer que vous voulez supprimer définitivement votre compte, renseignez votre mot de passe.",
@@ -80,5 +80,6 @@
     "You are receiving this email because we received a password reset request for your account.": "Vous recevez cet e-mail car nous avons reçu une demande de réinitialisation de mot de passe pour votre compte.",
     "You're logged in!": "Vous êtes connecté·e !",
     "Your email address is unverified.": "Votre adresse e-mail n'est pas vérifiée.",
-    "Your Tournaments": "Vos tournois"
+    "Your Hosted Tournaments": "Vos tournois organisés",
+    "Your Joined Tournaments": "Vos tournois rejoints"
 }
