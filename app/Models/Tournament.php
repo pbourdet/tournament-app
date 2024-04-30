@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
  * @mixin IdeHelperTournament
@@ -35,5 +36,11 @@ class Tournament extends Model
     public function players(): BelongsToMany
     {
         return $this->belongsToMany(User::class);
+    }
+
+    /** @return HasOne<TournamentInvitation> */
+    public function invitation(): HasOne
+    {
+        return $this->hasOne(TournamentInvitation::class);
     }
 }
