@@ -2,3 +2,5 @@ parameters:
     paths:
         - app/
     level: max
+    scanFiles:
+        - _ide_helper_models.php
