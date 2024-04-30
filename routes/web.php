@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Http\Controllers\Account\ProfileController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Tournaments\TournamentInvitationController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -12,6 +13,7 @@ Route::get('/', function () {
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::post('/tournaments/{tournament}/invitation/create', [TournamentInvitationController::class, 'store'])->name('tournament_invitation.create');
 });
 
 Route::middleware('auth')->group(function () {

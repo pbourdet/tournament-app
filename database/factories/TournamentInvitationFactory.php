@@ -15,8 +15,8 @@ class TournamentInvitationFactory extends Factory
     public function definition(): array
     {
         return [
-            'code' => Str::random(6),
-            'expires_at' => now()->addDays(7)->endOfDay(),
+            'code' => mb_strtoupper(Str::random(6)),
+            'expires_at' => now()->addDays(7),
         ];
     }
 }

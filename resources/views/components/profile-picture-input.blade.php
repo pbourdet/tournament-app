@@ -15,9 +15,7 @@
     }
 }">
     <div class="rounded-full bg-gray-200 mr-4 relative">
-        <!-- Image Preview -->
-        <img x-ref="picturePreview" src="{{ \Illuminate\Support\Facades\Storage::url('user-picture-placeholder.jpeg') }}" alt="Profile picture preview" class="w-24 h-24 rounded-full object-cover">
-        <!-- Remove Button -->
+        <img x-ref="picturePreview" src="{{ Storage::url('user-picture-placeholder.jpeg') }}" alt="Profile picture preview" class="w-24 h-24 rounded-full object-cover">
         <button type="button" x-show="hasImage" @click="removeImage" class="absolute top-1 right-1 hover:bg-gray-600 hover:text-white text-black rounded-full" style="transform: translate(50%,-50%);">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                 <path stroke-linecap="round" stroke-linejoin="round" d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />

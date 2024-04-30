@@ -18,3 +18,9 @@ checks:
 	make rector
 	make phpstan
 	make tests
+
+ide-helper:
+	$(sail) artisan clear-compiled
+	$(sail) artisan ide-helper:generate
+	$(sail) artisan ide-helper:models -M
+	$(sail) artisan ide-helper:meta
