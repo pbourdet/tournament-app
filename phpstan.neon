@@ -2,3 +2,6 @@ parameters:
     paths:
         - app/
     level: max
+
+    ignoreErrors:
+        - '#PHPDoc tag @mixin contains unknown class App\\Models\\IdeHelper#'

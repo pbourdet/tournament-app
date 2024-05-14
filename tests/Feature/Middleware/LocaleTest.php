@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Feature;
+namespace Tests\Feature\Middleware;
 
 use Illuminate\Support\Facades\App;
 use Tests\TestCase;

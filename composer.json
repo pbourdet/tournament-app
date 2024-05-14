@@ -5,13 +5,16 @@
     "keywords": ["laravel", "framework"],
     "license": "MIT",
     "require": {
-        "php": "^8.2",
+        "php": "^8.3",
         "laravel/framework": "^11.0",
         "laravel/tinker": "^2.9",
         "league/flysystem-aws-s3-v3": "^3.0"
     },
     "require-dev": {
+        "barryvdh/laravel-debugbar": "^3.13",
+        "barryvdh/laravel-ide-helper": "^3.0",
         "brianium/paratest": "^7.4",
+        "driftingly/rector-laravel": "^1.2",
         "fakerphp/faker": "^1.23",
         "larastan/larastan": "^2.9",
         "laravel-lang/attributes": "^2.10",
