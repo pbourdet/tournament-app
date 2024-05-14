@@ -19,7 +19,7 @@ class TournamentSeeder extends Seeder
 
             $user->managedTournaments()->each(function (Tournament $tournament) {
                 $players = User::inRandomOrder()
-                    ->take(5)
+                    ->take(rand(1, $tournament->number_of_players))
                     ->get();
 
                 $tournament->players()->attach($players);

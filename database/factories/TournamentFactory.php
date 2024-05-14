@@ -16,6 +16,7 @@ class TournamentFactory extends Factory
         return [
             'name' => fake()->words(asText: true),
             'description' => fake()->text(),
+            'number_of_players' => fake()->numberBetween(1, 5) * 2,
         ];
     }
 }
