@@ -10,7 +10,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-class TournamentInvitationTest extends TestCase
+class CreateTournamentInvitationTest extends TestCase
 {
     use RefreshDatabase;
 

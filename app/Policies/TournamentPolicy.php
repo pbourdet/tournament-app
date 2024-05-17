@@ -13,4 +13,10 @@ class TournamentPolicy
     {
         return $tournament->organizer()->is($user);
     }
+
+    public function join(User $user, Tournament $tournament): bool
+    {
+        return !$tournament->isFull()
+            && !$tournament->players->contains($user);
+    }
 }

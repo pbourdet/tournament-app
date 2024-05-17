@@ -43,4 +43,9 @@ class Tournament extends Model
     {
         return $this->hasOne(TournamentInvitation::class);
     }
+
+    public function isFull(): bool
+    {
+        return $this->players()->count() === $this->number_of_players;
+    }
 }
