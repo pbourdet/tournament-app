@@ -12,6 +12,7 @@ return new class() extends Migration {
         Schema::create('tournament_invitations', function (Blueprint $table) {
             $table->id();
             $table->foreignUuid('tournament_id')->constrained()->cascadeOnDelete();
+            $table->unique(['tournament_id']);
             $table->string('code', 6)->unique();
             $table->dateTime('expires_at');
             $table->timestamps();

@@ -30,7 +30,7 @@ class User extends Authenticatable implements MustVerifyEmail
     /** @return BelongsToMany<Tournament> */
     public function tournaments(): BelongsToMany
     {
-        return $this->belongsToMany(Tournament::class, 'tournament_user');
+        return $this->belongsToMany(Tournament::class, 'tournament_player');
     }
 
     /** @var array<int, string> */

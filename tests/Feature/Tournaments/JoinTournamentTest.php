@@ -21,7 +21,7 @@ class JoinTournamentTest extends TestCase
         $response = $this->actingAs($user)->post(route('tournament.join', ['tournament' => $tournament]));
 
         $response->assertRedirect(route('dashboard'));
-        $this->assertDatabaseCount('tournament_user', 1);
+        $this->assertDatabaseCount('tournament_player', 1);
     }
 
     public function testUserCannotJoinAFullTournament(): void
