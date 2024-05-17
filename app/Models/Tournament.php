@@ -35,7 +35,9 @@ class Tournament extends Model
     /** @return BelongsToMany<User> */
     public function players(): BelongsToMany
     {
-        return $this->belongsToMany(User::class);
+        return $this
+            ->belongsToMany(User::class, 'tournament_player')
+            ->withTimestamps();
     }
 
     /** @return HasOne<TournamentInvitation> */
