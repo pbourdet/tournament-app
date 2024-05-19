@@ -44,10 +44,8 @@
             @endif
         </div>
 
-        <div class="inline-flex items-center justify-center w-full">
-            <hr class="w-64 h-px my-8 bg-gray-200 border-0">
-            <span class="absolute px-3 -translate-x-1/2 bg-white left-1/2 dark:text-white">{{ __('or')  }}</span>
-        </div>
+        <x-divider>{{ __('or') }}</x-divider>
+
         <div class="flex justify-center">
             <x-secondary-button x-data x-on:click="window.location='{{ route('register') }}'">
                 {{  __('Register') }}
