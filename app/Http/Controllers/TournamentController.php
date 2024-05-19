@@ -24,8 +24,8 @@ class TournamentController extends Controller
 
     public function show(string $code): View
     {
-        $tournamentInvitation = TournamentInvitation::where('code', $code)->firstOrFail();
+        $tournamentInvitation = TournamentInvitation::where('code', mb_strtoupper($code))->first();
 
-        return view('tournaments.join', ['tournament' => $tournamentInvitation->tournament]);
+        return view('tournaments.join', ['tournament' => $tournamentInvitation?->tournament]);
     }
 }

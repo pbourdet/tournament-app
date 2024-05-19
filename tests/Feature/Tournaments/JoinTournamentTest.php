@@ -28,14 +28,32 @@ class JoinTournamentTest extends TestCase
         $response->assertViewIs('tournaments.join');
     }
 
-    public function testUserGetA404IfCodeMatchesNoInvitation(): void
+    public function testUserGetAClearMessageIfTheyCantJoinTheTournament(): void
     {
         $user = User::factory()->create();
-        $tournament = Tournament::factory()->create();
+
+        $fullTournament = Tournament::factory()->create([
+            'number_of_players' => 2,
+        ]);
+        TournamentInvitation::factory()->create(['tournament_id' => $fullTournament->id]);
+        $fullTournament->players()->attach(User::factory()->create());
+        $fullTournament->players()->attach(User::factory()->create());
+
+        $joinedTournament = Tournament::factory()->create();
+        $joinedTournament->players()->attach($user);
+        TournamentInvitation::factory()->create(['tournament_id' => $joinedTournament->id]);
 
         $response = $this->actingAs($user)->get(route('tournament.invitation', ['code' => 'fake code']));
+        $response->assertOk();
+        $response->assertSeeText(__('No tournament with this invitation code.'));
 
-        $response->assertNotFound();
+        $response = $this->actingAs($user)->get(route('tournament.invitation', ['code' => $fullTournament->invitation?->code]));
+        $response->assertOk();
+        $response->assertSeeText(__('This tournament is full.'));
+
+        $response = $this->actingAs($user)->get(route('tournament.invitation', ['code' => $joinedTournament->invitation?->code]));
+        $response->assertOk();
+        $response->assertSeeText(__('You are already taking part in this tournament.'));
     }
 
     public function testUserCanJoinATournament(): void
