@@ -21,18 +21,6 @@ class User extends Authenticatable implements MustVerifyEmail
     use Notifiable;
     use HasUuids;
 
-    /** @return HasMany<Tournament> */
-    public function managedTournaments(): HasMany
-    {
-        return $this->hasMany(Tournament::class, 'organizer_id');
-    }
-
-    /** @return BelongsToMany<Tournament> */
-    public function tournaments(): BelongsToMany
-    {
-        return $this->belongsToMany(Tournament::class, 'tournament_player');
-    }
-
     /** @var array<int, string> */
     protected $fillable = [
         'name',
@@ -46,6 +34,18 @@ class User extends Authenticatable implements MustVerifyEmail
         'password',
         'remember_token',
     ];
+
+    /** @return HasMany<Tournament> */
+    public function managedTournaments(): HasMany
+    {
+        return $this->hasMany(Tournament::class, 'organizer_id');
+    }
+
+    /** @return BelongsToMany<Tournament> */
+    public function tournaments(): BelongsToMany
+    {
+        return $this->belongsToMany(Tournament::class, 'tournament_player');
+    }
 
     public function getProfilePicture(): string
     {

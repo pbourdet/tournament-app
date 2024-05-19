@@ -37,6 +37,8 @@ jobs:
 
       - name: Build vite assets
         run: npm run build
+        env:
+          VITE_INCLUDE_JQUERY: false
 
       - name: Install Composer dependencies
         uses: ramsey/composer-install@v3
