@@ -88,8 +88,13 @@
     "Whoops!": "Oups !",
     "You are receiving this email because we received a password reset request for your account.": "Vous recevez cet e-mail car nous avons reçu une demande de réinitialisation de mot de passe pour votre compte.",
     "You are already taking part in this tournament.": "Vous participez déjà à ce tournoi.",
+    "You cannot join this tournament.": "Vous ne pouvez pas rejoindre ce tournoi.",
+    "You joined tournament :name": "Vous avez rejoint le tournoi \":name\".",
     "You're logged in!": "Vous êtes connecté·e !",
     "Your email address is unverified.": "Votre adresse e-mail n'est pas vérifiée.",
     "Your Hosted Tournaments": "Vos tournois organisés",
-    "Your Joined Tournaments": "Vos tournois rejoints"
+    "Your Joined Tournaments": "Vos tournois rejoints",
+    "Your email has been verified !": "Votre email a bien été vérifiée !",
+    "Your password was successfully updated !": "Votre mot de passe a bien été mis à jour !",
+    "Your profile was successfully updated !": "Votre profil a bien été mis à jour !"
 }
