@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Enums\ToastType;
 use App\Models\Tournament;
 use App\Models\TournamentInvitation;
 use Illuminate\Http\RedirectResponse;
@@ -15,11 +16,13 @@ class TournamentController extends Controller
 {
     public function join(Tournament $tournament): RedirectResponse
     {
-        Gate::authorize('join', $tournament);
+        if (!Gate::allows('join', $tournament)) {
+            return redirect()->back()->with(ToastType::DANGER->value, __('You cannot join this tournament.'));
+        }
 
         $tournament->players()->attach(Auth::user());
 
-        return redirect()->route('dashboard');
+        return redirect()->back()->with(ToastType::SUCCESS->value, __('You joined tournament :name', ['name' => $tournament->name]));
     }
 
     public function show(string $code): View

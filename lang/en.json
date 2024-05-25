@@ -88,8 +88,13 @@
     "Whoops!": "Whoops!",
     "You are receiving this email because we received a password reset request for your account.": "You are receiving this email because we received a password reset request for your account.",
     "You are already taking part in this tournament.": "You are already taking part in this tournament.",
+    "You cannot join this tournament.": "You cannot join this tournament.",
+    "You joined tournament :name": "You joined tournament \":name\".",
     "You're logged in!": "You're logged in!",
     "Your email address is unverified.": "Your email address is unverified.",
     "Your Hosted Tournaments": "Your hosted tournaments",
-    "Your Joined Tournaments": "Your joined tournaments"
+    "Your Joined Tournaments": "Your joined tournaments",
+    "Your email has been verified !": "Your email has been verified !",
+    "Your password was successfully updated !": "Your password was successfully updated !",
+    "Your profile was successfully updated !": "Your profile was successfully updated !"
 }

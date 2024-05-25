@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Auth;
 
+use App\Enums\ToastType;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Auth\Events\Verified;
@@ -25,6 +26,9 @@ class VerifyEmailController extends Controller
             event(new Verified($user));
         }
 
-        return redirect()->intended(route('dashboard', absolute: false).'?verified=1');
+        return redirect()
+            ->intended(route('dashboard', absolute: false).'?verified=1')
+            ->with(ToastType::SUCCESS->value, __('Your email has been verified !'))
+        ;
     }
 }

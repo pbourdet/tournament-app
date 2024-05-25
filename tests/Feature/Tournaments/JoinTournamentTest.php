@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Tournaments;
 
+use App\Enums\ToastType;
 use App\Models\Tournament;
 use App\Models\TournamentInvitation;
 use App\Models\User;
@@ -63,8 +64,8 @@ class JoinTournamentTest extends TestCase
 
         $response = $this->actingAs($user)->post(route('tournament.join', ['tournament' => $tournament]));
 
-        $response->assertRedirect(route('dashboard'));
         $this->assertDatabaseCount('tournament_player', 1);
+        $response->assertSessionHas(ToastType::SUCCESS->value, __('You joined tournament :name', ['name' => $tournament->name]));
     }
 
     public function testUserCannotJoinAFullTournament(): void
@@ -78,7 +79,8 @@ class JoinTournamentTest extends TestCase
 
         $response = $this->actingAs($user)->post(route('tournament.join', ['tournament' => $tournament]));
 
-        $response->assertForbidden();
+        $this->assertFalse($tournament->players->contains($user));
+        $response->assertSessionHas(ToastType::DANGER->value, __('You cannot join this tournament.'));
     }
 
     public function testUserCannotJoinATournamentTwice(): void
@@ -89,6 +91,7 @@ class JoinTournamentTest extends TestCase
 
         $response = $this->actingAs($user)->post(route('tournament.join', ['tournament' => $tournament]));
 
-        $response->assertForbidden();
+        $this->assertDatabaseCount('tournament_player', 1);
+        $response->assertSessionHas(ToastType::DANGER->value, __('You cannot join this tournament.'));
     }
 }
