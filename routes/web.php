@@ -15,10 +15,11 @@ Route::get('/', function () {
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    Route::post('/tournaments/{tournament}/invitation/create', [TournamentInvitationController::class, 'store'])->name('tournament_invitation.create');
-    Route::get('/tournaments/{code}/join', [TournamentController::class, 'show'])->name('tournament.invitation');
-    Route::post('/tournaments/{tournament}/join', [TournamentController::class, 'join'])->name('tournament.join');
-    Route::post('/tournaments/', [TournamentController::class, 'store'])->name('tournament.create');
+    Route::post('/tournaments/{tournament}/invitations/store', [TournamentInvitationController::class, 'store'])->name('tournament-invitations.store');
+    Route::get('/invitations/{code}/join', [TournamentInvitationController::class, 'join'])->name('tournament-invitations.join');
+
+    Route::post('/tournaments/{tournament}/join', [TournamentController::class, 'join'])->name('tournaments.join');
+    Route::post('/tournaments/', [TournamentController::class, 'store'])->name('tournaments.store');
 });
 
 Route::middleware('auth')->group(function () {

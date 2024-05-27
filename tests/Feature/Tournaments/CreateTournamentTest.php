@@ -17,7 +17,7 @@ class CreateTournamentTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $response = $this->actingAs($user)->post(route('tournament.create'), [
+        $response = $this->actingAs($user)->post(route('tournaments.store'), [
             'description' => 'description',
             'number_of_players' => 32,
             'name' => 'name',
@@ -34,7 +34,7 @@ class CreateTournamentTest extends TestCase
             'organizer_id' => $user->id,
         ]);
 
-        $response = $this->actingAs($user)->post(route('tournament.create'), [
+        $response = $this->actingAs($user)->post(route('tournaments.store'), [
             'description' => 'description',
             'number_of_players' => 32,
             'name' => 'name',

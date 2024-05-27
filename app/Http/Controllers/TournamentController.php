@@ -7,12 +7,10 @@ namespace App\Http\Controllers;
 use App\Enums\ToastType;
 use App\Http\Requests\TournamentStoreRequest;
 use App\Models\Tournament;
-use App\Models\TournamentInvitation;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\View\View;
 
 class TournamentController extends Controller
 {
@@ -25,13 +23,6 @@ class TournamentController extends Controller
         $tournament->players()->attach(Auth::user());
 
         return redirect()->back()->with(ToastType::SUCCESS->value, __('You joined tournament :name', ['name' => $tournament->name]));
-    }
-
-    public function show(string $code): View
-    {
-        $tournamentInvitation = TournamentInvitation::where('code', mb_strtoupper($code))->first();
-
-        return view('tournaments.join', ['tournament' => $tournamentInvitation?->tournament]);
     }
 
     public function store(TournamentStoreRequest $request): RedirectResponse

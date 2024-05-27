@@ -21,7 +21,7 @@ class CreateTournamentInvitationTest extends TestCase
             'organizer_id' => $organizer->id,
         ]);
 
-        $response = $this->actingAs($organizer)->post(route('tournament_invitation.create', ['tournament' => $tournament]));
+        $response = $this->actingAs($organizer)->post(route('tournament-invitations.store', ['tournament' => $tournament]));
 
         $this->assertDatabaseCount('tournament_invitations', 1);
         $response->assertOk();
@@ -39,7 +39,7 @@ class CreateTournamentInvitationTest extends TestCase
             'code' => 'ABCDEF',
         ]);
 
-        $response = $this->actingAs($organizer)->post(route('tournament_invitation.create', ['tournament' => $tournament]));
+        $response = $this->actingAs($organizer)->post(route('tournament-invitations.store', ['tournament' => $tournament]));
 
         $this->assertDatabaseCount('tournament_invitations', 1);
         $this->assertEquals(0, TournamentInvitation::where('code', 'ABCDEF')->count());
@@ -54,7 +54,7 @@ class CreateTournamentInvitationTest extends TestCase
             'organizer_id' => $organizer->id,
         ]);
 
-        $response = $this->actingAs($otherUser)->post(route('tournament_invitation.create', ['tournament' => $tournament]));
+        $response = $this->actingAs($otherUser)->post(route('tournament-invitations.store', ['tournament' => $tournament]));
 
         $this->assertDatabaseCount('tournament_invitations', 0);
         $response->assertForbidden();
