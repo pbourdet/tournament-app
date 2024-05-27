@@ -23,10 +23,10 @@ class JoinTournamentTest extends TestCase
             'tournament_id' => $tournament->id,
         ]);
 
-        $response = $this->actingAs($user)->get(route('tournament.invitation', ['code' => $tournament->invitation?->code]));
+        $response = $this->actingAs($user)->get(route('tournament-invitations.join', ['code' => $tournament->invitation?->code]));
 
         $response->assertOk();
-        $response->assertViewIs('tournaments.join');
+        $response->assertViewIs('tournaments.invitations.join');
     }
 
     public function testUserGetAClearMessageIfTheyCantJoinTheTournament(): void
@@ -44,15 +44,15 @@ class JoinTournamentTest extends TestCase
         $joinedTournament->players()->attach($user);
         TournamentInvitation::factory()->create(['tournament_id' => $joinedTournament->id]);
 
-        $response = $this->actingAs($user)->get(route('tournament.invitation', ['code' => 'fake code']));
+        $response = $this->actingAs($user)->get(route('tournament-invitations.join', ['code' => 'fake code']));
         $response->assertOk();
         $response->assertSeeText(__('No tournament with this invitation code.'));
 
-        $response = $this->actingAs($user)->get(route('tournament.invitation', ['code' => $fullTournament->invitation?->code]));
+        $response = $this->actingAs($user)->get(route('tournament-invitations.join', ['code' => $fullTournament->invitation?->code]));
         $response->assertOk();
         $response->assertSeeText(__('This tournament is full.'));
 
-        $response = $this->actingAs($user)->get(route('tournament.invitation', ['code' => $joinedTournament->invitation?->code]));
+        $response = $this->actingAs($user)->get(route('tournament-invitations.join', ['code' => $joinedTournament->invitation?->code]));
         $response->assertOk();
         $response->assertSeeText(__('You are already taking part in this tournament.'));
     }
@@ -62,7 +62,7 @@ class JoinTournamentTest extends TestCase
         $user = User::factory()->create();
         $tournament = Tournament::factory()->create();
 
-        $response = $this->actingAs($user)->post(route('tournament.join', ['tournament' => $tournament]));
+        $response = $this->actingAs($user)->post(route('tournaments.join', ['tournament' => $tournament]));
 
         $this->assertDatabaseCount('tournament_player', 1);
         $response->assertSessionHas(ToastType::SUCCESS->value, __('You joined tournament :name', ['name' => $tournament->name]));
@@ -77,7 +77,7 @@ class JoinTournamentTest extends TestCase
         $tournament->players()->attach(User::factory()->create());
         $tournament->players()->attach(User::factory()->create());
 
-        $response = $this->actingAs($user)->post(route('tournament.join', ['tournament' => $tournament]));
+        $response = $this->actingAs($user)->post(route('tournaments.join', ['tournament' => $tournament]));
 
         $this->assertFalse($tournament->players->contains($user));
         $response->assertSessionHas(ToastType::DANGER->value, __('You cannot join this tournament.'));
@@ -89,7 +89,7 @@ class JoinTournamentTest extends TestCase
         $tournament = Tournament::factory()->create();
         $tournament->players()->attach($user);
 
-        $response = $this->actingAs($user)->post(route('tournament.join', ['tournament' => $tournament]));
+        $response = $this->actingAs($user)->post(route('tournaments.join', ['tournament' => $tournament]));
 
         $this->assertDatabaseCount('tournament_player', 1);
         $response->assertSessionHas(ToastType::DANGER->value, __('You cannot join this tournament.'));

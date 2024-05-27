@@ -30,7 +30,7 @@
             @elseif($tournament->isFull())
                 @include('tournaments.partials.join-error', ['errorMessage' => __('This tournament is full.')])
             @else
-                <form method="POST" action="{{ route('tournament.join', ['tournament' => $tournament]) }}">
+                <form method="POST" action="{{ route('tournaments.join', ['tournament' => $tournament]) }}">
                     @csrf
                     <x-primary-button>
                         <span class="text-lg">{{ __('Join tournament') }}</span>
