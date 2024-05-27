@@ -19,4 +19,9 @@ class TournamentPolicy
         return !$tournament->isFull()
             && !$tournament->players->contains($user);
     }
+
+    public function create(User $user): bool
+    {
+        return $user->managedTournaments()->count() < 2;
+    }
 }

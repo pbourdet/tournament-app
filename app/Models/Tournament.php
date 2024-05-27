@@ -24,6 +24,7 @@ class Tournament extends Model
         'name',
         'description',
         'organizer_id',
+        'number_of_players',
     ];
 
     /** @return BelongsTo<User, Tournament> */
