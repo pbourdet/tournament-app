@@ -18,6 +18,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/tournaments/{tournament}/invitation/create', [TournamentInvitationController::class, 'store'])->name('tournament_invitation.create');
     Route::get('/tournaments/{code}/join', [TournamentController::class, 'show'])->name('tournament.invitation');
     Route::post('/tournaments/{tournament}/join', [TournamentController::class, 'join'])->name('tournament.join');
+    Route::post('/tournaments/', [TournamentController::class, 'store'])->name('tournament.create');
 });
 
 Route::middleware('auth')->group(function () {
