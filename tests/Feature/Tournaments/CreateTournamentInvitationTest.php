@@ -33,16 +33,12 @@ class CreateTournamentInvitationTest extends TestCase
         $tournament = Tournament::factory()->create([
             'organizer_id' => $organizer->id,
         ]);
-
-        TournamentInvitation::factory()->create([
-            'tournament_id' => $tournament->id,
-            'code' => 'ABCDEF',
-        ]);
+        $initialInvitationCode = $tournament->invitation?->id;
 
         $response = $this->actingAs($organizer)->post(route('tournament-invitations.store', ['tournament' => $tournament]));
 
         $this->assertDatabaseCount('tournament_invitations', 1);
-        $this->assertEquals(0, TournamentInvitation::where('code', 'ABCDEF')->count());
+        $this->assertEquals(0, TournamentInvitation::where('code', $initialInvitationCode)->count());
         $response->assertOk();
     }
 
@@ -50,7 +46,7 @@ class CreateTournamentInvitationTest extends TestCase
     {
         $organizer = User::factory()->create();
         $otherUser = User::factory()->create();
-        $tournament = Tournament::factory()->create([
+        $tournament = Tournament::factory()->withoutInvitation()->create([
             'organizer_id' => $organizer->id,
         ]);
 
