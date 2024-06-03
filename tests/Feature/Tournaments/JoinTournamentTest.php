@@ -6,7 +6,6 @@ namespace Tests\Feature\Tournaments;
 
 use App\Enums\ToastType;
 use App\Models\Tournament;
-use App\Models\TournamentInvitation;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -19,9 +18,6 @@ class JoinTournamentTest extends TestCase
     {
         $user = User::factory()->create();
         $tournament = Tournament::factory()->create();
-        TournamentInvitation::factory()->create([
-            'tournament_id' => $tournament->id,
-        ]);
 
         $response = $this->actingAs($user)->get(route('tournament-invitations.join', ['code' => $tournament->invitation?->code]));
 
@@ -33,16 +29,8 @@ class JoinTournamentTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $fullTournament = Tournament::factory()->create([
-            'number_of_players' => 2,
-        ]);
-        TournamentInvitation::factory()->create(['tournament_id' => $fullTournament->id]);
-        $fullTournament->players()->attach(User::factory()->create());
-        $fullTournament->players()->attach(User::factory()->create());
-
-        $joinedTournament = Tournament::factory()->create();
-        $joinedTournament->players()->attach($user);
-        TournamentInvitation::factory()->create(['tournament_id' => $joinedTournament->id]);
+        $fullTournament = Tournament::factory()->full()->create(['number_of_players' => 2]);
+        $joinedTournament = Tournament::factory()->withPlayer($user)->create();
 
         $response = $this->actingAs($user)->get(route('tournament-invitations.join', ['code' => 'fake code']));
         $response->assertOk();

@@ -30,7 +30,7 @@
             </div>
 
             <!-- Settings Dropdown -->
-            <div class="hidden sm:flex sm:items-center sm:ms-6">
+            <div id="dropdown" class="hidden sm:flex sm:items-center sm:ms-6">
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
                         <button
@@ -106,6 +106,7 @@
                     <x-text-input type="text" placeholder="{{ Str::random(6) }}..." maxlength="6"
                                   class="w-40 text-center text-2xl uppercase"
                                   x-model="code"
+                                  name="invitation-code"
                                   @input="checkCode()"
                     />
                 </div>
@@ -125,7 +126,7 @@
                             if (this.code.length === 6) {
                                 this.$nextTick(() => {
                                     var $button = this.$refs.invitationLink
-                                    $button.setAttribute('hx-get', `/tournaments/${this.code}/join`);
+                                    $button.setAttribute('hx-get', `/invitations/${this.code}/join`);
                                     htmx.process($button)
                                     $button.click();
                                 });
