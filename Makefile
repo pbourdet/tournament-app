@@ -4,6 +4,12 @@ sail = ./vendor/bin/sail
 tests:
 	$(sail) test --parallel
 
+.PHONY: dusk
+dusk:
+	$(sail) exec laravel supervisorctl stop vite
+	$(sail) dusk
+	$(sail) exec laravel supervisorctl start vite
+
 phpstan:
 	$(sail) exec laravel ./vendor/bin/phpstan analyse
 
@@ -18,6 +24,7 @@ checks:
 	make rector
 	make phpstan
 	make tests
+	make dusk
 
 ide-helper:
 	$(sail) artisan clear-compiled
