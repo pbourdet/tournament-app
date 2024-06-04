@@ -92,7 +92,7 @@ services:
         networks:
             - tournament-app
     selenium:
-        image: 'selenium/standalone-chrome'
+        image: 'selenium/standalone-chromium'
         container_name: selenium
         extra_hosts:
             - 'host.docker.internal:host-gateway'
