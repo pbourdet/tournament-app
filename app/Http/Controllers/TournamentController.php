@@ -7,10 +7,12 @@ namespace App\Http\Controllers;
 use App\Enums\ToastType;
 use App\Http\Requests\TournamentStoreRequest;
 use App\Models\Tournament;
+use App\Models\TournamentInvitation;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\View\View;
 
 class TournamentController extends Controller
 {
@@ -23,6 +25,15 @@ class TournamentController extends Controller
         $tournament->players()->attach(Auth::user());
 
         return redirect()->back()->with(ToastType::SUCCESS->value, __('You joined tournament :name', ['name' => $tournament->name]));
+    }
+
+    public function create(): View|RedirectResponse
+    {
+        if (!Gate::allows('create', Tournament::class)) {
+            return redirect()->back()->with(ToastType::DANGER->value, __('You cannot create more tournaments'));
+        }
+
+        return view('tournaments.create');
     }
 
     public function store(TournamentStoreRequest $request): RedirectResponse
@@ -38,6 +49,12 @@ class TournamentController extends Controller
             'number_of_players' => $request->number_of_players,
             'description' => $request->description,
         ]);
+
+        TournamentInvitation::fromTournament($tournament);
+
+        if ($request->boolean('join_tournament')) {
+            $tournament->players()->attach($user);
+        }
 
         return redirect()->route('dashboard')->with(ToastType::SUCCESS->value, __('Tournament :name created !', ['name' => $tournament->name]));
     }

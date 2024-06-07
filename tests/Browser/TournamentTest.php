@@ -48,4 +48,26 @@ class TournamentTest extends DuskTestCase
             'user_id' => $user->id,
         ]);
     }
+
+    public function testCreateTournament(): void
+    {
+        $user = User::factory()->create();
+
+        $this->browse(function (Browser $browser) use ($user) {
+            $browser
+                ->loginAs($user)
+                ->visit(route('tournaments.create'))
+                ->type('name', 'My tournament')
+                ->type('number_of_players', 4)
+                ->type('description', 'This is a test tournament')
+                ->press('button[type="submit"]')
+                ->waitForText(__('Tournament :name created !', ['name' => 'My tournament']))
+            ;
+
+            $browser->assertRouteIs('dashboard');
+        });
+
+        $this->assertDatabaseCount('tournaments', 1);
+        $this->assertDatabaseCount('tournament_player', 1);
+    }
 }

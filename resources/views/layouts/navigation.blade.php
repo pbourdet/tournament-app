@@ -139,10 +139,13 @@
             <x-divider>{{ __('or') }}</x-divider>
 
             <div class="text-center">
-                <a href="#">
-                    <x-primary-button type="button">
+                <a href="{{ route('tournaments.create') }}">
+                    <x-primary-button :disabled="Auth::user()->cannot('create', App\Models\Tournament::class)" type="button">
                         <span class="text-lg">{{ __('Create a tournament') }}</span>
                     </x-primary-button>
+                    @cannot('create', App\Models\Tournament::class)
+                        <x-input-error class="mt-1" :messages="__('You cannot create more tournaments')" />
+                    @endcannot
                 </a>
             </div>
         </div>
