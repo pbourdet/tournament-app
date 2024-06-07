@@ -39,6 +39,10 @@ class TournamentController extends Controller
             'description' => $request->description,
         ]);
 
+        if ($request->boolean('join_tournament')) {
+            $tournament->players()->attach($user);
+        }
+
         return redirect()->route('dashboard')->with(ToastType::SUCCESS->value, __('Tournament :name created !', ['name' => $tournament->name]));
     }
 }
