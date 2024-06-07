@@ -12,6 +12,7 @@ use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\View\View;
 
 class TournamentController extends Controller
 {
@@ -24,6 +25,15 @@ class TournamentController extends Controller
         $tournament->players()->attach(Auth::user());
 
         return redirect()->back()->with(ToastType::SUCCESS->value, __('You joined tournament :name', ['name' => $tournament->name]));
+    }
+
+    public function create(): View|RedirectResponse
+    {
+        if (!Gate::allows('create', Tournament::class)) {
+            return redirect()->back()->with(ToastType::DANGER->value, __('You cannot create more tournaments'));
+        }
+
+        return view('tournaments.create');
     }
 
     public function store(TournamentStoreRequest $request): RedirectResponse

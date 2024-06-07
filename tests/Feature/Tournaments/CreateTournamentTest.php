@@ -13,6 +13,16 @@ class CreateTournamentTest extends TestCase
 {
     use RefreshDatabase;
 
+    public function testTournamentCreationScreenCanBeRendered(): void
+    {
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->get(route('tournaments.create'));
+
+        $response->assertStatus(200);
+        $response->assertSee(__('Create a tournament'));
+    }
+
     public function testUserCanCreateTournament(): void
     {
         $user = User::factory()->create();
