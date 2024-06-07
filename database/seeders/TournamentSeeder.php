@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Database\Seeders;
 
 use App\Models\Tournament;
-use App\Models\TournamentInvitation;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -14,7 +13,7 @@ class TournamentSeeder extends Seeder
     public function run(): void
     {
         User::all()->each(function (User $user) {
-            Tournament::factory(2)->create([
+            Tournament::factory()->create([
                 'organizer_id' => $user->id,
             ]);
 
@@ -24,10 +23,6 @@ class TournamentSeeder extends Seeder
                     ->get();
 
                 $tournament->players()->attach($players);
-
-                TournamentInvitation::factory()->create([
-                    'tournament_id' => $tournament->id,
-                ]);
             });
         });
     }
