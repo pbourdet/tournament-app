@@ -34,6 +34,7 @@ class CreateTournamentTest extends TestCase
         ]);
 
         $this->assertCount(1, $user->managedTournaments);
+        $this->assertCount(0, $user->tournaments);
         $response->assertRedirectToRoute('dashboard');
     }
 
