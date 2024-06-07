@@ -7,6 +7,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Str;
 
 /**
  * @mixin IdeHelperTournamentInvitation
@@ -21,6 +22,15 @@ class TournamentInvitation extends Model
         'code',
         'expires_at',
     ];
+
+    public static function fromTournament(Tournament $tournament): self
+    {
+        return self::create([
+            'tournament_id' => $tournament->id,
+            'code' => mb_strtoupper(Str::random(6)),
+            'expires_at' => now()->addDays(7),
+        ]);
+    }
 
     /** @return BelongsTo<Tournament, TournamentInvitation> */
     public function tournament(): BelongsTo

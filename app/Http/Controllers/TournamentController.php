@@ -7,6 +7,7 @@ namespace App\Http\Controllers;
 use App\Enums\ToastType;
 use App\Http\Requests\TournamentStoreRequest;
 use App\Models\Tournament;
+use App\Models\TournamentInvitation;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
@@ -38,6 +39,8 @@ class TournamentController extends Controller
             'number_of_players' => $request->number_of_players,
             'description' => $request->description,
         ]);
+
+        TournamentInvitation::fromTournament($tournament);
 
         if ($request->boolean('join_tournament')) {
             $tournament->players()->attach($user);
