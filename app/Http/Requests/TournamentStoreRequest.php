@@ -14,7 +14,7 @@ class TournamentStoreRequest extends FormRequest
     {
         return [
             'description' => ['nullable'],
-            'number_of_players' => ['required', 'integer', 'max:256'],
+            'number_of_players' => ['required', 'integer', 'max:256', 'min:2'],
             'name' => ['required'],
         ];
     }
