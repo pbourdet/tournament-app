@@ -31,6 +31,7 @@ class CreateTournamentTest extends TestCase
             'description' => 'description',
             'number_of_players' => 32,
             'name' => 'name',
+            'join_tournament' => '0',
         ]);
 
         $this->assertCount(1, $user->managedTournaments);
@@ -44,7 +45,7 @@ class CreateTournamentTest extends TestCase
 
         $response = $this->actingAs($user)->post(route('tournaments.store'), [
             'description' => 'description',
-            'join_tournament' => 'on',
+            'join_tournament' => '1',
             'number_of_players' => 32,
             'name' => 'name',
         ]);
@@ -65,6 +66,7 @@ class CreateTournamentTest extends TestCase
             'description' => 'description',
             'number_of_players' => 32,
             'name' => 'name',
+            'join_tournament' => '0',
         ]);
 
         $response->assertForbidden();
