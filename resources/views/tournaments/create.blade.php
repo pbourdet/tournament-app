@@ -31,7 +31,7 @@
                 </div>
 
                 <div>
-                    <x-toggle :name="'join_tournament'">{{ __('Join tournament') }}</x-toggle>
+                    <x-toggle :checked="true" :name="'join_tournament'">{{ __('Join tournament') }}</x-toggle>
                 </div>
 
                 <div>
