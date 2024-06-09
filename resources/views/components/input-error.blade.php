@@ -6,4 +6,6 @@
             <li>{{ $message }}</li>
         @endforeach
     </ul>
+@else
+    {{ $slot }}
 @endif
