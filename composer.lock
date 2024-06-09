@@ -62,16 +62,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.311.1",
+            "version": "3.311.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "90218b9372469babf294f97bdd764c9d47ec8a57"
+                "reference": "731cd73062909594c5f7443413c4c4c40ed1c25c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/90218b9372469babf294f97bdd764c9d47ec8a57",
-                "reference": "90218b9372469babf294f97bdd764c9d47ec8a57",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/731cd73062909594c5f7443413c4c4c40ed1c25c",
+                "reference": "731cd73062909594c5f7443413c4c4c40ed1c25c",
                 "shasum": ""
             },
             "require": {
@@ -151,9 +151,9 @@
             "support": {
                 "forum": "https://forums.aws.amazon.com/forum.jspa?forumID=80",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.311.1"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.311.2"
             },
-            "time": "2024-06-06T18:05:50+00:00"
+            "time": "2024-06-07T18:05:33+00:00"
         },
         {
             "name": "brick/math",
@@ -7348,16 +7348,16 @@
         },
         {
             "name": "laravel-lang/config",
-            "version": "1.0.3",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Laravel-Lang/config.git",
-                "reference": "9deb92b5e15f41f29f5ce7cfc53e67ae472a4665"
+                "reference": "ae72f829b55bc2c14e195b6d0a38331b304d7f5f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Laravel-Lang/config/zipball/9deb92b5e15f41f29f5ce7cfc53e67ae472a4665",
-                "reference": "9deb92b5e15f41f29f5ce7cfc53e67ae472a4665",
+                "url": "https://api.github.com/repos/Laravel-Lang/config/zipball/ae72f829b55bc2c14e195b6d0a38331b304d7f5f",
+                "reference": "ae72f829b55bc2c14e195b6d0a38331b304d7f5f",
                 "shasum": ""
             },
             "require": {
@@ -7416,9 +7416,9 @@
             ],
             "support": {
                 "issues": "https://github.com/Laravel-Lang/config/issues",
-                "source": "https://github.com/Laravel-Lang/config/tree/1.0.3"
+                "source": "https://github.com/Laravel-Lang/config/tree/1.1.0"
             },
-            "time": "2024-06-04T10:22:13+00:00"
+            "time": "2024-06-09T00:55:31+00:00"
         },
         {
             "name": "laravel-lang/lang",
