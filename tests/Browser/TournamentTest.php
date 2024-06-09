@@ -58,7 +58,7 @@ class TournamentTest extends DuskTestCase
                 ->loginAs($user)
                 ->visit(route('tournaments.create'))
                 ->type('name', 'My tournament')
-                ->type('number_of_players', 4)
+                ->type('number_of_players', '4')
                 ->type('description', 'This is a test tournament')
                 ->press('button[type="submit"]')
                 ->waitForText(__('Tournament :name created !', ['name' => 'My tournament']))
@@ -69,5 +69,30 @@ class TournamentTest extends DuskTestCase
 
         $this->assertDatabaseCount('tournaments', 1);
         $this->assertDatabaseCount('tournament_player', 1);
+    }
+
+    public function testCreateTeamBasedTournament(): void
+    {
+        $user = User::factory()->create();
+
+        $this->browse(function (Browser $browser) use ($user) {
+            $browser
+                ->loginAs($user)
+                ->visit(route('tournaments.create'))
+                ->type('name', 'My team tournament')
+                ->type('number_of_players', '4')
+                ->click('#toggle_join_tournament')
+                ->click('#toggle_team_based')
+                ->type('team_size', '2')
+                ->type('description', 'This is a test team tournament')
+                ->press('button[type="submit"]')
+                ->waitForText(__('Tournament :name created !', ['name' => 'My team tournament']))
+            ;
+
+            $browser->assertRouteIs('dashboard');
+        });
+
+        $this->assertDatabaseCount('tournaments', 1);
+        $this->assertDatabaseCount('tournament_player', 0);
     }
 }
