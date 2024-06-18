@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Rules;
+namespace App\Rules\Tournaments;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Translation\PotentiallyTranslatedString;

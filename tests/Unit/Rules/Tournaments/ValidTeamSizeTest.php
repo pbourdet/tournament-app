@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit\Rules;
+namespace Tests\Unit\Rules\Tournaments;
 
-use App\Rules\ValidTeamSize;
+use App\Rules\Tournaments\ValidTeamSize;
 use Illuminate\Translation\PotentiallyTranslatedString;
 use Tests\TestCase;
 
