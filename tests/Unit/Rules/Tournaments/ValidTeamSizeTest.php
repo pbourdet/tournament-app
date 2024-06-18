@@ -5,10 +5,9 @@ declare(strict_types=1);
 namespace Tests\Unit\Rules\Tournaments;
 
 use App\Rules\Tournaments\ValidTeamSize;
-use Illuminate\Translation\PotentiallyTranslatedString;
-use Tests\TestCase;
+use Tests\Unit\Rules\RuleTestCase;
 
-class ValidTeamSizeTest extends TestCase
+class ValidTeamSizeTest extends RuleTestCase
 {
     public function testValidTeamSizePasses(): void
     {
@@ -26,25 +25,5 @@ class ValidTeamSizeTest extends TestCase
         $this->assertValidationFails($rule, 10);
         $this->assertValidationFails($rule, 1);
         $this->assertValidationFails($rule, 0);
-    }
-
-    private function assertValidationPasses(ValidTeamSize $rule, mixed $value): void
-    {
-        $failures = false;
-        $rule->validate('team_size', $value, function (PotentiallyTranslatedString $message) use (&$failures) {
-            $failures = true;
-        });
-
-        $this->assertFalse($failures);
-    }
-
-    private function assertValidationFails(ValidTeamSize $rule, mixed $value): void
-    {
-        $failures = false;
-        $rule->validate('team_size', $value, function (string $attribute, string $message) use (&$failures) {
-            $failures = true;
-        });
-
-        $this->assertTrue($failures);
     }
 }
