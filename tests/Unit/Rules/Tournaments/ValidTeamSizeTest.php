@@ -9,7 +9,7 @@ use Tests\Unit\Rules\RuleTestCase;
 
 class ValidTeamSizeTest extends RuleTestCase
 {
-    public function testValidTeamSizePasses(): void
+    public function testRulePasses(): void
     {
         $rule = new ValidTeamSize(10);
 
@@ -17,7 +17,7 @@ class ValidTeamSizeTest extends RuleTestCase
         $this->assertValidationPasses($rule, 2);
     }
 
-    public function testValidTeamSizeFails(): void
+    public function testRuleFails(): void
     {
         $rule = new ValidTeamSize(10);
 
