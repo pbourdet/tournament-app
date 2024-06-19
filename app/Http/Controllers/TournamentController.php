@@ -49,7 +49,7 @@ class TournamentController extends Controller
             'number_of_players' => $request->number_of_players,
             'description' => $request->description,
             'team_based' => $request->boolean('team_based'),
-            'team_size' => $request->boolean('team_based') ? $request->team_size : null,
+            'team_size' => $request->boolean('team_based') ? $request->integer('team_size') : null,
         ]);
 
         TournamentInvitation::fromTournament($tournament);

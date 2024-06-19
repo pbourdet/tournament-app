@@ -7,6 +7,7 @@ namespace Database\Factories;
 use App\Models\Tournament;
 use App\Models\TournamentInvitation;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /** @extends Factory<Tournament> */
@@ -18,7 +19,7 @@ class TournamentFactory extends Factory
         return [
             'name' => fake()->words(asText: true),
             'description' => fake()->text(),
-            'number_of_players' => fake()->numberBetween(1, 5) * 2,
+            'number_of_players' => fake()->numberBetween(2, 5) * 2,
         ];
     }
 
@@ -31,10 +32,11 @@ class TournamentFactory extends Factory
         });
     }
 
-    public function withPlayer(User $user): static
+    /** @param array<User>|Collection<User> $users */
+    public function withPlayers(array|Collection $users): static
     {
-        return $this->afterCreating(function (Tournament $tournament) use ($user): void {
-            $tournament->players()->attach($user);
+        return $this->afterCreating(function (Tournament $tournament) use ($users): void {
+            $tournament->players()->attach(collect($users)->pluck('id'));
         });
     }
 
@@ -42,6 +44,14 @@ class TournamentFactory extends Factory
     {
         return $this->afterCreating(function (Tournament $tournament): void {
             $tournament->invitation?->delete();
+        });
+    }
+
+    public function teamBased(int $teamSize = 2): static
+    {
+        return $this->afterMaking(function (Tournament $tournament) use ($teamSize): void {
+            $tournament->team_based = true;
+            $tournament->team_size = $teamSize;
         });
     }
 

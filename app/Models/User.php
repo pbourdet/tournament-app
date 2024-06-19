@@ -47,6 +47,12 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->belongsToMany(Tournament::class, 'tournament_player');
     }
 
+    /** @return BelongsToMany<Team> */
+    public function teams(): BelongsToMany
+    {
+        return $this->belongsToMany(Team::class);
+    }
+
     public function getProfilePicture(): string
     {
         return $this->profile_picture ?? 'user-picture-placeholder.jpeg';
