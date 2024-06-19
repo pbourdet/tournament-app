@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Http\Controllers\Account\ProfileController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\TeamController;
 use App\Http\Controllers\TournamentController;
 use App\Http\Controllers\Tournaments\TournamentInvitationController;
 use Illuminate\Support\Facades\Route;
@@ -21,6 +22,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/tournaments/create', [TournamentController::class, 'create'])->name('tournaments.create');
     Route::post('/tournaments/{tournament}/join', [TournamentController::class, 'join'])->name('tournaments.join');
     Route::post('/tournaments/', [TournamentController::class, 'store'])->name('tournaments.store');
+
+    Route::post('/tournaments/{tournament}/teams', [TeamController::class, 'store'])->name('tournaments.teams.store');
 });
 
 Route::middleware('auth')->group(function () {
