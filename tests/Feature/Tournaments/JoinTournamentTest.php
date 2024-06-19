@@ -30,7 +30,7 @@ class JoinTournamentTest extends TestCase
         $user = User::factory()->create();
 
         $fullTournament = Tournament::factory()->full()->create(['number_of_players' => 2]);
-        $joinedTournament = Tournament::factory()->withPlayer($user)->create();
+        $joinedTournament = Tournament::factory()->withPlayers([$user])->create();
 
         $response = $this->actingAs($user)->get(route('tournament-invitations.join', ['code' => 'fake code']));
         $response->assertOk();

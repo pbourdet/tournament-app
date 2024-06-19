@@ -20,7 +20,7 @@ class TournamentTest extends DuskTestCase
 
         $tournament = Tournament::factory()->create();
         $fullTournament = Tournament::factory()->full()->create(['number_of_players' => 1]);
-        $joinedTournament = Tournament::factory()->withPlayer($user)->create();
+        $joinedTournament = Tournament::factory()->withPlayers([$user])->create();
 
         $this->browse(function (Browser $browser) use ($user, $fullTournament, $tournament, $joinedTournament) {
             $browser
