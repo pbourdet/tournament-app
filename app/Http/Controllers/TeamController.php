@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Enums\ToastType;
 use App\Http\Requests\TeamStoreRequest;
 use App\Models\Team;
 use App\Models\Tournament;
@@ -22,6 +23,6 @@ class TeamController extends Controller
         ]);
         $team->members()->attach($request->members);
 
-        return redirect()->route('dashboard')->with('toast_success', __('Team :name created', ['name' => $team->name]));
+        return redirect()->route('dashboard')->with(ToastType::SUCCESS->value, __('Team :name created', ['name' => $team->name]));
     }
 }

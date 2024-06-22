@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Teams;
 
+use App\Enums\ToastType;
 use App\Models\Team;
 use App\Models\Tournament;
 use App\Models\User;
@@ -38,6 +39,7 @@ class StoreTeamTest extends TestCase
         $this->assertDatabaseHas('teams', ['name' => 'team name']);
         $this->assertDatabaseHas('teams', ['name' => 'Team 1']);
         $response->assertRedirectToRoute('dashboard');
+        $response->assertSessionHas(ToastType::SUCCESS->value, 'Team team name created');
     }
 
     public function testUserCannotCreateTeamInNotTeamBasedTournament(): void
