@@ -82,6 +82,7 @@
     "This is a secure area of the application. Please confirm your password before continuing.": "Ceci est une zone sécurisée de l'application. Veuillez confirmer votre mot de passe avant de continuer.",
     "This password reset link will expire in :count minutes.": "Ce lien de réinitialisation du mot de passe expirera dans :count minutes.",
     "This tournament is full.": "Ce tournoi est complet.",
+    "This tournament is not team based": "Ce tournoi ne se joue pas en équipe",
     "Tournament :name created !": "Tournoi \":name\" crée !",
     "to": "à",
     "Toggle navigation": "Afficher / masquer le menu de navigation",

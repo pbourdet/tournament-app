@@ -40,6 +40,25 @@ class StoreTeamTest extends TestCase
         $response->assertRedirectToRoute('dashboard');
     }
 
+    public function testUserCannotCreateTeamInNotTeamBasedTournament(): void
+    {
+        $organizer = User::factory()->create();
+        $users = User::factory(2)->create();
+
+        $tournament = Tournament::factory()->create([
+            'organizer_id' => $organizer->id,
+        ]);
+
+        $response = $this->actingAs($organizer)->post(route('tournaments.teams.store', ['tournament' => $tournament]), [
+            'members' => $users->pluck('id')->toArray(),
+        ]);
+
+        $this->assertCount(0, $tournament->teams);
+        $this->assertDatabaseCount('team_user', 0);
+        $this->assertDatabaseCount('teams', 0);
+        $response->assertForbidden();
+    }
+
     public function testUserCannotCreateATeamWithNonExistingUsers(): void
     {
         $organizer = User::factory()->create();

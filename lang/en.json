@@ -82,6 +82,7 @@
     "This is a secure area of the application. Please confirm your password before continuing.": "This is a secure area of the application. Please confirm your password before continuing.",
     "This password reset link will expire in :count minutes.": "This password reset link will expire in :count minutes.",
     "This tournament is full.": "This tournament is full.",
+    "This tournament is not team based": "This tournament is not team based",
     "to": "to",
     "Toggle navigation": "Toggle navigation",
     "Too Many Requests": "Too Many Requests",
