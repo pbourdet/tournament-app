@@ -60,4 +60,9 @@ class Tournament extends Model
     {
         return $this->players()->count() === $this->number_of_players;
     }
+
+    public function getNextTeamName(): string
+    {
+        return sprintf('Team %s', $this->teams()->count() + 1);
+    }
 }

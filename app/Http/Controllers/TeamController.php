@@ -17,7 +17,7 @@ class TeamController extends Controller
         Gate::authorize('manage', $tournament);
 
         $team = Team::create([
-            'name' => $request->name,
+            'name' => $request->name ?? $tournament->getNextTeamName(),
             'tournament_id' => $tournament->id,
         ]);
         $team->members()->attach($request->members);

@@ -18,20 +18,25 @@ class StoreTeamTest extends TestCase
     public function testUserCanCreateATeam(): void
     {
         $organizer = User::factory()->create();
-        $users = User::factory(2)->create();
+        $users = User::factory(4)->create();
 
         $tournament = Tournament::factory()->teamBased()->withPlayers($users)->create([
             'organizer_id' => $organizer->id,
         ]);
 
         $response = $this->actingAs($organizer)->post(route('tournaments.teams.store', ['tournament' => $tournament]), [
+            'members' => [$users[0]->id, $users[1]->id],
+        ]);
+        $this->actingAs($organizer)->post(route('tournaments.teams.store', ['tournament' => $tournament]), [
             'name' => 'team name',
-            'members' => $users->pluck('id')->toArray(),
+            'members' => [$users[2]->id, $users[3]->id],
         ]);
 
-        $this->assertCount(1, $tournament->teams);
-        $this->assertDatabaseCount('team_user', 2);
-        $this->assertDatabaseCount('teams', 1);
+        $this->assertCount(2, $tournament->teams);
+        $this->assertDatabaseCount('team_user', 4);
+        $this->assertDatabaseCount('teams', 2);
+        $this->assertDatabaseHas('teams', ['name' => 'team name']);
+        $this->assertDatabaseHas('teams', ['name' => 'Team 1']);
         $response->assertRedirectToRoute('dashboard');
     }
 
