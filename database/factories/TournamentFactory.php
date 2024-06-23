@@ -26,13 +26,13 @@ class TournamentFactory extends Factory
     public function full(): static
     {
         return $this->afterCreating(function (Tournament $tournament): void {
-            for ($i = 0; $i < $tournament->number_of_players; ++$i) {
+            while (!$tournament->isFull()) {
                 $tournament->players()->attach(User::factory()->create());
             }
         });
     }
 
-    /** @param array<User>|Collection<User> $users */
+    /** @param array<User>|Collection<int, User> $users */
     public function withPlayers(array|Collection $users): static
     {
         return $this->afterCreating(function (Tournament $tournament) use ($users): void {
