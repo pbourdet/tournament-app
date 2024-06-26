@@ -58,6 +58,15 @@ class TournamentController extends Controller
             $tournament->players()->attach($user);
         }
 
-        return redirect()->route('dashboard')->with(ToastType::SUCCESS->value, __('Tournament :name created !', ['name' => $tournament->name]));
+        return redirect()->route('tournaments.show', ['tournament' => $tournament])->with(ToastType::SUCCESS->value, __('Tournament :name created !', ['name' => $tournament->name]));
+    }
+
+    public function show(Tournament $tournament, User $user): View
+    {
+        Gate::authorize('view', $tournament);
+
+        $tournament->load('teams.members');
+
+        return view('tournaments.show', compact('tournament'));
     }
 }
