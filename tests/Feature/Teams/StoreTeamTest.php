@@ -27,11 +27,11 @@ class StoreTeamTest extends TestCase
         ]);
 
         $response = $this->actingAs($organizer)->post(route('tournaments.teams.store', ['tournament' => $tournament]), [
-            'members' => [$users[0]->id, $users[1]->id],
+            'members' => $users->slice(0, 2)->pluck('id')->toArray(),
         ]);
         $this->actingAs($organizer)->post(route('tournaments.teams.store', ['tournament' => $tournament]), [
             'name' => 'team name',
-            'members' => [$users[2]->id, $users[3]->id],
+            'members' => $users->slice(2, 2)->pluck('id')->toArray(),
         ]);
 
         $this->assertCount(2, $tournament->teams);
@@ -162,5 +162,49 @@ class StoreTeamTest extends TestCase
         $this->assertDatabaseCount('team_user', 0);
         $this->assertDatabaseCount('teams', 0);
         $response->assertConflict();
+    }
+
+    public function testUserCannotCreateTeamInTournamentTheyDoNotOrganize(): void
+    {
+        $user = User::factory()->create();
+        $organizer = User::factory()->create();
+        $users = User::factory(2)->create();
+
+        $tournament = Tournament::factory()->teamBased()->withPlayers($users)->create([
+            'organizer_id' => $organizer->id,
+        ]);
+
+        $response = $this->actingAs($user)->post(route('tournaments.teams.store', ['tournament' => $tournament]), [
+            'name' => 'team name',
+            'members' => $users->pluck('id')->toArray(),
+        ]);
+
+        $this->assertCount(0, $tournament->teams);
+        $this->assertDatabaseCount('team_user', 0);
+        $this->assertDatabaseCount('teams', 0);
+        $response->assertForbidden();
+    }
+
+    public function testUserCannotCreateTeamIfTournamentHasAllTeams(): void
+    {
+        $organizer = User::factory()->create();
+        $users = User::factory(4)->create();
+
+        $tournament = Tournament::factory()->teamBased()->withPlayers($users)->create([
+            'organizer_id' => $organizer->id,
+            'number_of_players' => 4,
+        ]);
+
+        Team::factory()->withMembers($users->slice(0, 2))->create(['tournament_id' => $tournament->id]);
+        Team::factory()->withMembers($users->slice(2, 2))->create(['tournament_id' => $tournament->id]);
+
+        $response = $this->actingAs($organizer)->post(route('tournaments.teams.store', ['tournament' => $tournament]), [
+            'members' => [$users[0]->id, $users[1]->id],
+        ]);
+
+        $this->assertCount(2, $tournament->teams);
+        $this->assertDatabaseCount('team_user', 4);
+        $this->assertDatabaseCount('teams', 2);
+        $response->assertForbidden();
     }
 }

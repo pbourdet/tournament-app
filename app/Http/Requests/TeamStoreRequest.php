@@ -18,7 +18,7 @@ class TeamStoreRequest extends FormRequest
         /** @var Tournament $tournament */
         $tournament = $this->route('tournament');
 
-        return $tournament->team_based;
+        return $tournament->team_based && !$tournament->hasAllTeams();
     }
 
     /** @return array<string, array<string|ValidationRule>> */
