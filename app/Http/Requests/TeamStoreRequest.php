@@ -13,6 +13,14 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class TeamStoreRequest extends FormRequest
 {
+    public function authorize(): bool
+    {
+        /** @var Tournament $tournament */
+        $tournament = $this->route('tournament');
+
+        return $tournament->team_based && !$tournament->hasAllTeams();
+    }
+
     /** @return array<string, array<string|ValidationRule>> */
     public function rules(): array
     {
