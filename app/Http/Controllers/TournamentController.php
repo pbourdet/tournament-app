@@ -60,4 +60,9 @@ class TournamentController extends Controller
 
         return redirect()->route('dashboard')->with(ToastType::SUCCESS->value, __('Tournament :name created !', ['name' => $tournament->name]));
     }
+
+    public function show(Tournament $tournament): View
+    {
+        return view('tournaments.show', compact('tournament'));
+    }
 }
