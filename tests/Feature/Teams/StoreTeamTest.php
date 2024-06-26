@@ -9,6 +9,7 @@ use App\Models\Team;
 use App\Models\Tournament;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Cache;
 use Ramsey\Uuid\Uuid;
 use Tests\TestCase;
 
@@ -139,5 +140,27 @@ class StoreTeamTest extends TestCase
         $this->assertDatabaseCount('team_user', 0);
         $this->assertDatabaseCount('teams', 0);
         $response->assertSessionHasErrors('members');
+    }
+
+    public function testUserCannotCreateTeamIfTeamGenerationIsInProgress(): void
+    {
+        $organizer = User::factory()->create();
+        $users = User::factory(2)->create();
+
+        $tournament = Tournament::factory()->teamBased()->withPlayers($users)->create([
+            'organizer_id' => $organizer->id,
+        ]);
+
+        Cache::lock(sprintf('tournament:%s:generate-teams', $tournament->id), 20)->get();
+
+        $response = $this->actingAs($organizer)->post(route('tournaments.teams.store', ['tournament' => $tournament]), [
+            'name' => 'team name',
+            'members' => $users->pluck('id')->toArray(),
+        ]);
+
+        $this->assertCount(0, $tournament->teams);
+        $this->assertDatabaseCount('team_user', 0);
+        $this->assertDatabaseCount('teams', 0);
+        $response->assertConflict();
     }
 }

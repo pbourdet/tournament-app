@@ -21,11 +21,15 @@ class TeamController extends Controller
     {
         Gate::authorize('manage', $tournament);
 
+        $lock = $this->checkLock($tournament);
+
         $team = Team::create([
             'name' => $request->name ?? $tournament->getNextTeamName(),
             'tournament_id' => $tournament->id,
         ]);
         $team->members()->attach($request->members);
+
+        $lock->release();
 
         return redirect()->route('dashboard')->with(ToastType::SUCCESS->value, __('Team :name created', ['name' => $team->name]));
     }
