@@ -73,6 +73,7 @@
     "Server Error": "Erreur serveur",
     "Service Unavailable": "Service indisponible",
     "Showing": "Montrant",
+    "Team": "Équipe",
     "Team :name created !": "Équipe \":name\" créée !",
     "Team based": "Se joue en équipe",
     "Team size must be greater than 1, less than the number of players and a multiple of the number of players.": "La taille des équipes doit être supérieure à 1, inférieure au nombre de joueurs et un multiple du nombre de joueurs.",

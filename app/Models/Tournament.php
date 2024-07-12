@@ -65,7 +65,7 @@ class Tournament extends Model
 
     public function getNextTeamName(): string
     {
-        return sprintf('Team %s', $this->teams()->count() + 1);
+        return sprintf('%s %s', __('Team'), $this->teams()->count() + 1);
     }
 
     public function hasAllTeams(): bool
