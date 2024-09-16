@@ -10,7 +10,7 @@ use Illuminate\Translation\PotentiallyTranslatedString;
 readonly class ValidTeamSize implements ValidationRule
 {
     public function __construct(
-        public int $numberOfPlayers
+        public int $numberOfPlayers,
     ) {
     }
 
