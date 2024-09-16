@@ -11,7 +11,7 @@ use Illuminate\Translation\PotentiallyTranslatedString;
 readonly class MembersInTournament implements ValidationRule
 {
     public function __construct(
-        public Tournament $tournament
+        public Tournament $tournament,
     ) {
     }
 
