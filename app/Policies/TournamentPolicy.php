@@ -24,4 +24,9 @@ class TournamentPolicy
     {
         return $user->managedTournaments()->count() < 2;
     }
+
+    public function view(User $user, Tournament $tournament): bool
+    {
+        return $tournament->players->contains($user) || $tournament->organizer()->is($user);
+    }
 }
