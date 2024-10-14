@@ -37,19 +37,19 @@ class User extends Authenticatable implements MustVerifyEmail
         'remember_token',
     ];
 
-    /** @return HasMany<Tournament> */
+    /** @return HasMany<Tournament, $this> */
     public function managedTournaments(): HasMany
     {
         return $this->hasMany(Tournament::class, 'organizer_id');
     }
 
-    /** @return BelongsToMany<Tournament> */
+    /** @return BelongsToMany<Tournament, $this> */
     public function tournaments(): BelongsToMany
     {
         return $this->belongsToMany(Tournament::class, 'tournament_player');
     }
 
-    /** @return BelongsToMany<Team> */
+    /** @return BelongsToMany<Team, $this> */
     public function teams(): BelongsToMany
     {
         return $this->belongsToMany(Team::class);
