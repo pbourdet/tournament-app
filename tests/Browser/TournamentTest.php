@@ -64,7 +64,7 @@ class TournamentTest extends DuskTestCase
                 ->waitForText(__('Tournament :name created !', ['name' => 'My tournament']))
             ;
 
-            $browser->assertRouteIs('dashboard');
+            $browser->assertRouteIs('tournaments.show', ['tournament' => Tournament::first()]);
         });
 
         $this->assertDatabaseCount('tournaments', 1);
@@ -89,7 +89,7 @@ class TournamentTest extends DuskTestCase
                 ->waitForText(__('Tournament :name created !', ['name' => 'My team tournament']))
             ;
 
-            $browser->assertRouteIs('dashboard');
+            $browser->assertRouteIs('tournaments.show', ['tournament' => Tournament::first()]);
         });
 
         $this->assertDatabaseCount('tournaments', 1);
