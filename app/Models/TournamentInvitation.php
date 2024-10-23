@@ -34,7 +34,7 @@ class TournamentInvitation extends Model
         ]);
     }
 
-    /** @return BelongsTo<Tournament, TournamentInvitation> */
+    /** @return BelongsTo<Tournament, $this> */
     public function tournament(): BelongsTo
     {
         return $this->belongsTo(Tournament::class);

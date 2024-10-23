@@ -22,13 +22,13 @@ class Team extends Model
 
     protected $fillable = ['name', 'tournament_id'];
 
-    /** @return BelongsToMany<User> */
+    /** @return BelongsToMany<User, $this> */
     public function members(): BelongsToMany
     {
         return $this->belongsToMany(User::class);
     }
 
-    /** @return BelongsTo<Tournament, Team> */
+    /** @return BelongsTo<Tournament, $this> */
     public function tournament(): BelongsTo
     {
         return $this->belongsTo(Tournament::class);

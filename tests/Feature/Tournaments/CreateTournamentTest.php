@@ -37,7 +37,7 @@ class CreateTournamentTest extends TestCase
 
         $this->assertCount(1, $user->managedTournaments);
         $this->assertCount(0, $user->tournaments);
-        $response->assertRedirectToRoute('dashboard');
+        $response->assertRedirectToRoute('tournaments.show', ['tournament' => Tournament::first()]);
     }
 
     public function testUserCanCreateTeamBasedTournament(): void
@@ -55,7 +55,7 @@ class CreateTournamentTest extends TestCase
 
         $this->assertCount(1, $user->managedTournaments);
         $this->assertCount(0, $user->tournaments);
-        $response->assertRedirectToRoute('dashboard');
+        $response->assertRedirectToRoute('tournaments.show', ['tournament' => Tournament::first()]);
     }
 
     public function testUserCannotCreateTeamBasedTournamentWithWrongValues(): void
@@ -89,7 +89,7 @@ class CreateTournamentTest extends TestCase
 
         $this->assertCount(1, $user->managedTournaments);
         $this->assertCount(1, $user->tournaments);
-        $response->assertRedirectToRoute('dashboard');
+        $response->assertRedirectToRoute('tournaments.show', ['tournament' => Tournament::first()]);
     }
 
     public function testUserCanCreateMoreThanTwoTournaments(): void

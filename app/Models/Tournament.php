@@ -32,13 +32,13 @@ class Tournament extends Model
         'team_size',
     ];
 
-    /** @return BelongsTo<User, Tournament> */
+    /** @return BelongsTo<User, $this> */
     public function organizer(): BelongsTo
     {
         return $this->belongsTo(User::class, 'organizer_id');
     }
 
-    /** @return BelongsToMany<User> */
+    /** @return BelongsToMany<User, $this> */
     public function players(): BelongsToMany
     {
         return $this
@@ -46,13 +46,13 @@ class Tournament extends Model
             ->withTimestamps();
     }
 
-    /** @return HasOne<TournamentInvitation> */
+    /** @return HasOne<TournamentInvitation, $this> */
     public function invitation(): HasOne
     {
         return $this->hasOne(TournamentInvitation::class);
     }
 
-    /** @return HasMany<Team> */
+    /** @return HasMany<Team, $this> */
     public function teams(): HasMany
     {
         return $this->hasMany(Team::class);
@@ -65,7 +65,7 @@ class Tournament extends Model
 
     public function getNextTeamName(): string
     {
-        return sprintf('Team %s', $this->teams()->count() + 1);
+        return sprintf('%s %s', __('Team'), $this->teams()->count() + 1);
     }
 
     public function hasAllTeams(): bool
