@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Seeders;
 
+use App\Models\Team;
 use App\Models\Tournament;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -25,5 +26,24 @@ class TournamentSeeder extends Seeder
                 $tournament->players()->attach($players);
             });
         });
+
+        $teamUser = User::where('email', 'team@example.com')->firstOrFail();
+        $teamTournament = Tournament::factory()->create([
+            'organizer_id' => $teamUser->id,
+            'number_of_players' => 16,
+            'team_based' => true,
+            'team_size' => 2,
+        ]);
+
+        $players = User::inRandomOrder()->take(5)->get();
+        $teamTournament->players()->attach($players);
+        $teams = $players->chunk(2);
+        foreach ($teams as $team) {
+            if (1 === $team->count()) {
+                continue;
+            }
+
+            $teamTournament->teams()->save(Team::factory()->withMembers($team)->create(['tournament_id' => $teamTournament->id]));
+        }
     }
 }
