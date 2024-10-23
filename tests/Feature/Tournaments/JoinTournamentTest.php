@@ -7,7 +7,9 @@ namespace Tests\Feature\Tournaments;
 use App\Enums\ToastType;
 use App\Models\Tournament;
 use App\Models\User;
+use App\Notifications\PlayerJoined;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
 
 class JoinTournamentTest extends TestCase
@@ -47,6 +49,8 @@ class JoinTournamentTest extends TestCase
 
     public function testUserCanJoinATournament(): void
     {
+        Notification::fake();
+
         $user = User::factory()->create();
         $tournament = Tournament::factory()->create();
 
@@ -54,10 +58,12 @@ class JoinTournamentTest extends TestCase
 
         $this->assertDatabaseCount('tournament_player', 1);
         $response->assertSessionHas(ToastType::SUCCESS->value, __('You joined tournament :name', ['name' => $tournament->name]));
+        Notification::assertSentTo($tournament->organizer, PlayerJoined::class);
     }
 
     public function testUserCannotJoinAFullTournament(): void
     {
+        Notification::fake();
         $user = User::factory()->create();
         $tournament = Tournament::factory()->create([
             'number_of_players' => 2,
@@ -69,10 +75,12 @@ class JoinTournamentTest extends TestCase
 
         $this->assertFalse($tournament->players->contains($user));
         $response->assertSessionHas(ToastType::DANGER->value, __('You cannot join this tournament.'));
+        Notification::assertNothingSent();
     }
 
     public function testUserCannotJoinATournamentTwice(): void
     {
+        Notification::fake();
         $user = User::factory()->create();
         $tournament = Tournament::factory()->create();
         $tournament->players()->attach($user);
@@ -81,5 +89,6 @@ class JoinTournamentTest extends TestCase
 
         $this->assertDatabaseCount('tournament_player', 1);
         $response->assertSessionHas(ToastType::DANGER->value, __('You cannot join this tournament.'));
+        Notification::assertNothingSent();
     }
 }

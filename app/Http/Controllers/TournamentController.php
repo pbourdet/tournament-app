@@ -9,6 +9,7 @@ use App\Http\Requests\TournamentStoreRequest;
 use App\Models\Tournament;
 use App\Models\TournamentInvitation;
 use App\Models\User;
+use App\Notifications\PlayerJoined;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
@@ -18,11 +19,16 @@ class TournamentController extends Controller
 {
     public function join(Tournament $tournament): RedirectResponse
     {
+        /** @var User $user */
+        $user = Auth::user();
+
         if (!Gate::allows('join', $tournament)) {
             return redirect()->back()->with(ToastType::DANGER->value, __('You cannot join this tournament.'));
         }
 
-        $tournament->players()->attach(Auth::user());
+        $tournament->players()->attach($user);
+
+        $tournament->organizer?->notify((new PlayerJoined($tournament, $user))->afterCommit());
 
         return redirect()->back()->with(ToastType::SUCCESS->value, __('You joined tournament :name', ['name' => $tournament->name]));
     }
