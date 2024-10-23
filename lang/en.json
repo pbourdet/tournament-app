@@ -58,6 +58,7 @@
     "password": "The password is incorrect.",
     "Payment Required": "Payment Required",
     "Player count": "Player count",
+    "Player :name has joined tournament :tournament": "Player :name has joined tournament :tournament.",
     "Please click the button below to verify your email address.": "Please click the button below to verify your email address.",
     "Profile": "Profile",
     "Profile Information": "Profile Information",
