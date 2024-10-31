@@ -143,10 +143,10 @@
                     <x-primary-button :disabled="Auth::user()->cannot('create', App\Models\Tournament::class)" type="button">
                         <span class="text-lg">{{ __('Create a tournament') }}</span>
                     </x-primary-button>
-                    @cannot('create', App\Models\Tournament::class)
-                        <x-input-error class="mt-1" :messages="__('You cannot create more tournaments')" />
-                    @endcannot
                 </a>
+                @cannot('create', App\Models\Tournament::class)
+                    <x-input-error class="mt-1" :messages="__('You cannot create more tournaments')" />
+                @endcannot
             </div>
         </div>
     </x-modal>

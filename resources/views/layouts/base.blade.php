@@ -28,14 +28,5 @@
         <div class="@yield('container-class', 'min-h-screen bg-gray-100')">
             @yield('content')
         </div>
-
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                window.Echo.private('App.Models.User.{{ auth()->id() }}')
-                    .notification((notification) => {
-                        triggerToast(notification.toastType, notification.message);
-                    });
-            });
-        </script>
     </body>
 </html>
