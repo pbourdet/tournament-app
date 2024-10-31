@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Jobs;
 
 use App\Models\Tournament;
+use App\Notifications\TeamsGenerated;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -50,6 +51,8 @@ class GenerateTeams implements ShouldQueue
                     $team->members()->attach($playersChunk);
                 }
             } while ($playersChunk->count() === $teamSize);
+
+            $this->tournament->organizer?->notify((new TeamsGenerated($this->tournament))->locale($this->locale));
         } finally {
             Cache::lock(sprintf('tournament:%s:generate-teams', $this->tournament->id))->forceRelease();
         }

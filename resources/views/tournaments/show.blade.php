@@ -19,6 +19,20 @@
                 </x-tab-content>
                 @if($tournament->team_based)
                     <x-tab-content :tab-name="'teams'">
+                        @if($tournament->organizer->is(auth()->user()) && $tournament->canGenerateTeams())
+                            <div>
+                                <form
+                                    hx-post="{{ route('tournaments.teams.generate', $tournament) }}"
+                                    hx-swap="none"
+                                    hx-on:htmx:after-swap="triggerToast('{{ \App\Enums\ToastType::INFO->value }}', '{{ __('Teams generation in progress') }}')"
+                                >
+                                    @csrf
+                                    <x-primary-button id="button-generate-teams">
+                                        {{ __('Generate teams') }}
+                                    </x-primary-button>
+                                </form>
+                            </div>
+                        @endif
                         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-1">
                             @foreach($tournament->teams as $team)
                                 <div class="max-w-sm rounded-lg overflow-hidden shadow-lg bg-white mb-2">
@@ -27,8 +41,8 @@
                                         <p class="text-gray-700 text-base">
                                             @foreach($team->members as $member)
                                                 <span class="block">
-                                                {{ $member->name }}
-                                            </span>
+                                                    {{ $member->name }}
+                                                </span>
                                             @endforeach
                                         </p>
                                     </div>
