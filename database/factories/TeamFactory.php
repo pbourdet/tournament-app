@@ -20,7 +20,7 @@ class TeamFactory extends Factory
         ];
     }
 
-    /** @param array<User>|Collection<User> $users */
+    /** @param array<User>|Collection<int, User> $users */
     public function withMembers(array|Collection $users): static
     {
         return $this->afterCreating(function (Team $team) use ($users): void {

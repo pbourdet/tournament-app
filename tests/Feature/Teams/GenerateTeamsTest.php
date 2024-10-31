@@ -64,6 +64,22 @@ class GenerateTeamsTest extends TestCase
         $response->assertForbidden();
     }
 
+    public function testUserCannotTriggerTeamGenerationIfTournamentHasAllTeamsAlready(): void
+    {
+        Queue::fake();
+
+        $organizer = User::factory()->create();
+
+        $tournament = Tournament::factory()->teamBased()->withAllTeams()->create([
+            'organizer_id' => $organizer->id,
+        ]);
+
+        $response = $this->actingAs($organizer)->post(route('tournaments.teams.generate', ['tournament' => $tournament]));
+
+        Queue::assertNothingPushed();
+        $response->assertForbidden();
+    }
+
     public function testUserCannotTriggerTeamGenerationOnATournamentTheyDoNotOrganize(): void
     {
         Queue::fake();
