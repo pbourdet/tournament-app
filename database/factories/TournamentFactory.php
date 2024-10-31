@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
+use App\Models\Team;
 use App\Models\Tournament;
 use App\Models\TournamentInvitation;
 use App\Models\User;
@@ -37,6 +38,17 @@ class TournamentFactory extends Factory
     {
         return $this->afterCreating(function (Tournament $tournament) use ($users): void {
             $tournament->players()->attach(collect($users)->pluck('id'));
+        });
+    }
+
+    public function withAllTeams(): static
+    {
+        return $this->full()->afterCreating(function (Tournament $tournament): void {
+            while (!$tournament->hasAllTeams()) {
+                $users = User::factory()->count($tournament->team_size)->createMany();
+                $team = Team::factory()->withMembers($users)->create(['tournament_id' => $tournament->id]);
+                $tournament->teams()->save($team);
+            }
         });
     }
 

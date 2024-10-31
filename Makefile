@@ -19,6 +19,10 @@ pint:
 rector:
 	$(sail) exec laravel ./vendor/bin/rector
 
+dependencies:
+	$(sail) composer update
+	$(sail) npm update
+
 checks:
 	make pint
 	make rector

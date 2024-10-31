@@ -16,4 +16,14 @@
     <main class="py-12">
         {{ $slot }}
     </main>
+    @auth
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                window.Echo.private('App.Models.User.{{ auth()->id() }}')
+                    .notification((notification) => {
+                        triggerToast(notification.toastType, notification.message);
+                    });
+            });
+        </script>
+    @endauth
 @endsection

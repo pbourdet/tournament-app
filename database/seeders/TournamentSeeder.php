@@ -45,5 +45,11 @@ class TournamentSeeder extends Seeder
 
             $teamTournament->teams()->save(Team::factory()->withMembers($team)->create(['tournament_id' => $teamTournament->id]));
         }
+
+        $fullTeamTournamentUser = User::where('email', 'full-team@example.com')->firstOrFail();
+        Tournament::factory()->teamBased()->full()->create([
+            'organizer_id' => $fullTeamTournamentUser->id,
+            'number_of_players' => 8,
+        ]);
     }
 }

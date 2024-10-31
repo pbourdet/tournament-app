@@ -30,7 +30,7 @@ class GenerateTeamsTest extends TestCase
         $lock = Cache::lock(sprintf('tournament:%s:generate-teams', $tournament->id), 20);
         $lock->get();
 
-        (new GenerateTeams($tournament))->handle();
+        (new GenerateTeams($tournament, 'en'))->handle();
 
         $this->assertDatabaseCount('teams', 3);
 
@@ -51,19 +51,19 @@ class GenerateTeamsTest extends TestCase
         $lock = Cache::lock(sprintf('tournament:%s:generate-teams', $tournament->id), 20);
         $lock->get();
 
-        (new GenerateTeams($tournament))->handle();
+        (new GenerateTeams($tournament, 'en'))->handle();
 
         $this->assertDatabaseCount('teams', 0);
         $this->assertTrue($lock->get());
     }
 
-    public function testItDoesNotCreateTeamsIsTournamentIsTeamBased(): void
+    public function testItDoesNotCreateTeamsIsTournamentIsNotTeamBased(): void
     {
         $tournament = Tournament::factory()->full()->create();
         $lock = Cache::lock(sprintf('tournament:%s:generate-teams', $tournament->id), 20);
         $lock->get();
 
-        (new GenerateTeams($tournament))->handle();
+        (new GenerateTeams($tournament, 'en'))->handle();
 
         $this->assertDatabaseCount('teams', 0);
         $this->assertTrue($lock->get());

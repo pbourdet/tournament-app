@@ -72,4 +72,9 @@ class Tournament extends Model
     {
         return $this->team_based && $this->teams()->count() === $this->number_of_players / $this->team_size;
     }
+
+    public function canGenerateTeams(): bool
+    {
+        return $this->isFull() && $this->team_based && !$this->hasAllTeams();
+    }
 }
