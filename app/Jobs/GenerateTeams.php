@@ -21,13 +21,16 @@ class GenerateTeams implements ShouldQueue
 
     public function __construct(
         public readonly Tournament $tournament,
+        public readonly string $locale,
     ) {
     }
 
     public function handle(): void
     {
+        app()->setLocale($this->locale);
+
         try {
-            if (!$this->tournament->isFull() || !$this->tournament->team_based) {
+            if (!$this->tournament->canGenerateTeams()) {
                 return;
             }
 

@@ -38,13 +38,13 @@ class TeamController extends Controller
     {
         Gate::authorize('manage', $tournament);
 
-        if (!$tournament->team_based || !$tournament->isFull()) {
+        if (!$tournament->canGenerateTeams()) {
             abort(403);
         }
 
         $this->checkLock($tournament);
 
-        GenerateTeams::dispatch($tournament);
+        GenerateTeams::dispatch($tournament, app()->getLocale());
 
         return response('', 202);
     }
