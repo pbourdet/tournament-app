@@ -1,13 +1,9 @@
 import './bootstrap';
-
-import Alpine from 'alpinejs';
 import htmx from 'htmx.org';
-
 import.meta.glob([
     '../images/**',
 ]);
 
-window.Alpine = Alpine;
 window.htmx = htmx
 
 if (import.meta.env.VITE_INCLUDE_JQUERY === 'true') {
@@ -15,5 +11,3 @@ if (import.meta.env.VITE_INCLUDE_JQUERY === 'true') {
         window.jQuery = $;
     });
 }
-
-Alpine.start();

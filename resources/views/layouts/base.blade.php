@@ -16,6 +16,7 @@
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+        @livewireStyles
     </head>
     <body class="@yield('body-class', 'font-sans antialiased')">
         @guest
@@ -28,5 +29,6 @@
         <div class="@yield('container-class', 'min-h-screen bg-gray-100')">
             @yield('content')
         </div>
+        @livewireScripts
     </body>
 </html>
