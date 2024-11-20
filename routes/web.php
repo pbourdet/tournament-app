@@ -25,7 +25,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/tournaments/{tournament}', [TournamentController::class, 'show'])->name('tournaments.show');
 
     Route::post('/tournaments/{tournament}/teams', [TeamController::class, 'store'])->name('tournaments.teams.store');
-    Route::post('/tournaments/{tournament}/teams/generate', [TeamController::class, 'generate'])->name('tournaments.teams.generate');
 });
 
 Route::middleware('auth')->group(function () {

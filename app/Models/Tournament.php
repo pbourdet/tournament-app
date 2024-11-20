@@ -63,11 +63,6 @@ class Tournament extends Model
         return $this->players()->count() === $this->number_of_players;
     }
 
-    public function getNextTeamName(): string
-    {
-        return sprintf('%s %s', __('Team'), $this->teams()->count() + 1);
-    }
-
     public function hasAllTeams(): bool
     {
         return $this->team_based && $this->teams()->count() === $this->number_of_players / $this->team_size;

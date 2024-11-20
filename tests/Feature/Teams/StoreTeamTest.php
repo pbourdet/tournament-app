@@ -38,7 +38,6 @@ class StoreTeamTest extends TestCase
         $this->assertDatabaseCount('team_user', 4);
         $this->assertDatabaseCount('teams', 2);
         $this->assertDatabaseHas('teams', ['name' => 'team name']);
-        $this->assertDatabaseHas('teams', ['name' => 'Team 1']);
         $response->assertRedirectToRoute('dashboard');
         $response->assertSessionHas(ToastType::SUCCESS->value, 'Team team name created');
     }
