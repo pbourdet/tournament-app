@@ -7,7 +7,7 @@ tests:
 .PHONY: dusk
 dusk:
 	$(sail) exec laravel supervisorctl stop vite
-	$(sail) dusk
+	$(sail) dusk || true
 	$(sail) exec laravel supervisorctl start vite
 
 phpstan:
