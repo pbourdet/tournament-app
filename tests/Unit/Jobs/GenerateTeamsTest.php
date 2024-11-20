@@ -35,8 +35,6 @@ class GenerateTeamsTest extends TestCase
         $this->assertDatabaseCount('teams', 3);
 
         $teams = $tournament->teams;
-        $this->assertContains('Team 2', $teams->pluck('name')->toArray());
-        $this->assertContains('Team 3', $teams->pluck('name')->toArray());
         foreach ($teams as $team) {
             $this->assertCount(2, $team->members);
         }

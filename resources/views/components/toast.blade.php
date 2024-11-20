@@ -1,6 +1,6 @@
 @props(['type' => 'info', 'message' => ''])
 
-<div x-data="toast()" x-init="init('{{ $type }}', '{{ $message }}')" class="fixed top-3 right-3 w-full max-w-xs sm:max-w-sm md:max-w-md space-y-2">
+<div x-cloak x-data="toast()" x-init="init('{{ $type }}', '{{ $message }}')" class="fixed top-3 right-3 w-full max-w-xs sm:max-w-sm md:max-w-md space-y-2">
     <div x-show="isVisible"
          x-transition:enter="transition ease-out duration-300"
          x-transition:enter-start="opacity-0 transform translate-x-2"
