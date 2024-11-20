@@ -43,7 +43,7 @@ class TournamentFactory extends Factory
 
     public function withAllTeams(): static
     {
-        return $this->full()->afterCreating(function (Tournament $tournament): void {
+        return $this->teamBased()->full()->afterCreating(function (Tournament $tournament): void {
             while (!$tournament->hasAllTeams()) {
                 $users = User::factory()->count($tournament->team_size)->createMany();
                 $team = Team::factory()->withMembers($users)->create(['tournament_id' => $tournament->id]);
