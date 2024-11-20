@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Jobs;
 
+use App\Events\TeamsGenerated;
 use App\Models\Tournament;
-use App\Notifications\TeamsGenerated;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -36,23 +36,24 @@ class GenerateTeams implements ShouldQueue
             }
 
             $teamSize = (int) $this->tournament->team_size;
+            $missingTeamsCount = $this->tournament->missingTeamsCount();
 
-            do {
+            for ($i = 0; $i < $missingTeamsCount; ++$i) {
                 $playersChunk = $this->tournament->players()
-                    ->whereDoesntHave('teams')
-                    ->take($teamSize)
-                    ->get();
+                     ->whereDoesntHave('teams')
+                     ->take($teamSize)
+                     ->get();
 
                 if ($playersChunk->isNotEmpty()) {
                     $team = $this->tournament->teams()->create([
-                        'name' => $this->tournament->getNextTeamName(),
+                        'name' => sprintf('%s %s', __('Team'), $playersChunk->first()->name),
                     ]);
 
                     $team->members()->attach($playersChunk);
                 }
-            } while ($playersChunk->count() === $teamSize);
+            }
 
-            $this->tournament->organizer?->notify((new TeamsGenerated($this->tournament))->locale($this->locale));
+            event(new TeamsGenerated($this->tournament));
         } finally {
             Cache::lock(sprintf('tournament:%s:generate-teams', $this->tournament->id))->forceRelease();
         }

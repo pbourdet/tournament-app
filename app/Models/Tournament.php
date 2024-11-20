@@ -77,4 +77,13 @@ class Tournament extends Model
     {
         return $this->isFull() && $this->team_based && !$this->hasAllTeams();
     }
+
+    public function missingTeamsCount(): int
+    {
+        if (null === $this->team_size) {
+            return 0;
+        }
+
+        return $this->number_of_players / $this->team_size - $this->teams()->count();
+    }
 }
