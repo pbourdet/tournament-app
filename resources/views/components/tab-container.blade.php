@@ -1,9 +1,5 @@
 @props(['defaultTab'])
 
-<style>
-    [x-cloak] {display: none;}
-</style>
-
 <div x-cloak x-data="tabContainer('{{ $defaultTab }}')">
     <div>
         <ul class="flex flex-wrap text-md font-medium text-center text-gray-500 border-b border-gray-200">
