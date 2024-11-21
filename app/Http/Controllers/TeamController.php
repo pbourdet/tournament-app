@@ -37,7 +37,7 @@ class TeamController extends Controller
 
     private function checkLock(Tournament $tournament): Lock
     {
-        $lock = Cache::lock(sprintf('tournament:%s:generate-teams', $tournament->id), 20);
+        $lock = Cache::lock($tournament->getTeamsLockKey(), 20);
 
         if (!$lock->get()) {
             abort(409);

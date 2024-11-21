@@ -41,7 +41,7 @@ class Teams extends Component
             abort(403);
         }
 
-        $this->checkLock($this->tournament);
+        $this->checkLock();
 
         GenerateTeams::dispatch($this->tournament, app()->getLocale());
         $this->dispatch('toast-trigger', type: ToastType::INFO->value, message: __('Teams generation in progress'));
@@ -53,9 +53,9 @@ class Teams extends Component
         $this->dispatch('toast-trigger', type: ToastType::SUCCESS->value, message: __('Teams generation done for tournament :tournament !', ['tournament' => $this->tournament->name]));
     }
 
-    private function checkLock(Tournament $tournament): void
+    private function checkLock(): void
     {
-        $lock = Cache::lock(sprintf('tournament:%s:generate-teams', $tournament->id), 20);
+        $lock = Cache::lock($this->tournament->getTeamsLockKey(), 60);
 
         if (!$lock->get()) {
             abort(409);
