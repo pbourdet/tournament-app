@@ -6,10 +6,11 @@ namespace App\Livewire\Tournament;
 
 use App\Enums\ToastType;
 use App\Jobs\GenerateTeams;
+use App\Livewire\Component;
+use App\Models\Team;
 use App\Models\Tournament;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
-use Livewire\Component;
 
 class Teams extends Component
 {
@@ -20,7 +21,7 @@ class Teams extends Component
         $this->tournament = $tournament;
     }
 
-    public function boot(): void
+    public function rendering(): void
     {
         $this->tournament->load(['teams.members']);
     }
@@ -44,13 +45,20 @@ class Teams extends Component
         $this->checkLock();
 
         GenerateTeams::dispatch($this->tournament, app()->getLocale());
-        $this->dispatch('toast-trigger', type: ToastType::INFO->value, message: __('Teams generation in progress'));
+        $this->toast(ToastType::INFO, __('Teams generation in progress'));
     }
 
     public function generationDone(): void
     {
-        $this->tournament->load(['teams.members']);
-        $this->dispatch('toast-trigger', type: ToastType::SUCCESS->value, message: __('Teams generation done for tournament :tournament !', ['tournament' => $this->tournament->name]));
+        $this->toast(ToastType::SUCCESS, __('Teams generation done for tournament :tournament !', ['tournament' => $this->tournament->name]));
+    }
+
+    public function delete(Team $team): void
+    {
+        $this->authorize('manage', $this->tournament);
+
+        $team->delete();
+        $this->toast(ToastType::SUCCESS, __('Team :name deleted !', ['name' => $team->name]));
     }
 
     private function checkLock(): void
