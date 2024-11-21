@@ -81,4 +81,9 @@ class Tournament extends Model
 
         return $this->number_of_players / $this->team_size - $this->teams()->count();
     }
+
+    public function getTeamsLockKey(): string
+    {
+        return sprintf('tournament:%s:lock-teams', $this->id);
+    }
 }

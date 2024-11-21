@@ -150,7 +150,7 @@ class StoreTeamTest extends TestCase
             'organizer_id' => $organizer->id,
         ]);
 
-        Cache::lock(sprintf('tournament:%s:generate-teams', $tournament->id), 20)->get();
+        Cache::lock($tournament->getTeamsLockKey(), 20)->get();
 
         $response = $this->actingAs($organizer)->post(route('tournaments.teams.store', ['tournament' => $tournament]), [
             'name' => 'team name',

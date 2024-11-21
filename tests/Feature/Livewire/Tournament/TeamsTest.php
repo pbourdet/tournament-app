@@ -87,7 +87,7 @@ class TeamsTest extends TestCase
 
     public function testOrganizerCantGenerateTeamsOnTournamentWithAllTeams(): void
     {
-        $tournament = Tournament::factory()->full()->create();
+        $tournament = Tournament::factory()->withAllTeams()->create();
 
         Livewire::actingAs($tournament->organizer)
             ->test(Teams::class, ['tournament' => $tournament])
@@ -102,7 +102,7 @@ class TeamsTest extends TestCase
     {
         $tournament = Tournament::factory()->full()->teamBased()->create();
 
-        Cache::lock(sprintf('tournament:%s:generate-teams', $tournament->id), 20)->get();
+        Cache::lock($tournament->getTeamsLockKey(), 20)->get();
 
         Livewire::actingAs($tournament->organizer)
             ->test(Teams::class, ['tournament' => $tournament])
@@ -111,5 +111,34 @@ class TeamsTest extends TestCase
             ->assertNotDispatched('toast-trigger');
 
         Event::assertNotDispatched(TeamsGenerated::class);
+    }
+
+    public function testOrganizerCanDeleteATeam(): void
+    {
+        $tournament = Tournament::factory()->withAllTeams()->create();
+        $team = $tournament->teams->firstOrFail();
+
+        Livewire::actingAs($tournament->organizer)
+            ->test(Teams::class, ['tournament' => $tournament])
+            ->call('delete', $team)
+            ->assertSuccessful()
+            ->assertDispatched('toast-trigger');
+
+        $this->assertDatabaseMissing('teams', ['id' => $team->id]);
+    }
+
+    public function testNonOrganizerCantDeleteTeams(): void
+    {
+        $user = User::factory()->create();
+        $tournament = Tournament::factory()->withAllTeams()->create();
+        $team = $tournament->teams->firstOrFail();
+
+        Livewire::actingAs($user)
+            ->test(Teams::class, ['tournament' => $tournament])
+            ->call('delete', $team)
+            ->assertForbidden()
+            ->assertNotDispatched('toast-trigger');
+
+        $this->assertDatabaseHas('teams', ['id' => $team->id]);
     }
 }

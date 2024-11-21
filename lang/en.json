@@ -79,6 +79,7 @@
     "Team": "Team",
     "Teams": "Teams",
     "Team :name created !": "Team \":name\" created !",
+    "Team :name deleted !": "Team \":name\" deleted !",
     "Teams generation in progress": "Teams generation in progress",
     "Team based": "Team based",
     "Team size must be greater than 1, less than the number of players and a multiple of the number of players.": "Team size must be greater than 1, less than the number of players and a multiple of the number of players.",
