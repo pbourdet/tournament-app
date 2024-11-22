@@ -62,7 +62,7 @@ class GenerateTeams implements ShouldQueue
 
             event(new TeamsGenerated($this->tournament));
         } finally {
-            Cache::lock($this->tournament->getTeamsLockKey())->forceRelease();
+            Cache::lock($this->tournament->getTeamsLockKey(), 60)->forceRelease();
         }
     }
 }

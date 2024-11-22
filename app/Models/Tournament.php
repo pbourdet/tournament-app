@@ -75,11 +75,20 @@ class Tournament extends Model
 
     public function missingTeamsCount(): int
     {
-        if (null === $this->team_size) {
+        if (!$this->team_based) {
             return 0;
         }
 
         return $this->number_of_players / $this->team_size - $this->teams()->count();
+    }
+
+    public function maxTeamsCount(): int
+    {
+        if (!$this->team_based) {
+            return 0;
+        }
+
+        return $this->number_of_players / $this->team_size;
     }
 
     public function getTeamsLockKey(): string
