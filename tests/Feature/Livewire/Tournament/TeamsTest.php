@@ -6,12 +6,14 @@ namespace Tests\Feature\Livewire\Tournament;
 
 use App\Events\TeamsGenerated;
 use App\Livewire\Tournament\Teams;
+use App\Models\Team;
 use App\Models\Tournament;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Event;
 use Livewire\Livewire;
+use Ramsey\Uuid\Uuid;
 use Tests\TestCase;
 
 class TeamsTest extends TestCase
@@ -156,5 +158,177 @@ class TeamsTest extends TestCase
             ->assertNotDispatched('toast-trigger');
 
         $this->assertDatabaseHas('teams', ['id' => $team->id]);
+    }
+
+    public function testUserCanCreateATeam(): void
+    {
+        $organizer = User::factory()->create();
+        $users = User::factory(4)->create();
+
+        $tournament = Tournament::factory()->teamBased()->withPlayers($users)->create([
+            'organizer_id' => $organizer->id,
+        ]);
+
+        Livewire::actingAs($organizer)
+            ->test(Teams::class, ['tournament' => $tournament])
+            ->set('createForm.name', 'team name')
+            ->set('createForm.members', [$users[0]->id, $users[1]->id])
+            ->call('create')
+            ->assertSuccessful()
+            ->assertDispatched('toast-trigger');
+
+        $this->assertDatabaseHas('teams', ['name' => 'team name']);
+        $this->assertDatabaseCount('teams', 1);
+    }
+
+    public function testUserCannotCreateTeamInNotTeamBasedTournament(): void
+    {
+        $organizer = User::factory()->create();
+        $users = User::factory(2)->create();
+
+        $tournament = Tournament::factory()->create([
+            'organizer_id' => $organizer->id,
+        ]);
+
+        Livewire::actingAs($organizer)
+            ->test(Teams::class, ['tournament' => $tournament])
+            ->set('createForm.name', 'team name')
+            ->set('createForm.members', $users->pluck('id')->toArray())
+            ->call('create')
+            ->assertForbidden()
+            ->assertNotDispatched('toast-trigger');
+    }
+
+    public function testUserCannotCreateATeamWithNonExistingUsers(): void
+    {
+        $organizer = User::factory()->create();
+
+        $tournament = Tournament::factory()->teamBased()->create([
+            'organizer_id' => $organizer->id,
+        ]);
+
+        Livewire::actingAs($organizer)
+            ->test(Teams::class, ['tournament' => $tournament])
+            ->set('createForm.name', 'team name')
+            ->set('createForm.members', [Uuid::uuid4()->toString(), Uuid::uuid4()->toString()])
+            ->call('create')
+            ->assertHasErrors('createForm.members.*')
+            ->assertNotDispatched('toast-trigger');
+    }
+
+    public function testUserCannotCreateTeamWithInvalidNumberOfMembers(): void
+    {
+        $organizer = User::factory()->create();
+        $user = User::factory()->create();
+
+        $tournament = Tournament::factory()->teamBased()->create([
+            'organizer_id' => $organizer->id,
+        ]);
+
+        Livewire::actingAs($organizer)
+            ->test(Teams::class, ['tournament' => $tournament])
+            ->set('createForm.name', 'team name')
+            ->set('createForm.members', [$user->id])
+            ->call('create')
+            ->assertHasErrors('createForm.members')
+            ->assertNotDispatched('toast-trigger');
+    }
+
+    public function testUserCannotCreateTeamWithMembersAlreadyInTeams(): void
+    {
+        $organizer = User::factory()->create();
+        $users = User::factory(2)->create();
+
+        $tournament = Tournament::factory()->teamBased()->withPlayers($users)->create([
+            'organizer_id' => $organizer->id,
+        ]);
+        Team::factory()->withMembers($users)->create(['tournament_id' => $tournament->id]);
+
+        Livewire::actingAs($organizer)
+            ->test(Teams::class, ['tournament' => $tournament])
+            ->set('createForm.name', 'team name')
+            ->set('createForm.members', $users->pluck('id')->toArray())
+            ->call('create')
+            ->assertHasErrors('createForm.members')
+            ->assertNotDispatched('toast-trigger');
+    }
+
+    public function testUserCannotCreateTeamWithMembersNotInTournament(): void
+    {
+        $organizer = User::factory()->create();
+        $users = User::factory(2)->create();
+
+        $tournament = Tournament::factory()->teamBased()->create([
+            'organizer_id' => $organizer->id,
+        ]);
+
+        Livewire::actingAs($organizer)
+            ->test(Teams::class, ['tournament' => $tournament])
+            ->set('createForm.name', 'team name')
+            ->set('createForm.members', $users->pluck('id')->toArray())
+            ->call('create')
+            ->assertHasErrors('createForm.members')
+            ->assertNotDispatched('toast-trigger');
+    }
+
+    public function testUserCannotCreateTeamIfTeamGenerationIsInProgress(): void
+    {
+        $organizer = User::factory()->create();
+        $users = User::factory(2)->create();
+
+        $tournament = Tournament::factory()->teamBased()->withPlayers($users)->create([
+            'organizer_id' => $organizer->id,
+        ]);
+
+        Cache::lock($tournament->getTeamsLockKey(), 20)->get();
+
+        Livewire::actingAs($organizer)
+            ->test(Teams::class, ['tournament' => $tournament])
+            ->set('createForm.name', 'team name')
+            ->set('createForm.members', $users->pluck('id')->toArray())
+            ->call('create')
+            ->assertConflict()
+            ->assertNotDispatched('toast-trigger');
+    }
+
+    public function testUserCannotCreateTeamInTournamentTheyDoNotOrganize(): void
+    {
+        $user = User::factory()->create();
+        $organizer = User::factory()->create();
+        $users = User::factory(2)->create();
+
+        $tournament = Tournament::factory()->teamBased()->withPlayers($users)->create([
+            'organizer_id' => $organizer->id,
+        ]);
+
+        Livewire::actingAs($user)
+            ->test(Teams::class, ['tournament' => $tournament])
+            ->set('createForm.name', 'team name')
+            ->set('createForm.members', $users->pluck('id')->toArray())
+            ->call('create')
+            ->assertForbidden()
+            ->assertNotDispatched('toast-trigger');
+    }
+
+    public function testUserCannotCreateTeamIfTournamentHasAllTeams(): void
+    {
+        $organizer = User::factory()->create();
+        $users = User::factory(4)->create();
+
+        $tournament = Tournament::factory()->teamBased()->withPlayers($users)->create([
+            'organizer_id' => $organizer->id,
+            'number_of_players' => 4,
+        ]);
+
+        Team::factory()->withMembers($users->slice(0, 2))->create(['tournament_id' => $tournament->id]);
+        Team::factory()->withMembers($users->slice(2, 2))->create(['tournament_id' => $tournament->id]);
+
+        Livewire::actingAs($organizer)
+            ->test(Teams::class, ['tournament' => $tournament])
+            ->set('createForm.name', 'team name')
+            ->set('createForm.members', $users->pluck('id')->toArray())
+            ->call('create')
+            ->assertForbidden()
+            ->assertNotDispatched('toast-trigger');
     }
 }

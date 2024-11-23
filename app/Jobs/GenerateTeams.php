@@ -46,8 +46,7 @@ class GenerateTeams implements ShouldQueue
 
             for ($i = 0; $i < $missingTeamsCount; ++$i) {
                 $playersChunk = $this->tournament->players()
-                     ->whereDoesntHave('teams')
-                     ->inRandomOrder()
+                     ->withoutTeams()
                      ->take($teamSize)
                      ->get();
 

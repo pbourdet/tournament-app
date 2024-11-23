@@ -6,6 +6,7 @@ namespace App\Models;
 
 use Database\Factories\UserFactory;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -36,6 +37,16 @@ class User extends Authenticatable implements MustVerifyEmail
         'password',
         'remember_token',
     ];
+
+    /**
+     * @param Builder<User> $query
+     *
+     * @return Builder<User>
+     */
+    public function scopeWithoutTeams(Builder $query): Builder
+    {
+        return $query->whereDoesntHave('teams')->inRandomOrder();
+    }
 
     /** @return HasMany<Tournament, $this> */
     public function managedTournaments(): HasMany
