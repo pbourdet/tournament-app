@@ -52,7 +52,7 @@ class GenerateTeams implements ShouldQueue
 
                 if ($playersChunk->isNotEmpty()) {
                     $team = $this->tournament->teams()->create([
-                        'name' => sprintf('%s %s', __('Team'), $playersChunk->first()->name),
+                        'name' => sprintf('%s %s', __('Team'), $playersChunk->first()->username),
                     ]);
 
                     $team->members()->attach($playersChunk);

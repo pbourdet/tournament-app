@@ -26,7 +26,7 @@ class RegistrationTest extends TestCase
         Storage::fake('public');
 
         $response = $this->post('/register', [
-            'name' => 'Test User',
+            'username' => 'Test User',
             'email' => 'test@example.com',
             'password' => 'password',
             'password_confirmation' => 'password',

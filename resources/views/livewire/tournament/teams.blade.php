@@ -54,8 +54,8 @@
                             @foreach($team->members as $member)
                                 <li class="text-gray-700 text-sm flex items-center">
                                     <img src="{{ Storage::url($member->getProfilePicture()) }}"
-                                         alt="{{ $member->name }}" class="w-6 h-6 rounded-full mr-2">
-                                    {{ $member->name }}
+                                         alt="{{ $member->username }}" class="w-6 h-6 rounded-full mr-2">
+                                    {{ $member->username }}
                                 </li>
                             @endforeach
                         </ul>

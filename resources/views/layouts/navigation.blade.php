@@ -38,7 +38,7 @@
                             <div class="flex items-center">
                                 <img src="{{ Storage::url(Auth::user()->getProfilePicture()) }}"
                                      class="w-8 h-8 rounded-full object-cover mr-2">
-                                {{ Auth::user()->name }}
+                                {{ Auth::user()->username }}
                             </div>
 
                             <div class="ms-1">
@@ -156,7 +156,7 @@
                 <div class="flex item-center">
                     <img src="{{ Storage::url(Auth::user()->getProfilePicture()) }}"
                          class="w-8 h-8 rounded-full object-cover mr-2">
-                    <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
+                    <div class="font-medium text-base text-gray-800">{{ Auth::user()->username }}</div>
                 </div>
                 <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
             </div>

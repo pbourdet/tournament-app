@@ -8,7 +8,7 @@
                     {{ $tournament->name }}
                 </div>
                 <div class="text-xs italic text-gray-500">
-                    {{__('Organized by')}} {{ $tournament->organizer->name }}
+                    {{__('Organized by')}} {{ $tournament->organizer->username }}
                 </div>
             </div>
 

@@ -14,17 +14,17 @@ class UserSeeder extends Seeder
         User::factory(9)->create();
 
         User::factory()->create([
-            'name' => 'Test User',
+            'username' => 'Test User',
             'email' => 'test@example.com',
         ]);
 
         User::factory()->create([
-            'name' => 'Team tournament',
+            'username' => 'Team tournament',
             'email' => 'team@example.com',
         ]);
 
         User::factory()->create([
-            'name' => 'Full Team tournament',
+            'username' => 'Full Team tournament',
             'email' => 'full-team@example.com',
         ]);
     }
