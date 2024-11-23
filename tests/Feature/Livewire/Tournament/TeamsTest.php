@@ -141,4 +141,20 @@ class TeamsTest extends TestCase
 
         $this->assertDatabaseHas('teams', ['id' => $team->id]);
     }
+
+    public function testOrganizerCantDeleteTeamIfGenerationIsOngoing(): void
+    {
+        $tournament = Tournament::factory()->withAllTeams()->create();
+        $team = $tournament->teams->firstOrFail();
+
+        Cache::lock($tournament->getTeamsLockKey(), 20)->get();
+
+        Livewire::actingAs($tournament->organizer)
+            ->test(Teams::class, ['tournament' => $tournament])
+            ->call('delete', $team)
+            ->assertConflict()
+            ->assertNotDispatched('toast-trigger');
+
+        $this->assertDatabaseHas('teams', ['id' => $team->id]);
+    }
 }

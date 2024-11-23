@@ -111,7 +111,7 @@
                     />
                 </div>
                 <div class="flex justify-center mt-5">
-                    <x-loader id="loader" class="htmx-indicator w-8 h-8 text-gray-200 animate-spin fill-blue-600"/>
+                    <x-loader id="loader" class="htmx-indicator size-8"/>
                 </div>
                 <button class="hidden" hx-trigger="click delay:300ms" hx-target="#invitation-response"
                         hx-indicator="#loader" x-ref="invitationLink"></button>

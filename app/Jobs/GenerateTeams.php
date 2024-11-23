@@ -10,6 +10,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\Middleware\WithoutOverlapping;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Cache;
 
@@ -22,14 +23,19 @@ class GenerateTeams implements ShouldQueue
 
     public function __construct(
         public readonly Tournament $tournament,
-        public readonly string $locale,
     ) {
+    }
+
+    /** @return array<int, object> */
+    public function middleware(): array
+    {
+        return [
+            (new WithoutOverlapping($this->tournament->getTeamsLockKey()))->withPrefix('')->shared()->dontRelease(),
+        ];
     }
 
     public function handle(): void
     {
-        app()->setLocale($this->locale);
-
         try {
             if (!$this->tournament->canGenerateTeams()) {
                 return;
@@ -41,6 +47,7 @@ class GenerateTeams implements ShouldQueue
             for ($i = 0; $i < $missingTeamsCount; ++$i) {
                 $playersChunk = $this->tournament->players()
                      ->whereDoesntHave('teams')
+                     ->inRandomOrder()
                      ->take($teamSize)
                      ->get();
 
@@ -55,7 +62,7 @@ class GenerateTeams implements ShouldQueue
 
             event(new TeamsGenerated($this->tournament));
         } finally {
-            Cache::lock($this->tournament->getTeamsLockKey())->forceRelease();
+            Cache::lock($this->tournament->getTeamsLockKey(), 60)->forceRelease();
         }
     }
 }
