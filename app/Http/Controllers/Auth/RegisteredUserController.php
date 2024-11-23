@@ -27,7 +27,7 @@ class RegisteredUserController extends Controller
         $password = $request->password;
 
         $user = User::create([
-            'name' => $request->name,
+            'username' => $request->username,
             'email' => $request->email,
             'password' => Hash::make($password),
             'profile_picture' => $this->extractFile($request)?->store('profile_pictures'),

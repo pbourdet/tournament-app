@@ -33,7 +33,7 @@ class PlayerJoined extends Notification implements ShouldQueue
         return new BroadcastMessage([
             'toastType' => ToastType::INFO->value,
             'message' => __('Player :name has joined tournament :tournament', [
-                'name' => $this->newPlayer->name,
+                'name' => $this->newPlayer->username,
                 'tournament' => $this->tournament->name,
             ]),
         ]);

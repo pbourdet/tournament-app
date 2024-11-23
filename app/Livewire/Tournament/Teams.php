@@ -40,7 +40,7 @@ class Teams extends Component
     {
         return view('livewire.tournament.teams', [
             'tournament' => $this->tournament->load(['teams.members']),
-            'selectablePlayers' => $this->tournament->players()->withoutTeams()->pluck('name', 'id')->toArray(),
+            'selectablePlayers' => $this->tournament->players()->withoutTeams()->pluck('username', 'id')->toArray(),
         ]);
     }
 
@@ -91,7 +91,7 @@ class Teams extends Component
 
         $team = Team::create([
             'name' => 0 === strlen(trim($this->createForm->name))
-                ? sprintf('%s %s', __('Team'), User::find($this->createForm->members)->firstOrFail()->name)
+                ? sprintf('%s %s', __('Team'), User::find($this->createForm->members)->firstOrFail()->username)
                 : $this->createForm->name,
             'tournament_id' => $this->tournament->id,
         ]);
