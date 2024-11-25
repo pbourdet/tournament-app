@@ -23,6 +23,8 @@ class User extends Authenticatable implements MustVerifyEmail
     use HasFactory;
     use Notifiable;
     use HasUuids;
+    /** @use WithMatches<$this> */
+    use WithMatches;
 
     /** @var array<int, string> */
     protected $fillable = [
