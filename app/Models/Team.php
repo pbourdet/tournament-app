@@ -19,6 +19,8 @@ class Team extends Model
     /** @use HasFactory<TeamFactory> */
     use HasFactory;
     use HasUuids;
+    /** @use WithMatches<$this> */
+    use WithMatches;
 
     protected $fillable = ['name', 'tournament_id'];
 

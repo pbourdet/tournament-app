@@ -58,6 +58,12 @@ class Tournament extends Model
         return $this->hasMany(Team::class);
     }
 
+    /** @return HasMany<Matchup, $this> */
+    public function matches(): HasMany
+    {
+        return $this->hasMany(Matchup::class);
+    }
+
     public function isFull(): bool
     {
         return $this->players()->count() === $this->number_of_players;
