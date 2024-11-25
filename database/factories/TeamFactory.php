@@ -16,7 +16,7 @@ class TeamFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => 'Team '.fake()->name,
+            'name' => 'Team '.fake()->unique()->name,
         ];
     }
 
