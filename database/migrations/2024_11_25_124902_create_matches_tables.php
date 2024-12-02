@@ -20,8 +20,7 @@ return new class extends Migration {
             $table->uuidMorphs('contestant');
             $table->timestamps();
 
-            $table->primary(['match_id', 'contestant_id']);
-            $table->index('contestant_id');
+            $table->primary(['match_id', 'contestant_type', 'contestant_id']);
             $table->index('match_id');
         });
     }
