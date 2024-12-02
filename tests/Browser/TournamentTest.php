@@ -7,6 +7,7 @@ namespace Tests\Browser;
 use App\Models\Tournament;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTruncation;
+use Illuminate\Support\Str;
 use Laravel\Dusk\Browser;
 use Tests\DuskTestCase;
 
@@ -118,5 +119,17 @@ class TournamentTest extends DuskTestCase
         });
 
         $this->assertDatabaseCount('teams', 2);
+    }
+
+    public function testViewTournament(): void
+    {
+        $tournament = Tournament::factory()->full()->create();
+
+        $this->browse(function (Browser $browser) use ($tournament) {
+            $browser
+                ->loginAs($tournament->organizer)
+                ->visit(route('tournaments.show', ['tournament' => $tournament]))
+                ->waitForText(Str::headline($tournament->name));
+        });
     }
 }

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 use App\Http\Controllers\Account\ProfileController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\TournamentController;
 use App\Http\Controllers\Tournaments\TournamentInvitationController;
 use App\Livewire;
 use Illuminate\Support\Facades\Route;
@@ -19,7 +18,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/tournaments/{tournament}/invitations/store', [TournamentInvitationController::class, 'store'])->name('tournament-invitations.store');
 
     Route::get('/tournaments/create', Livewire\Tournament\Create::class)->name('tournaments.create');
-    Route::get('/tournaments/{tournament}', [TournamentController::class, 'show'])->name('tournaments.show');
+    Route::get('/tournaments/{tournament}', Livewire\Tournament\Show::class)->name('tournaments.show');
 });
 
 Route::middleware('auth')->group(function () {
