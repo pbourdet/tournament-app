@@ -26,7 +26,7 @@ class TournamentTest extends DuskTestCase
             $browser
                 ->loginAs($user)
                 ->visit(route('dashboard'))
-                ->press('button[type="button"]')
+                ->press('@new-tournament')
                 ->type('invitation-code', 'ABCDEF')
                 ->waitForText(__('No tournament with this invitation code.'), 5)
                 ->clear('invitation-code')
@@ -38,7 +38,7 @@ class TournamentTest extends DuskTestCase
                 ->clear('invitation-code')
                 ->type('invitation-code', $tournament->invitation->code)
                 ->waitForText($tournament->name)
-                ->press('button[type="submit"]')
+                ->press('@join-tournament')
                 ->waitForText(__('You joined tournament :name', ['name' => $tournament->name]))
             ;
         });
