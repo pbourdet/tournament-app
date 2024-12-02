@@ -90,6 +90,6 @@ class Create extends Component
         }
 
         session()->flash(ToastType::SUCCESS->value, __('Tournament :name created !', ['name' => $tournament->name]));
-        $this->redirect(route('tournaments.show', ['tournament' => $tournament]));
+        $this->redirect(route('tournaments.show', ['tournament' => $tournament]), navigate: true);
     }
 }

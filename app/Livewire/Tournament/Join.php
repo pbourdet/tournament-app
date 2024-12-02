@@ -40,7 +40,7 @@ class Join extends Component
         }
 
         session()->flash(ToastType::SUCCESS->value, __('You joined tournament :name', ['name' => $tournament->name]));
-        $this->redirect(route('tournaments.show', ['tournament' => $tournament]));
+        $this->redirect(route('tournaments.show', ['tournament' => $tournament]), navigate: true);
     }
 
     public function find(): void

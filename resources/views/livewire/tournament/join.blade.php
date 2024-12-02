@@ -82,7 +82,7 @@
         <x-divider>{{ __('or') }}</x-divider>
 
         <div class="text-center">
-            <a href="{{ route('tournaments.create') }}">
+            <a href="{{ route('tournaments.create') }}" wire:navigate>
                 <x-primary-button :disabled="Auth::user()->cannot('create', App\Models\Tournament::class)"
                                   type="button">
                     <span class="text-lg">{{ __('Create a tournament') }}</span>
