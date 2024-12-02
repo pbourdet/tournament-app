@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Feature\Livewire\Tournament;
+namespace Tests\Feature\Livewire\Tournament;
 
 use App\Livewire\Tournament\TeamCard;
 use App\Models\Tournament;
