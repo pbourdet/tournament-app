@@ -17,11 +17,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::post('/tournaments/{tournament}/invitations/store', [TournamentInvitationController::class, 'store'])->name('tournament-invitations.store');
-    Route::get('/invitations/{code}/join', [TournamentInvitationController::class, 'join'])->name('tournament-invitations.join');
 
     Route::get('/tournaments/create', Livewire\Tournament\Create::class)->name('tournaments.create');
-    Route::post('/tournaments/{tournament}/join', [TournamentController::class, 'join'])->name('tournaments.join');
-    Route::post('/tournaments/', [TournamentController::class, 'store'])->name('tournaments.store');
     Route::get('/tournaments/{tournament}', [TournamentController::class, 'show'])->name('tournaments.show');
 });
 

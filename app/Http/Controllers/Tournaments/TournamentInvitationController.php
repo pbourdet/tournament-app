@@ -12,13 +12,6 @@ use Illuminate\View\View;
 
 class TournamentInvitationController extends Controller
 {
-    public function join(string $code): View
-    {
-        $tournamentInvitation = TournamentInvitation::where('code', mb_strtoupper($code))->first();
-
-        return view('tournaments.invitations.join', ['tournament' => $tournamentInvitation?->tournament]);
-    }
-
     public function store(Tournament $tournament): View
     {
         Gate::authorize('manage', $tournament);

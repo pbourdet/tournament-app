@@ -18,14 +18,7 @@
                 </div>
 
                 <div class="mx-4 m-auto">
-                    <x-primary-button type="button" x-on:click.prevent="$dispatch('open-modal', 'new-tournament')">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                             stroke="currentColor" class="mr-1 w-5 h-5">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                  d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
-                        </svg>
-                        {{ __('New tournament') }}
-                    </x-primary-button>
+                    <livewire:tournament.join/>
                 </div>
             </div>
 
@@ -86,61 +79,6 @@
             </div>
         </div>
     </div>
-
-    <x-modal name="new-tournament" focusable>
-        <div x-data="codeInput()">
-            <div class="flex items-center justify-between">
-                <h2 class="text-lg text-gray-900">{{ __('Join a tournament') }}</h2>
-                <x-close-modal-button/>
-            </div>
-            <p class="mt-1 text-sm text-gray-600">{{ __('Enter the tournament invitation code') }}</p>
-            <div class="mt-6 flex justify-center items-center">
-                <x-text-input type="text" placeholder="{{ Str::random(6) }}..." maxlength="6"
-                              class="w-40 text-center text-2xl uppercase"
-                              x-model="code"
-                              name="invitation-code"
-                              @input="checkCode()"
-                />
-            </div>
-            <div class="flex justify-center mt-5">
-                <x-loader id="loader" class="htmx-indicator size-8"/>
-            </div>
-            <button class="hidden" hx-trigger="click delay:300ms" hx-target="#invitation-response"
-                    hx-indicator="#loader" x-ref="invitationLink"></button>
-            <div class="w-100" id="invitation-response"></div>
-        </div>
-
-        <script>
-            function codeInput() {
-                return {
-                    code: '',
-                    checkCode() {
-                        if (this.code.length === 6) {
-                            this.$nextTick(() => {
-                                var $button = this.$refs.invitationLink
-                                $button.setAttribute('hx-get', `/invitations/${this.code}/join`);
-                                htmx.process($button)
-                                $button.click();
-                            });
-                        }
-                    }
-                }
-            }
-        </script>
-
-        <x-divider>{{ __('or') }}</x-divider>
-
-        <div class="text-center">
-            <a href="{{ route('tournaments.create') }}">
-                <x-primary-button :disabled="Auth::user()->cannot('create', App\Models\Tournament::class)" type="button">
-                    <span class="text-lg">{{ __('Create a tournament') }}</span>
-                </x-primary-button>
-            </a>
-            @cannot('create', App\Models\Tournament::class)
-                <x-input-error class="mt-1" :messages="__('You cannot create more tournaments')" />
-            @endcannot
-        </div>
-    </x-modal>
 
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
