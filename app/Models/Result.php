@@ -26,6 +26,6 @@ class Result extends Model
     public function winner(): MorphOne
     {
         /* @phpstan-ignore-next-line */
-        return $this->morphOne($this->match()->firstOrFail()->getContestantType(), 'winner');
+        return $this->morphOne($this->match->getContestantType(), 'winner');
     }
 }

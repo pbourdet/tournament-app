@@ -38,6 +38,6 @@ class Matchup extends Model
     /** @return class-string<User|Team> */
     public function getContestantType(): string
     {
-        return $this->tournament?->team_based ? Team::class : User::class;
+        return $this->tournament->team_based ? Team::class : User::class;
     }
 }
