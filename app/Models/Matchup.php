@@ -28,13 +28,16 @@ class Matchup extends Model
         return $this->belongsTo(Tournament::class);
     }
 
-    /** @return MorphToMany<User, $this>|MorphToMany<Team, $this> */
+    /** @phpstan-return MorphToMany<User|Team, $this> */
     public function contestants(): MorphToMany
     {
-        if ($this->tournament?->team_based) {
-            return $this->morphedByMany(Team::class, 'contestant', 'match_contestant', 'match_id');
-        }
+        /* @phpstan-ignore-next-line */
+        return $this->morphedByMany($this->getContestantType(), 'contestant', 'match_contestant', 'match_id');
+    }
 
-        return $this->morphedByMany(User::class, 'contestant', 'match_contestant', 'match_id');
+    /** @return class-string<User|Team> */
+    public function getContestantType(): string
+    {
+        return $this->tournament?->team_based ? Team::class : User::class;
     }
 }
