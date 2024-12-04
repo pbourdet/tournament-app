@@ -16,6 +16,10 @@ class EliminationPhase extends Model
 {
     use HasUuids;
 
+    protected $fillable = [
+        'number_of_contestants',
+    ];
+
     /** @return BelongsTo<Tournament, $this> */
     public function tournament(): BelongsTo
     {

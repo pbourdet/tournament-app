@@ -5,6 +5,7 @@
             @if($tournament->team_based)
                 <x-tab :tab-name="'teams'"/>
             @endif
+            <x-tab :tab-name="'elimination'"/>
         </x-slot:tabs>
         <x-slot:tabContents>
             <x-tab-content :tab-name="'general'">
@@ -18,9 +19,13 @@
             </x-tab-content>
             @if($tournament->team_based)
                 <x-tab-content :tab-name="'teams'">
-                    <livewire:tournament.teams :tournament="$tournament"/>
+                    <livewire:tournament.teams :$tournament/>
                 </x-tab-content>
             @endif
+
+            <x-tab-content :tab-name="'elimination'">
+                <livewire:tournament.phase.elimination :$tournament/>
+            </x-tab-content>
         </x-slot:tabContents>
     </x-tab-container>
 </x-section>

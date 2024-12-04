@@ -84,9 +84,25 @@ class Tournament extends Model
         return $this->players()->count() === $this->number_of_players;
     }
 
+    /** @return Collection<int, User>|Collection<int, Team> */
+    public function contestants(): Collection
+    {
+        return $this->team_based ? $this->teams : $this->players;
+    }
+
+    public function contestantsCount(): int
+    {
+        return $this->team_based ? $this->maxTeamsCount() : $this->number_of_players;
+    }
+
+    public function hasAllContestants(): bool
+    {
+        return $this->team_based ? $this->hasAllTeams() : $this->isFull();
+    }
+
     public function hasAllTeams(): bool
     {
-        return $this->team_based && $this->teams()->count() === $this->number_of_players / $this->team_size;
+        return $this->team_based && $this->teams()->count() === $this->maxTeamsCount();
     }
 
     public function canGenerateTeams(): bool
@@ -100,7 +116,7 @@ class Tournament extends Model
             return 0;
         }
 
-        return $this->number_of_players / $this->team_size - $this->teams()->count();
+        return $this->maxTeamsCount() - $this->teams()->count();
     }
 
     public function maxTeamsCount(): int
