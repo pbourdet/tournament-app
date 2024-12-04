@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Collection;
 
 /**
  * @mixin IdeHelperTournament
@@ -62,6 +63,20 @@ class Tournament extends Model
     public function matches(): HasMany
     {
         return $this->hasMany(Matchup::class);
+    }
+
+    /** @return HasOne<EliminationPhase, $this> */
+    public function eliminationPhase(): HasOne
+    {
+        return $this->hasOne(EliminationPhase::class);
+    }
+
+    /** @return Collection<int, EliminationPhase> */
+    public function phases(): Collection
+    {
+        return collect([
+            $this->eliminationPhase,
+        ])->filter();
     }
 
     public function isFull(): bool
