@@ -1,7 +1,8 @@
 parameters:
     paths:
         - app/
+        - database/
     level: max
 
-    ignoreErrors:
-        - '#PHPDoc tag @mixin contains unknown class App\\Models\\IdeHelper#'
+    scanFiles:
+        - _ide_helper_models.php

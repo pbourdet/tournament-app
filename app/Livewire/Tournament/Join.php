@@ -36,7 +36,7 @@ class Join extends Component
         $tournament->players()->attach($user);
 
         if ($tournament->organizer()->isNot($user)) {
-            $tournament->organizer?->notify((new PlayerJoined($tournament, $user))->afterCommit());
+            $tournament->organizer->notify((new PlayerJoined($tournament, $user))->afterCommit());
         }
 
         session()->flash(ToastType::SUCCESS->value, __('You joined tournament :name', ['name' => $tournament->name]));

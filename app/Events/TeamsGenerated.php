@@ -26,7 +26,7 @@ class TeamsGenerated implements ShouldBroadcast
     public function broadcastOn(): array
     {
         return [
-            new PrivateChannel(sprintf('App.Models.User.%s', $this->tournament->organizer?->id)),
+            new PrivateChannel(sprintf('App.Models.User.%s', $this->tournament->organizer->id)),
         ];
     }
 }
