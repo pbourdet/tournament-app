@@ -2,8 +2,8 @@
      class="max-w-sm rounded-lg shadow-md border border-gray-200 bg-white mb-4">
     <div class="px-4 py-3 border-b border-gray-200 bg-gray-50 flex items-center justify-between">
         <div class="flex flex-col truncate">
-            <h2 x-show="!editing"
-                class="font-semibold text-lg text-gray-800 truncate leading-none">{{ $team->name }}</h2>
+            <h2 x-show="!editing" x-text="$wire.newName"
+                class="font-semibold text-lg text-gray-800 truncate leading-none"></h2>
             <x-text-input type="text" placeholder="Team Name" class="border border-gray-300 rounded px-2 py-1 text-sm"
                           required minlength="2" maxlength="50"
                           wire:model="newName" wire:keydown.enter="update('{{ $team->id }}')"
