@@ -46,12 +46,14 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property string $round_id
+ * @property int $index
  * @property-read \App\Models\Tournament $tournament
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Matchup newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Matchup newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Matchup query()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Matchup whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Matchup whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Matchup whereIndex($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Matchup whereRoundId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Matchup whereTournamentId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Matchup whereUpdatedAt($value)
@@ -164,6 +166,7 @@ namespace App\Models{
  * @property int $number_of_players
  * @property bool $team_based
  * @property int|null $team_size
+ * @property \App\Enums\TournamentStatus $status
  * @property-read \App\Models\EliminationPhase|null $eliminationPhase
  * @property-read \App\Models\TournamentInvitation|null $invitation
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Matchup> $matches

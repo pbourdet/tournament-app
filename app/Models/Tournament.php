@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\TournamentStatus;
 use Database\Factories\TournamentFactory;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -131,5 +132,13 @@ class Tournament extends Model
     public function getTeamsLockKey(): string
     {
         return sprintf('tournament:%s:lock-teams', $this->id);
+    }
+
+    /** @return array<string, string> */
+    protected function casts(): array
+    {
+        return [
+            'status' => TournamentStatus::class,
+        ];
     }
 }
