@@ -20,6 +20,7 @@ class Matchup extends Model
 
     protected $fillable = [
         'tournament_id',
+        'index',
     ];
 
     /** @return BelongsTo<Tournament, $this> */

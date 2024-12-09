@@ -17,3 +17,4 @@ yarn-error.log
 
 # Ide Helper
 .phpstorm.meta.php
+_ide_helper.php

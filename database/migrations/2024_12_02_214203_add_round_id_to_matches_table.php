@@ -11,6 +11,7 @@ return new class extends Migration {
     {
         Schema::table('matches', function (Blueprint $table) {
             $table->foreignUuid('round_id')->constrained()->cascadeOnDelete();
+            $table->smallInteger('index')->unsigned();
 
             $table->index('round_id');
         });
@@ -20,6 +21,7 @@ return new class extends Migration {
     {
         Schema::table('matches', function (Blueprint $table) {
             $table->dropConstrainedForeignId('round_id');
+            $table->dropColumn('index');
         });
     }
 };

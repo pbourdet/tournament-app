@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\RoundStage;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -16,6 +17,10 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 class Round extends Model
 {
     use HasUuids;
+
+    protected $fillable = [
+        'stage',
+    ];
 
     /** @return MorphTo<EliminationPhase, $this> */
     public function phase(): MorphTo
@@ -40,5 +45,13 @@ class Round extends Model
             'phase_id',
             'tournament_id'
         );
+    }
+
+    /** @return array<string, string> */
+    protected function casts(): array
+    {
+        return [
+            'stage' => RoundStage::class,
+        ];
     }
 }

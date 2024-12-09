@@ -100,7 +100,7 @@ namespace App\Models{
  * @property string $id
  * @property string $phase_type
  * @property string $phase_id
- * @property int $stage
+ * @property \App\Enums\RoundStage $stage
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Matchup> $matches
