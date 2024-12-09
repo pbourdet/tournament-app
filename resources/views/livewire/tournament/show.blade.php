@@ -16,7 +16,7 @@
                     {{ $tournament->players->count() }} / {{ $tournament->number_of_players }}
                 </div>
                 <div>
-                    {{ $tournament->status->value }}
+                    {{ __($tournament->status->value) }}
                 </div>
 
             </x-tab-content>
