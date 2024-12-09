@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace App\Livewire\Tournament;
 
 use App\Enums\ToastType;
+use App\Events\TournamentFull;
 use App\Models\Tournament;
 use App\Models\TournamentInvitation;
 use App\Models\User;
-use App\Notifications\TournamentFull;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Livewire\Attributes\Locked;
@@ -36,7 +36,7 @@ class Join extends Component
         $tournament->players()->attach($user);
 
         if ($tournament->isFull()) {
-            $tournament->organizer->notify((new TournamentFull($tournament))->afterCommit());
+            TournamentFull::dispatch($tournament);
         }
 
         session()->flash(ToastType::SUCCESS->value, __('You joined tournament :name', ['name' => $tournament->name]));
