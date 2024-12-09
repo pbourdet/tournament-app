@@ -13,6 +13,10 @@ class PhaseCreatedListener
     {
         $tournament = $event->tournament;
 
+        if ($tournament->isNotFull()) {
+            return;
+        }
+
         $tournament->update(['status' => TournamentStatus::READY_TO_START]);
     }
 }

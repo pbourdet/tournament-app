@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Livewire\Tournament;
 
+use App\Enums\TournamentStatus;
 use App\Livewire\Tournament\Join;
 use App\Models\Tournament;
 use App\Models\User;
 use App\Notifications\TournamentFull;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Notification;
 use Livewire\Livewire;
 use Tests\TestCase;
@@ -62,35 +64,54 @@ class JoinTest extends TestCase
         ]);
     }
 
-    public function testOrganizerIsNotifiedWhenTournamentIsFull(): void
+    public function testNothingIsDispatchedIfTournamentIsNotFull(): void
+    {
+        Event::fake();
+        $user = User::factory()->create();
+        $tournament = Tournament::factory()->create();
+
+        Livewire::actingAs($user)
+            ->test(Join::class)
+            ->set('tournamentCode', $tournament->invitation->code)
+            ->call('join', $tournament);
+
+        Event::assertNotDispatched(TournamentFull::class);
+    }
+
+    public function testOrganizerIsNotifiedAndTournamentStatusUpdatedWhenTournamentIsFull(): void
     {
         Notification::fake();
 
         $user = User::factory()->create();
         $tournament = Tournament::factory()->create(['number_of_players' => 2]);
         $tournament->players()->attach(User::factory()->create());
+        $this->assertSame(TournamentStatus::WAITING_FOR_PLAYERS, $tournament->status);
 
         Livewire::actingAs($user)
             ->test(Join::class)
             ->set('tournamentCode', $tournament->invitation->code)
             ->call('join', $tournament);
 
+        $tournament->refresh();
         Notification::assertSentTo($tournament->organizer, TournamentFull::class);
+        $this->assertSame(TournamentStatus::SETUP_IN_PROGRESS, $tournament->status);
     }
 
-    public function testUserIsNotNotifiedIfTheyJoinTheirOwnTournament(): void
+    public function testStatusUpdatesToReadyToStartWhenTournamentIsFullWithAPhase(): void
     {
-        Notification::fake();
-
         $user = User::factory()->create();
-        $tournament = Tournament::factory()->create(['organizer_id' => $user->id]);
+        $tournament = Tournament::factory()->create(['number_of_players' => 2]);
+        $tournament->players()->attach($user);
+        $tournament->eliminationPhase()->create(['number_of_contestants' => 2]);
+        $this->assertSame(TournamentStatus::WAITING_FOR_PLAYERS, $tournament->status);
 
-        Livewire::actingAs($user)
+        Livewire::actingAs(User::factory()->create())
             ->test(Join::class)
             ->set('tournamentCode', $tournament->invitation->code)
             ->call('join', $tournament);
 
-        Notification::assertNothingSent();
+        $tournament->refresh();
+        $this->assertSame(TournamentStatus::READY_TO_START, $tournament->status);
     }
 
     public function testUserCannotJoinAFullTournament(): void

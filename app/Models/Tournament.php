@@ -86,6 +86,11 @@ class Tournament extends Model
         return $this->players()->count() === $this->number_of_players;
     }
 
+    public function isNotFull(): bool
+    {
+        return !$this->isFull();
+    }
+
     /** @return Collection<int, User>|Collection<int, Team> */
     public function contestants(): Collection
     {

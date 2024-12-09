@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Livewire\Tournament\Phase;
 
+use App\Enums\TournamentStatus;
 use App\Livewire\Tournament\Phase\Elimination;
 use App\Models\Tournament;
 use App\Models\User;
@@ -35,6 +36,30 @@ class EliminationTest extends TestCase
             ->assertSuccessful();
 
         $this->assertDatabaseCount('elimination_phases', 1);
+    }
+
+    public function testTournamentStatusIsUpdatedIfFullAfterCreation(): void
+    {
+        $tournament = Tournament::factory()->full()->create();
+
+        Livewire::actingAs($tournament->organizer)
+            ->test(Elimination::class, ['tournament' => $tournament])
+            ->set('form.numberOfContestants', 8)
+            ->call('create');
+
+        $this->assertSame(TournamentStatus::READY_TO_START, $tournament->fresh()->status);
+    }
+
+    public function testTournamentStatusIsNotUpdatedIfNotFullAfterCreation(): void
+    {
+        $tournament = Tournament::factory()->create();
+
+        Livewire::actingAs($tournament->organizer)
+            ->test(Elimination::class, ['tournament' => $tournament])
+            ->set('form.numberOfContestants', 8)
+            ->call('create');
+
+        $this->assertSame(TournamentStatus::WAITING_FOR_PLAYERS, $tournament->fresh()->status);
     }
 
     public function testUserCantCreateAnEliminationPhaseWithInvalidValues(): void
