@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\TournamentStatus;
 use Database\Factories\TournamentFactory;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -31,6 +32,7 @@ class Tournament extends Model
         'number_of_players',
         'team_based',
         'team_size',
+        'status',
     ];
 
     /** @return BelongsTo<User, $this> */
@@ -84,6 +86,11 @@ class Tournament extends Model
         return $this->players()->count() === $this->number_of_players;
     }
 
+    public function isNotFull(): bool
+    {
+        return !$this->isFull();
+    }
+
     /** @return Collection<int, User>|Collection<int, Team> */
     public function contestants(): Collection
     {
@@ -131,5 +138,13 @@ class Tournament extends Model
     public function getTeamsLockKey(): string
     {
         return sprintf('tournament:%s:lock-teams', $this->id);
+    }
+
+    /** @return array<string, string> */
+    protected function casts(): array
+    {
+        return [
+            'status' => TournamentStatus::class,
+        ];
     }
 }

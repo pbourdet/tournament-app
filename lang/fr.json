@@ -34,6 +34,7 @@
     "errors": "les erreurs",
     "Filter": "Filtrer",
     "Finally, do you also want to participate in your tournament ?": "Pour finir, voulez-vous aussi participer à votre tournoi ?",
+    "Finished": "Terminé",
     "Forbidden": "Interdit",
     "Forgot your password?": "Mot de passe oublié ?",
     "Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.": "Mot de passe oublié ? Pas de soucis. Veuillez nous indiquer votre adresse e-mail et nous vous enverrons un lien de réinitialisation du mot de passe.",
@@ -46,6 +47,7 @@
     "If you did not create an account, no further action is required.": "Si vous n'avez pas créé de compte, vous pouvez ignorer ce message.",
     "If you did not request a password reset, no further action is required.": "Si vous n'avez pas demandé de réinitialisation de mot de passe, vous pouvez ignorer ce message.",
     "If you're having trouble clicking the \":actionText\" button, copy and paste the URL below\ninto your web browser:": "Si vous avez des difficultés à cliquer sur le bouton \":actionText\", copiez et collez l'URL ci-dessous\ndans votre navigateur Web :",
+    "In progress": "En cours",
     "In teams": "En équipe",
     "Invalid filename.": "Invalid filename.",
     "Invalid JSON was returned from the route.": "Un JSON non valide a été renvoyé par la route.",
@@ -89,6 +91,7 @@
     "Please click the button below to verify your email address.": "Veuillez cliquer sur le bouton ci-dessous pour vérifier votre adresse e-mail :",
     "Profile": "Profil",
     "Profile Information": "Informations du profil",
+    "Ready to start": "Prêt à démarrer",
     "Regards": "Cordialement",
     "Regards,": "Cordialement,",
     "Register": "Inscription",
@@ -103,6 +106,7 @@
     "Select :count players": "Sélectionner :count joueurs",
     "Server Error": "Erreur serveur",
     "Service Unavailable": "Service indisponible",
+    "Setup in progress": "Configuration en cours",
     "Showing": "Montrant",
     "Start by choosing a name for your tournament": "Commencez par choisir un nom pour votre tournoi",
     "Team": "Équipe",
@@ -135,6 +139,7 @@
     "Upload Picture": "Ajouter photo",
     "Username": "Nom d'utilisateur",
     "Verify Email Address": "Vérifier l'adresse e-mail",
+    "Waiting for players": "En attente de joueurs",
     "Whoops!": "Oups !",
     "Will your tournament be played in teams ?": "Votre tournoi se jouera-t-il en équipe ?",
     "Yes": "Oui",
@@ -149,5 +154,6 @@
     "Your Hosted Tournaments": "Vos tournois organisés",
     "Your Joined Tournaments": "Vos tournois rejoints",
     "Your password was successfully updated !": "Votre mot de passe a bien été mis à jour !",
-    "Your profile was successfully updated !": "Votre profil a bien été mis à jour !"
+    "Your profile was successfully updated !": "Votre profil a bien été mis à jour !",
+    "Your tournament :name is full ! You can start it once the tournaments phases are set up.": "Votre tournoi \":name\" est complet ! Vous pouvez le démarrer une fois les phases du tournoi configurées."
 }

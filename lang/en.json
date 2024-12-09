@@ -34,6 +34,7 @@
     "errors": "errors",
     "Filter": "Filter",
     "Finally, do you also want to participate in your tournament ?": "Finally, do you also want to participate in your tournament ?",
+    "Finished": "Finished",
     "Forbidden": "Forbidden",
     "Forgot your password?": "Forgot your password?",
     "Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.": "Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.",
@@ -46,6 +47,7 @@
     "If you did not create an account, no further action is required.": "If you did not create an account, no further action is required.",
     "If you did not request a password reset, no further action is required.": "If you did not request a password reset, no further action is required.",
     "If you're having trouble clicking the \":actionText\" button, copy and paste the URL below\ninto your web browser:": "If you're having trouble clicking the \":actionText\" button, copy and paste the URL below\ninto your web browser:",
+    "In progress": "In progress",
     "In teams": "In teams",
     "Invalid filename.": "Invalid filename.",
     "Invalid JSON was returned from the route.": "Invalid JSON was returned from the route.",
@@ -89,6 +91,7 @@
     "Please click the button below to verify your email address.": "Please click the button below to verify your email address.",
     "Profile": "Profile",
     "Profile Information": "Profile Information",
+    "Ready to start": "Ready to start",
     "Regards": "Regards",
     "Regards,": "Regards,",
     "Register": "Register",
@@ -103,6 +106,7 @@
     "Select :count players": "Select :count players",
     "Server Error": "Server Error",
     "Service Unavailable": "Service Unavailable",
+    "Setup in progress": "Setup in progress",
     "Showing": "Showing",
     "Start by choosing a name for your tournament": "Start by choosing a name for your tournament",
     "Team": "Team",
@@ -135,6 +139,7 @@
     "Upload Picture": "Upload Picture",
     "Username": "Username",
     "Verify Email Address": "Verify Email Address",
+    "Waiting for players": "Waiting for players",
     "Whoops!": "Whoops!",
     "Will your tournament be played in teams ?": "Will your tournament be played in teams ?",
     "Yes": "Yes",
@@ -149,5 +154,6 @@
     "Your Hosted Tournaments": "Your hosted tournaments",
     "Your Joined Tournaments": "Your joined tournaments",
     "Your password was successfully updated !": "Your password was successfully updated !",
-    "Your profile was successfully updated !": "Your profile was successfully updated !"
+    "Your profile was successfully updated !": "Your profile was successfully updated !",
+    "Your tournament :name is full ! You can start it once the tournaments phases are set up.": "Your tournament \":name\" is full ! You can start it once the tournaments phases are set up."
 }

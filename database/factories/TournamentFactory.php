@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
+use App\Enums\TournamentStatus;
 use App\Models\Team;
 use App\Models\Tournament;
 use App\Models\TournamentInvitation;
@@ -21,6 +22,7 @@ class TournamentFactory extends Factory
             'name' => fake()->words(asText: true),
             'description' => fake()->text(),
             'number_of_players' => fake()->numberBetween(2, 5) * 2,
+            'status' => TournamentStatus::WAITING_FOR_PLAYERS,
         ];
     }
 
