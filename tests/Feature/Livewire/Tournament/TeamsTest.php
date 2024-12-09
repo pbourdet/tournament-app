@@ -104,7 +104,7 @@ class TeamsTest extends TestCase
     {
         $tournament = Tournament::factory()->full()->teamBased()->create();
 
-        Cache::lock($tournament->getTeamsLockKey(), 20)->get();
+        Cache::lock($tournament->getLockKey(), 20)->get();
 
         Livewire::actingAs($tournament->organizer)
             ->test(Teams::class, ['tournament' => $tournament])
@@ -149,7 +149,7 @@ class TeamsTest extends TestCase
         $tournament = Tournament::factory()->withAllTeams()->create();
         $team = $tournament->teams->firstOrFail();
 
-        Cache::lock($tournament->getTeamsLockKey(), 20)->get();
+        Cache::lock($tournament->getLockKey(), 20)->get();
 
         Livewire::actingAs($tournament->organizer)
             ->test(Teams::class, ['tournament' => $tournament])
@@ -280,7 +280,7 @@ class TeamsTest extends TestCase
             'organizer_id' => $organizer->id,
         ]);
 
-        Cache::lock($tournament->getTeamsLockKey(), 20)->get();
+        Cache::lock($tournament->getLockKey(), 20)->get();
 
         Livewire::actingAs($organizer)
             ->test(Teams::class, ['tournament' => $tournament])

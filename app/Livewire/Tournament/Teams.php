@@ -15,9 +15,11 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\View\View;
 use Livewire\Attributes\Locked;
+use Livewire\Attributes\Modelable;
 
 class Teams extends Component
 {
+    #[Modelable]
     public Tournament $tournament;
 
     public CreateTeamForm $createForm;
@@ -104,7 +106,7 @@ class Teams extends Component
 
     private function generationInProgress(): bool
     {
-        $lock = Cache::lock($this->tournament->getTeamsLockKey(), 60);
+        $lock = Cache::lock($this->tournament->getLockKey(), 60);
 
         if ($lock->get()) {
             $lock->release();

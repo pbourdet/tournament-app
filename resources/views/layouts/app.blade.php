@@ -22,6 +22,7 @@
                 window.Echo.private('App.Models.User.{{ auth()->id() }}')
                     .notification((notification) => triggerToast(notification.toastType, notification.message))
                     .listen('TeamsGenerated', () => {})
+                    .listen('TournamentStarted', (e) => triggerToast(e.toastType, e.message))
                 ;
             });
         </script>

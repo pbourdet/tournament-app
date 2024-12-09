@@ -32,6 +32,8 @@ class TournamentFactory extends Factory
             while (!$tournament->isFull()) {
                 $tournament->players()->attach(User::factory()->create());
             }
+
+            $tournament->update(['status' => TournamentStatus::SETUP_IN_PROGRESS]);
         });
     }
 

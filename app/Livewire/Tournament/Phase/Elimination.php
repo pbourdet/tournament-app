@@ -11,9 +11,11 @@ use App\Livewire\Forms\Tournament\Phase\CreateEliminationForm;
 use App\Models\Tournament;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\View\View;
+use Livewire\Attributes\Modelable;
 
 class Elimination extends Component
 {
+    #[Modelable]
     public Tournament $tournament;
 
     public CreateEliminationForm $form;
@@ -41,5 +43,6 @@ class Elimination extends Component
 
         PhaseCreated::dispatch($this->tournament);
         $this->toast(ToastType::SUCCESS, __('Elimination phase created successfully !'));
+        $this->dispatch('phase-created', message: __('Elimination phase created successfully !'));
     }
 }
