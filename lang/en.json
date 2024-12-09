@@ -149,5 +149,6 @@
     "Your Hosted Tournaments": "Your hosted tournaments",
     "Your Joined Tournaments": "Your joined tournaments",
     "Your password was successfully updated !": "Your password was successfully updated !",
-    "Your profile was successfully updated !": "Your profile was successfully updated !"
+    "Your profile was successfully updated !": "Your profile was successfully updated !",
+    "Your tournament :name is full ! You can start it once the tournaments phases are set up.": "Your tournament \":name\" is full ! You can start it once the tournaments phases are set up."
 }

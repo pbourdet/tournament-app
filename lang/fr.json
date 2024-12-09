@@ -149,5 +149,6 @@
     "Your Hosted Tournaments": "Vos tournois organisés",
     "Your Joined Tournaments": "Vos tournois rejoints",
     "Your password was successfully updated !": "Votre mot de passe a bien été mis à jour !",
-    "Your profile was successfully updated !": "Votre profil a bien été mis à jour !"
+    "Your profile was successfully updated !": "Votre profil a bien été mis à jour !",
+    "Your tournament :name is full ! You can start it once the tournaments phases are set up.": "Votre tournoi \":name\" est complet ! Vous pouvez le démarrer une fois les phases du tournoi configurées."
 }

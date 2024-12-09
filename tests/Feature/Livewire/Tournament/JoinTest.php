@@ -7,7 +7,7 @@ namespace Tests\Feature\Livewire\Tournament;
 use App\Livewire\Tournament\Join;
 use App\Models\Tournament;
 use App\Models\User;
-use App\Notifications\PlayerJoined;
+use App\Notifications\TournamentFull;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Notification;
 use Livewire\Livewire;
@@ -60,7 +60,22 @@ class JoinTest extends TestCase
             'tournament_id' => $tournament->id,
             'user_id' => $user->id,
         ]);
-        Notification::assertSentTo($tournament->organizer, PlayerJoined::class);
+    }
+
+    public function testOrganizerIsNotifiedWhenTournamentIsFull(): void
+    {
+        Notification::fake();
+
+        $user = User::factory()->create();
+        $tournament = Tournament::factory()->create(['number_of_players' => 2]);
+        $tournament->players()->attach(User::factory()->create());
+
+        Livewire::actingAs($user)
+            ->test(Join::class)
+            ->set('tournamentCode', $tournament->invitation->code)
+            ->call('join', $tournament);
+
+        Notification::assertSentTo($tournament->organizer, TournamentFull::class);
     }
 
     public function testUserIsNotNotifiedIfTheyJoinTheirOwnTournament(): void

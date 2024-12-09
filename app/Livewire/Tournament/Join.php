@@ -8,7 +8,7 @@ use App\Enums\ToastType;
 use App\Models\Tournament;
 use App\Models\TournamentInvitation;
 use App\Models\User;
-use App\Notifications\PlayerJoined;
+use App\Notifications\TournamentFull;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Livewire\Attributes\Locked;
@@ -35,8 +35,8 @@ class Join extends Component
 
         $tournament->players()->attach($user);
 
-        if ($tournament->organizer()->isNot($user)) {
-            $tournament->organizer->notify((new PlayerJoined($tournament, $user))->afterCommit());
+        if ($tournament->isFull()) {
+            $tournament->organizer->notify((new TournamentFull($tournament))->afterCommit());
         }
 
         session()->flash(ToastType::SUCCESS->value, __('You joined tournament :name', ['name' => $tournament->name]));
