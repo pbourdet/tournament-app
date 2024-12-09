@@ -32,6 +32,7 @@ class Tournament extends Model
         'number_of_players',
         'team_based',
         'team_size',
+        'status',
     ];
 
     /** @return BelongsTo<User, $this> */
