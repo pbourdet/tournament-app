@@ -5,11 +5,10 @@ declare(strict_types=1);
 namespace App\Livewire\Tournament\Phase;
 
 use App\Enums\ToastType;
+use App\Events\PhaseCreated;
 use App\Livewire\Component;
 use App\Livewire\Forms\Tournament\Phase\CreateEliminationForm;
 use App\Models\Tournament;
-use App\Services\EliminationMatchesGenerator;
-use App\Services\EliminationRoundsGenerator;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\View\View;
 
@@ -39,9 +38,8 @@ class Elimination extends Component
         $eliminationPhase = $this->tournament->eliminationPhase()->create([
             'number_of_contestants' => $this->form->numberOfContestants,
         ]);
-        $this->toast(ToastType::SUCCESS, __('Elimination phase created successfully !'));
 
-        (new EliminationRoundsGenerator())->generate($eliminationPhase);
-        (new EliminationMatchesGenerator())->generate($eliminationPhase);
+        $this->toast(ToastType::SUCCESS, __('Elimination phase created successfully !'));
+        PhaseCreated::dispatch($eliminationPhase->tournament);
     }
 }
