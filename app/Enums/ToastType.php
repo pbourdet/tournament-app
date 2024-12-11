@@ -7,7 +7,7 @@ namespace App\Enums;
 enum ToastType: string
 {
     case SUCCESS = 'success';
-    case DANGER = 'danger';
+    case ERROR = 'error';
     case WARNING = 'warning';
     case INFO = 'info';
 }
