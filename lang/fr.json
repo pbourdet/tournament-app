@@ -108,6 +108,7 @@
     "Service Unavailable": "Service indisponible",
     "Setup in progress": "Configuration en cours",
     "Showing": "Montrant",
+    "Start tournament": "Démarrer le tournoi",
     "Start by choosing a name for your tournament": "Commencez par choisir un nom pour votre tournoi",
     "Team": "Équipe",
     "Team :name created !": "Équipe \":name\" créée !",
@@ -125,6 +126,8 @@
     "The number of team members must match the team size setting of the tournament.": "Le nombre de membres de l'équipe doit correspondre à la taille de l'équipe définie pour le tournoi.",
     "The response is not a streamed response.": "La réponse n'est pas une réponse diffusée.",
     "The response is not a view.": "La réponse n'est pas une vue.",
+    "The tournament :tournament has started. Good luck, have fun !": "Le tournoi :tournament a démarré. Bonne chance, amusez-vous !",
+    "The tournament will soon start ! Matches are being generated and players will be notified.": "Le tournoi va bientôt commencer ! Les matchs sont en cours de génération et les joueurs seront notifiés.",
     "This action is unauthorized.": "Cette action n'est pas autorisée.",
     "This is a secure area of the application. Please confirm your password before continuing.": "Ceci est une zone sécurisée de l'application. Veuillez confirmer votre mot de passe avant de continuer.",
     "This password reset link will expire in :count minutes.": "Ce lien de réinitialisation du mot de passe expirera dans :count minutes.",
@@ -155,5 +158,5 @@
     "Your Joined Tournaments": "Vos tournois rejoints",
     "Your password was successfully updated !": "Votre mot de passe a bien été mis à jour !",
     "Your profile was successfully updated !": "Votre profil a bien été mis à jour !",
-    "Your tournament :name is full ! You can start it once the tournaments phases are set up.": "Votre tournoi \":name\" est complet ! Vous pouvez le démarrer une fois les phases du tournoi configurées."
+    "Your tournament :tournament is full ! You can start it once the tournaments phases are set up.": "Votre tournoi \":tournament\" est complet ! Vous pouvez le démarrer une fois les phases du tournoi configurées."
 }

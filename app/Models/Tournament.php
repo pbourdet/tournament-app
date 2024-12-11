@@ -135,7 +135,7 @@ class Tournament extends Model
         return $this->number_of_players / $this->team_size;
     }
 
-    public function getTeamsLockKey(): string
+    public function isNotStarted(): bool
     {
         return in_array($this->status, TournamentStatus::EDITABLE_STATUSES, true);
     }

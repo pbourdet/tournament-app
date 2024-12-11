@@ -10,7 +10,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Notification;
 
-class TournamentFull extends Notification
+class TournamentStarted extends Notification
 {
     use Queueable;
 
@@ -28,8 +28,8 @@ class TournamentFull extends Notification
     public function toBroadcast(object $notifiable): BroadcastMessage
     {
         return new BroadcastMessage([
-            'toastType' => ToastType::INFO->value,
-            'message' => __('Your tournament :tournament is full ! You can start it once the tournaments phases are set up.', [
+            'toastType' => ToastType::SUCCESS->value,
+            'message' => __('The tournament :tournament has started. Good luck, have fun !', [
                 'tournament' => $this->tournament->name,
             ]),
         ]);
