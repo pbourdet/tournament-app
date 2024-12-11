@@ -22,7 +22,7 @@
             </x-tab-content>
             @if($tournament->team_based)
                 <x-tab-content :tab-name="'teams'">
-                    <livewire:tournament.teams :$tournament/>
+                    <livewire:tournament.teams :$tournament :$generationInProgress/>
                 </x-tab-content>
             @endif
 
@@ -31,4 +31,11 @@
             </x-tab-content>
         </x-slot:tabContents>
     </x-tab-container>
+    @script
+    <script>
+        window.Echo.private('App.Models.Tournament.{{ $tournament->id }}')
+            .listen('TournamentUpdated', () => $wire.$refresh())
+        ;
+    </script>
+    @endscript
 </x-section>

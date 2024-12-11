@@ -1,4 +1,4 @@
-<div>
+<div x-data="{generationStarted: false, generationInProgress: @js($generationInProgress)}">
     <div class="flex justify-between items-center">
         <div class="flex">
             @can('manage', $tournament)
@@ -9,12 +9,12 @@
                     </x-secondary-button>
                 </div>
                 @if($tournament->canGenerateTeams())
-                    <div class="flex items-center">
-                        <x-primary-button wire:loading.attr="disabled" :disabled="$this->generationInProgress"
-                                          type="button" wire:click="generate" id="button-generate-teams">
+                    <div wire:replace class="flex items-center">
+                        <x-primary-button x-on:click="generationStarted = true" x-bind:disabled="generationStarted || generationInProgress"
+                                          type="button" wire:click="$parent.generate" id="button-generate-teams">
                             <span>{{ __('Generate teams') }}</span>
                         </x-primary-button>
-                        <x-loader wire:loading wire:target="generate" class="size-5 ml-1"/>
+                        <x-loader x-show="generationStarted" class="size-5 ml-1"/>
                     </div>
                 @endif
             @endcan

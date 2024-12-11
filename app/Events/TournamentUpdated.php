@@ -11,7 +11,7 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class TeamsGenerated implements ShouldBroadcast
+class TournamentUpdated implements ShouldBroadcast
 {
     use Dispatchable;
     use InteractsWithSockets;
@@ -26,7 +26,7 @@ class TeamsGenerated implements ShouldBroadcast
     public function broadcastOn(): array
     {
         return [
-            new PrivateChannel(sprintf('App.Models.User.%s', $this->tournament->organizer->id)),
+            new PrivateChannel(sprintf('App.Models.Tournament.%s', $this->tournament->id)),
         ];
     }
 }

@@ -5,16 +5,14 @@ declare(strict_types=1);
 namespace App\Livewire\Tournament;
 
 use App\Enums\ToastType;
-use App\Jobs\GenerateTeams;
 use App\Livewire\Component;
 use App\Livewire\Forms\CreateTeamForm;
 use App\Models\Team;
 use App\Models\Tournament;
 use App\Models\User;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\View\View;
 use Livewire\Attributes\Locked;
+use Livewire\Attributes\Reactive;
 
 class Teams extends Component
 {
@@ -23,17 +21,14 @@ class Teams extends Component
     public CreateTeamForm $createForm;
 
     #[Locked]
+    #[Reactive]
     public bool $generationInProgress = false;
 
-    public function mount(Tournament $tournament): void
+    public function mount(Tournament $tournament, bool $generationInProgress): void
     {
         $this->createForm->tournament = $tournament;
         $this->tournament = $tournament;
-    }
-
-    public function boot(): void
-    {
-        $this->generationInProgress = $this->generationInProgress();
+        $this->generationInProgress = $generationInProgress;
     }
 
     public function render(): View
@@ -42,33 +37,6 @@ class Teams extends Component
             'tournament' => $this->tournament->load(['teams.members']),
             'selectablePlayers' => $this->tournament->players()->withoutTeams()->pluck('username', 'id')->toArray(),
         ]);
-    }
-
-    /** @return array<string, string> */
-    public function getListeners(): array
-    {
-        return [
-            sprintf('echo-private:App.Models.User.%s,TeamsGenerated', Auth::user()?->id) => 'generationDone',
-        ];
-    }
-
-    public function generate(): void
-    {
-        $this->checkAuthorization();
-
-        if (!$this->tournament->canGenerateTeams()) {
-            abort(403);
-        }
-
-        GenerateTeams::dispatch($this->tournament);
-        $this->generationInProgress = true;
-        $this->toast(ToastType::INFO, __('Teams generation in progress'));
-    }
-
-    public function generationDone(): void
-    {
-        $this->generationInProgress = false;
-        $this->toast(ToastType::SUCCESS, __('Teams generation done for tournament :tournament !', ['tournament' => $this->tournament->name]));
     }
 
     public function delete(Team $team): void
@@ -100,19 +68,6 @@ class Teams extends Component
         $this->createForm->reset('name', 'members');
         $this->toast(ToastType::SUCCESS, __('Team :name created !', ['name' => $team->name]));
         $this->dispatch('team-created');
-    }
-
-    private function generationInProgress(): bool
-    {
-        $lock = Cache::lock($this->tournament->getTeamsLockKey(), 60);
-
-        if ($lock->get()) {
-            $lock->release();
-
-            return false;
-        }
-
-        return true;
     }
 
     private function checkAuthorization(): void
