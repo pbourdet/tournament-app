@@ -22,7 +22,7 @@
             </x-tab-content>
             @if($tournament->team_based)
                 <x-tab-content :tab-name="'teams'">
-                    <livewire:tournament.teams :$tournament/>
+                    <livewire:tournament.teams :$tournament :$generationInProgress/>
                 </x-tab-content>
             @endif
 

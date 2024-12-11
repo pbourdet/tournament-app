@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Jobs;
 
-use App\Enums\ToastType;
 use App\Events\TournamentUpdated;
 use App\Models\Tournament;
 use App\Notifications\TeamsGenerated;

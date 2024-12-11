@@ -30,7 +30,7 @@ class TeamsGenerated extends Notification
         return new BroadcastMessage([
             'toastType' => ToastType::SUCCESS->value,
             'message' => __('Teams generation done for tournament :tournament !', [
-                'tournament' => $this->tournament->name
+                'tournament' => $this->tournament->name,
             ]),
         ]);
     }
