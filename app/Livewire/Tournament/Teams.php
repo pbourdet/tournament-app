@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Livewire\Tournament;
 
 use App\Enums\ToastType;
+use App\Events\TournamentUpdated;
 use App\Livewire\Component;
 use App\Livewire\Forms\CreateTeamForm;
 use App\Models\Team;
@@ -22,8 +23,7 @@ class Teams extends Component
 
     public CreateTeamForm $createForm;
 
-    #[Locked]
-    #[Reactive]
+    #[Locked, Reactive]
     public bool $generationInProgress = false;
 
     public function mount(Tournament $tournament, bool $generationInProgress): void
@@ -47,6 +47,7 @@ class Teams extends Component
 
         $team->delete();
         $this->toast(ToastType::SUCCESS, __('Team :name deleted !', ['name' => $team->name]));
+        event(new TournamentUpdated($this->tournament));
     }
 
     public function create(): void
@@ -70,6 +71,7 @@ class Teams extends Component
         $this->createForm->reset('name', 'members');
         $this->toast(ToastType::SUCCESS, __('Team :name created !', ['name' => $team->name]));
         $this->dispatch('team-created');
+        event(new TournamentUpdated($this->tournament));
     }
 
     private function checkAuthorization(): void

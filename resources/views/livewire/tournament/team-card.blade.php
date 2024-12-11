@@ -65,7 +65,11 @@
                 <li class="text-gray-700 text-sm flex items-center">
                     <img src="{{ Storage::url($member->getProfilePicture()) }}"
                          alt="{{ $member->username }}" class="w-6 h-6 rounded-full mr-2">
-                    {{ $member->username }}
+                    @if($member->is(Auth::user()))
+                        <span class="text-sm font-medium text-indigo-600">{{ __('You') }}</span>
+                    @else
+                        <span class="text-sm font-medium text-gray-900">{{ $member->username }}</span>
+                    @endif
                 </li>
             @endforeach
         </ul>
