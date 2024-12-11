@@ -128,7 +128,7 @@ class CreateTest extends TestCase
         Livewire::actingAs($user)
             ->test(Create::class)
             ->assertRedirect(route('dashboard'))
-            ->assertSessionHas(ToastType::DANGER->value, __('You cannot create more tournaments'));
+            ->assertSessionHas(ToastType::ERROR->value, __('You cannot create more tournaments'));
     }
 
     public function testUserCantCreateMoreThanTwoTournaments(): void

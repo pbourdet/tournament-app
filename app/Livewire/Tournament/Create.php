@@ -31,7 +31,7 @@ class Create extends Component
     public function mount(): void
     {
         if (!Gate::allows('create', Tournament::class)) {
-            session()->flash(ToastType::DANGER->value, __('You cannot create more tournaments'));
+            session()->flash(ToastType::ERROR->value, __('You cannot create more tournaments'));
             $this->redirectIntended(route('dashboard'));
         }
     }
