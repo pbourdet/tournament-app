@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Livewire\Tournament;
 
-use App\Events\TeamsGenerated;
+use App\Events\TournamentUpdated;
 use App\Livewire\Tournament\Teams;
 use App\Models\Team;
 use App\Models\Tournament;
@@ -44,7 +44,7 @@ class TeamsTest extends TestCase
             ->assertSuccessful()
             ->assertDispatched('toast-trigger');
 
-        Event::assertDispatched(TeamsGenerated::class);
+        Event::assertDispatched(TournamentUpdated::class);
     }
 
     public function testNonOrganizerCantGenerateTeams(): void
@@ -58,7 +58,7 @@ class TeamsTest extends TestCase
             ->assertForbidden()
             ->assertNotDispatched('toast-trigger');
 
-        Event::assertNotDispatched(TeamsGenerated::class);
+        Event::assertNotDispatched(TournamentUpdated::class);
     }
 
     public function testOrganizerCantGenerateTeamsOnNonFullTournament(): void
@@ -71,7 +71,7 @@ class TeamsTest extends TestCase
             ->assertForbidden()
             ->assertNotDispatched('toast-trigger');
 
-        Event::assertNotDispatched(TeamsGenerated::class);
+        Event::assertNotDispatched(TournamentUpdated::class);
     }
 
     public function testOrganizerCantGenerateTeamsOnNonTeamBasedTournament(): void
@@ -84,7 +84,7 @@ class TeamsTest extends TestCase
             ->assertForbidden()
             ->assertNotDispatched('toast-trigger');
 
-        Event::assertNotDispatched(TeamsGenerated::class);
+        Event::assertNotDispatched(TournamentUpdated::class);
     }
 
     public function testOrganizerCantGenerateTeamsOnTournamentWithAllTeams(): void
@@ -97,7 +97,7 @@ class TeamsTest extends TestCase
             ->assertForbidden()
             ->assertNotDispatched('toast-trigger');
 
-        Event::assertNotDispatched(TeamsGenerated::class);
+        Event::assertNotDispatched(TournamentUpdated::class);
     }
 
     public function testOrganizerCantGenerateTeamsOnTournamentIfGenerationAlreadyOngoing(): void
@@ -112,7 +112,7 @@ class TeamsTest extends TestCase
             ->assertConflict()
             ->assertNotDispatched('toast-trigger');
 
-        Event::assertNotDispatched(TeamsGenerated::class);
+        Event::assertNotDispatched(TournamentUpdated::class);
     }
 
     public function testOrganizerCanDeleteATeam(): void

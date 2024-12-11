@@ -44,14 +44,6 @@ class Teams extends Component
         ]);
     }
 
-    /** @return array<string, string> */
-    public function getListeners(): array
-    {
-        return [
-            sprintf('echo-private:App.Models.User.%s,TeamsGenerated', Auth::user()?->id) => 'generationDone',
-        ];
-    }
-
     public function generate(): void
     {
         $this->checkAuthorization();
@@ -63,12 +55,6 @@ class Teams extends Component
         GenerateTeams::dispatch($this->tournament);
         $this->generationInProgress = true;
         $this->toast(ToastType::INFO, __('Teams generation in progress'));
-    }
-
-    public function generationDone(): void
-    {
-        $this->generationInProgress = false;
-        $this->toast(ToastType::SUCCESS, __('Teams generation done for tournament :tournament !', ['tournament' => $this->tournament->name]));
     }
 
     public function delete(Team $team): void

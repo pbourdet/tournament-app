@@ -34,7 +34,8 @@
     @script
     <script>
         window.Echo.private('App.Models.Tournament.{{ $tournament->id }}')
-            .listen('TeamsGenerated', () => $wire.$refresh())
+            .listen('TournamentUpdated', () => $wire.$refresh())
+        ;
     </script>
     @endscript
 </x-section>

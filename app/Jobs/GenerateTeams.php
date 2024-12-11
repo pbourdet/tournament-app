@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Jobs;
 
-use App\Events\TeamsGenerated;
+use App\Enums\ToastType;
+use App\Events\TournamentUpdated;
 use App\Models\Tournament;
+use App\Notifications\TeamsGenerated;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -59,7 +61,8 @@ class GenerateTeams implements ShouldQueue
                 }
             }
 
-            event(new TeamsGenerated($this->tournament));
+            event(new TournamentUpdated($this->tournament));
+            $this->tournament->organizer->notify(new TeamsGenerated($this->tournament));
         } finally {
             Cache::lock($this->tournament->getTeamsLockKey(), 60)->forceRelease();
         }
