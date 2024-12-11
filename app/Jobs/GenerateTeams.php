@@ -31,7 +31,7 @@ class GenerateTeams implements ShouldQueue
     public function middleware(): array
     {
         return [
-            (new WithoutOverlapping($this->tournament->getTeamsLockKey()))->withPrefix('')->shared()->dontRelease(),
+            (new WithoutOverlapping($this->tournament->getLockKey()))->withPrefix('')->shared()->dontRelease(),
         ];
     }
 
@@ -63,7 +63,7 @@ class GenerateTeams implements ShouldQueue
             event(new TournamentUpdated($this->tournament));
             $this->tournament->organizer->notify(new TeamsGenerated($this->tournament));
         } finally {
-            Cache::lock($this->tournament->getTeamsLockKey(), 60)->forceRelease();
+            Cache::lock($this->tournament->getLockKey(), 20)->forceRelease();
         }
     }
 }

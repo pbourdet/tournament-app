@@ -53,7 +53,7 @@ class Show extends Component
 
     private function generationInProgress(): bool
     {
-        $lock = Cache::lock($this->tournament->getTeamsLockKey(), 20);
+        $lock = Cache::lock($this->tournament->getLockKey(), 20);
 
         if ($lock->get()) {
             $lock->release();

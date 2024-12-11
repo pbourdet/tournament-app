@@ -129,7 +129,7 @@ class ShowTest extends TestCase
         Queue::fake();
         $tournament = Tournament::factory()->full()->teamBased()->create();
 
-        Cache::lock($tournament->getTeamsLockKey(), 20)->get();
+        Cache::lock($tournament->getLockKey(), 20)->get();
 
         Livewire::actingAs($tournament->organizer)
             ->test(Show::class, ['tournament' => $tournament])
