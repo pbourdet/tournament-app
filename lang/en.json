@@ -108,6 +108,7 @@
     "Service Unavailable": "Service Unavailable",
     "Setup in progress": "Setup in progress",
     "Showing": "Showing",
+    "Start tournament": "Start tournament",
     "Start by choosing a name for your tournament": "Start by choosing a name for your tournament",
     "Team": "Team",
     "Team :name created !": "Team \":name\" created !",
@@ -125,6 +126,8 @@
     "The number of team members must match the team size setting of the tournament.": "The number of team members must match the team size setting of the tournament.",
     "The response is not a streamed response.": "The response is not a streamed response.",
     "The response is not a view.": "The response is not a view.",
+    "The tournament :tournament has started. Good luck, have fun !": "The tournament :tournament has started. Good luck, have fun !",
+    "The tournament will soon start ! Matches are being generated and players will be notified.": "The tournament will soon start ! Matches are being generated and players will be notified.",
     "This action is unauthorized.": "This action is unauthorized.",
     "This is a secure area of the application. Please confirm your password before continuing.": "This is a secure area of the application. Please confirm your password before continuing.",
     "This password reset link will expire in :count minutes.": "This password reset link will expire in :count minutes.",
@@ -155,5 +158,5 @@
     "Your Joined Tournaments": "Your joined tournaments",
     "Your password was successfully updated !": "Your password was successfully updated !",
     "Your profile was successfully updated !": "Your profile was successfully updated !",
-    "Your tournament :name is full ! You can start it once the tournaments phases are set up.": "Your tournament \":name\" is full ! You can start it once the tournaments phases are set up."
+    "Your tournament :tournament is full ! You can start it once the tournaments phases are set up.": "Your tournament \":tournament\" is full ! You can start it once the tournaments phases are set up."
 }

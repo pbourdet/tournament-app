@@ -135,9 +135,19 @@ class Tournament extends Model
         return $this->number_of_players / $this->team_size;
     }
 
-    public function getTeamsLockKey(): string
+    public function isNotStarted(): bool
     {
-        return sprintf('tournament:%s:lock-teams', $this->id);
+        return in_array($this->status, TournamentStatus::EDITABLE_STATUSES, true);
+    }
+
+    public function isReadyToStart(): bool
+    {
+        return TournamentStatus::READY_TO_START === $this->status && $this->hasAllContestants();
+    }
+
+    public function getLockKey(): string
+    {
+        return sprintf('tournament:%s:lock', $this->id);
     }
 
     /** @return array<string, string> */

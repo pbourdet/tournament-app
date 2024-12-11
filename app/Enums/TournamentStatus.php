@@ -11,4 +11,11 @@ enum TournamentStatus: string
     case READY_TO_START = 'Ready to start';
     case IN_PROGRESS = 'In progress';
     case FINISHED = 'Finished';
+
+    /** @var array<int, TournamentStatus> */
+    public const array EDITABLE_STATUSES = [
+        self::READY_TO_START,
+        self::WAITING_FOR_PLAYERS,
+        self::SETUP_IN_PROGRESS,
+    ];
 }

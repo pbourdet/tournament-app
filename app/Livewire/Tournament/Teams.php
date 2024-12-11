@@ -12,10 +12,12 @@ use App\Models\Tournament;
 use App\Models\User;
 use Illuminate\View\View;
 use Livewire\Attributes\Locked;
+use Livewire\Attributes\Modelable;
 use Livewire\Attributes\Reactive;
 
 class Teams extends Component
 {
+    #[Modelable]
     public Tournament $tournament;
 
     public CreateTeamForm $createForm;

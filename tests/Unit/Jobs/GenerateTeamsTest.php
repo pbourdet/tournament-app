@@ -27,7 +27,7 @@ class GenerateTeamsTest extends TestCase
             'name' => 'created team',
         ]);
 
-        $lock = Cache::lock($tournament->getTeamsLockKey(), 20);
+        $lock = Cache::lock($tournament->getLockKey(), 20);
         $lock->get();
 
         (new GenerateTeams($tournament))->handle();
@@ -46,7 +46,7 @@ class GenerateTeamsTest extends TestCase
     public function testItDoesNotCreateTeamsIsTournamentIsNotFull(): void
     {
         $tournament = Tournament::factory()->teamBased()->create();
-        $lock = Cache::lock($tournament->getTeamsLockKey(), 20);
+        $lock = Cache::lock($tournament->getLockKey(), 20);
         $lock->get();
 
         (new GenerateTeams($tournament))->handle();
@@ -58,7 +58,7 @@ class GenerateTeamsTest extends TestCase
     public function testItDoesNotCreateTeamsIsTournamentIsNotTeamBased(): void
     {
         $tournament = Tournament::factory()->full()->create();
-        $lock = Cache::lock($tournament->getTeamsLockKey(), 20);
+        $lock = Cache::lock($tournament->getLockKey(), 20);
         $lock->get();
 
         (new GenerateTeams($tournament))->handle();
