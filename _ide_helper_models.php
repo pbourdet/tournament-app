@@ -186,6 +186,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Tournament whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Tournament whereNumberOfPlayers($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Tournament whereOrganizerId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Tournament whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Tournament whereTeamBased($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Tournament whereTeamSize($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Tournament whereUpdatedAt($value)

@@ -31,4 +31,10 @@
             </x-tab-content>
         </x-slot:tabContents>
     </x-tab-container>
+    @script
+    <script>
+        window.Echo.private('App.Models.Tournament.{{ $tournament->id }}')
+            .listen('TeamsGenerated', () => $wire.$refresh())
+    </script>
+    @endscript
 </x-section>
