@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Livewire\Tournament;
 
 use App\Enums\ToastType;
+use App\Events\TournamentUpdated;
 use App\Livewire\Component;
 use App\Models\Team;
 use App\Models\Tournament;
@@ -39,5 +40,6 @@ class TeamCard extends Component
 
         $this->team->update(['name' => $this->newName]);
         $this->toast(ToastType::SUCCESS, __('Team :name updated !', ['name' => $this->team->name]));
+        event(new TournamentUpdated($this->tournament));
     }
 }

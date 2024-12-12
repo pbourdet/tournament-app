@@ -18,6 +18,9 @@
                 <div>
                     {{ __($tournament->status->value) }}
                 </div>
+                <div>
+                    {{ $tournament->invitation?->code }}
+                </div>
 
                 @if($tournament->isNotStarted())
                     <div>
@@ -27,6 +30,8 @@
                         </x-primary-button>
                     </div>
                 @endif
+
+                <livewire:tournament.players-table wire:model="tournament" :$tournament :$generationInProgress/>
 
             </x-tab-content>
             @if($tournament->team_based)
