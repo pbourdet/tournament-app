@@ -10,7 +10,7 @@
         <script>
             document.addEventListener('DOMContentLoaded', function() {
                 window.Echo.private('App.Models.User.{{ auth()->id() }}')
-                    .notification((notification) => triggerToast(notification.toastType, notification.message))
+                    .notification((notification) => Flux.toast({text: notification.message, variant: notification.toastType}))
                 ;
             });
         </script>

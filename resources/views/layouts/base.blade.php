@@ -24,7 +24,6 @@
         </style>
     </head>
     <body class="min-h-screen bg-white dark:bg-zinc-800">
-        <x-toast-container/>
         @guest
             @include('layouts.navigation-guest')
         @endguest
@@ -37,5 +36,6 @@
 
         @livewireScripts
         @fluxScripts
+        <x-toast-container/>
     </body>
 </html>

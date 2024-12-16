@@ -38,6 +38,6 @@ class TeamCard extends Component
         ]);
 
         $this->team->update(['name' => $this->newName]);
-        $this->toast(ToastType::SUCCESS, __('Team :name updated !', ['name' => $this->team->name]));
+        $this->toast(__('Team :name updated !', ['name' => $this->team->name]), variant: ToastType::SUCCESS->value);
     }
 }

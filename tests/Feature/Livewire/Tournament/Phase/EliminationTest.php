@@ -32,7 +32,7 @@ class EliminationTest extends TestCase
             ->test(Elimination::class, ['tournament' => $tournament])
             ->set('form.numberOfContestants', 8)
             ->call('create')
-            ->assertDispatched('toast-trigger')
+            ->assertDispatched('toast-show')
             ->assertSuccessful();
 
         $this->assertDatabaseCount('elimination_phases', 1);

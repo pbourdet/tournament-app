@@ -31,7 +31,7 @@ class TeamCardTest extends TestCase
             ->test(TeamCard::class, ['team' => $team, 'tournament' => $tournament, 'generationInProgress' => false])
             ->set('newName', 'New Team Name')
             ->call('update')
-            ->assertDispatched('toast-trigger');
+            ->assertDispatched('toast-show');
 
         $this->assertDatabaseHas('teams', ['id' => $team->id, 'name' => 'New Team Name']);
     }

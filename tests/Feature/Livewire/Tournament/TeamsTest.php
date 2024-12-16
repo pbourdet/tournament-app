@@ -41,7 +41,7 @@ class TeamsTest extends TestCase
             ->test(Teams::class, ['tournament' => $tournament, 'generationInProgress' => false])
             ->call('delete', $team)
             ->assertSuccessful()
-            ->assertDispatched('toast-trigger');
+            ->assertDispatched('toast-show');
 
         $this->assertDatabaseMissing('teams', ['id' => $team->id]);
     }
@@ -56,7 +56,7 @@ class TeamsTest extends TestCase
             ->test(Teams::class, ['tournament' => $tournament, 'generationInProgress' => false])
             ->call('delete', $team)
             ->assertForbidden()
-            ->assertNotDispatched('toast-trigger');
+            ->assertNotDispatched('toast-show');
 
         $this->assertDatabaseHas('teams', ['id' => $team->id]);
     }
@@ -70,7 +70,7 @@ class TeamsTest extends TestCase
             ->test(Teams::class, ['tournament' => $tournament, 'generationInProgress' => true])
             ->call('delete', $team)
             ->assertConflict()
-            ->assertNotDispatched('toast-trigger');
+            ->assertNotDispatched('toast-show');
 
         $this->assertDatabaseHas('teams', ['id' => $team->id]);
     }
@@ -90,7 +90,7 @@ class TeamsTest extends TestCase
             ->set('createForm.members', [$users[0]->id, $users[1]->id])
             ->call('create')
             ->assertSuccessful()
-            ->assertDispatched('toast-trigger');
+            ->assertDispatched('toast-show');
 
         $this->assertDatabaseHas('teams', ['name' => 'team name']);
         $this->assertDatabaseCount('teams', 1);
@@ -111,7 +111,7 @@ class TeamsTest extends TestCase
             ->set('createForm.members', $users->pluck('id')->toArray())
             ->call('create')
             ->assertForbidden()
-            ->assertNotDispatched('toast-trigger');
+            ->assertNotDispatched('toast-show');
     }
 
     public function testUserCannotCreateATeamWithNonExistingUsers(): void
@@ -128,7 +128,7 @@ class TeamsTest extends TestCase
             ->set('createForm.members', [Uuid::uuid4()->toString(), Uuid::uuid4()->toString()])
             ->call('create')
             ->assertHasErrors('createForm.members.*')
-            ->assertNotDispatched('toast-trigger');
+            ->assertNotDispatched('toast-show');
     }
 
     public function testUserCannotCreateTeamWithInvalidNumberOfMembers(): void
@@ -146,7 +146,7 @@ class TeamsTest extends TestCase
             ->set('createForm.members', [$user->id])
             ->call('create')
             ->assertHasErrors('createForm.members')
-            ->assertNotDispatched('toast-trigger');
+            ->assertNotDispatched('toast-show');
     }
 
     public function testUserCannotCreateTeamWithMembersAlreadyInTeams(): void
@@ -165,7 +165,7 @@ class TeamsTest extends TestCase
             ->set('createForm.members', $users->pluck('id')->toArray())
             ->call('create')
             ->assertHasErrors('createForm.members')
-            ->assertNotDispatched('toast-trigger');
+            ->assertNotDispatched('toast-show');
     }
 
     public function testUserCannotCreateTeamWithMembersNotInTournament(): void
@@ -183,7 +183,7 @@ class TeamsTest extends TestCase
             ->set('createForm.members', $users->pluck('id')->toArray())
             ->call('create')
             ->assertHasErrors('createForm.members')
-            ->assertNotDispatched('toast-trigger');
+            ->assertNotDispatched('toast-show');
     }
 
     public function testUserCannotCreateTeamIfTeamGenerationIsInProgress(): void
@@ -201,7 +201,7 @@ class TeamsTest extends TestCase
             ->set('createForm.members', $users->pluck('id')->toArray())
             ->call('create')
             ->assertConflict()
-            ->assertNotDispatched('toast-trigger');
+            ->assertNotDispatched('toast-show');
     }
 
     public function testUserCannotCreateTeamInTournamentTheyDoNotOrganize(): void
@@ -220,7 +220,7 @@ class TeamsTest extends TestCase
             ->set('createForm.members', $users->pluck('id')->toArray())
             ->call('create')
             ->assertForbidden()
-            ->assertNotDispatched('toast-trigger');
+            ->assertNotDispatched('toast-show');
     }
 
     public function testUserCannotCreateTeamIfTournamentHasAllTeams(): void
@@ -242,6 +242,6 @@ class TeamsTest extends TestCase
             ->set('createForm.members', $users->pluck('id')->toArray())
             ->call('create')
             ->assertForbidden()
-            ->assertNotDispatched('toast-trigger');
+            ->assertNotDispatched('toast-show');
     }
 }

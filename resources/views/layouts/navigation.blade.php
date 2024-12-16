@@ -13,7 +13,7 @@
     </flux:modal.trigger>
 
     <flux:navlist variant="outline">
-        <flux:navlist.item icon="home" href="{{ route('dashboard') }}">Dashboard</flux:navlist.item>
+        <flux:navlist.item wire:navigate icon="home" href="{{ route('dashboard') }}">{{ __('Dashboard') }}</flux:navlist.item>
     </flux:navlist>
     <flux:spacer/>
 

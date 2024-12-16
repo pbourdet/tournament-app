@@ -119,7 +119,7 @@
     "Team size must be greater than 1, less than the number of players and a multiple of the number of players.": "La taille des équipes doit être supérieure à 1, inférieure au nombre de joueurs et un multiple du nombre de joueurs.",
     "Teams": "Équipes",
     "Teams generation done for tournament :tournament !": "Génération des équipes terminée pour le tournoi :tournament !",
-    "Teams generation in progress": "Génération des équipes en cours",
+    "Teams generation in progress...": "Génération des équipes en cours...",
     "Teams size": "Taille des équipes",
     "Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just emailed to you? If you didn't receive the email, we will gladly send you another.": "Merci de vous être inscrit(e) ! Avant de commencer, veuillez vérifier votre adresse e-mail en cliquant sur le lien que nous venons de vous envoyer. Si vous n'avez pas reçu cet e-mail, nous vous en enverrons un nouveau avec plaisir.",
     "The given data was invalid.": "La donnée renseignée est incorrecte.",

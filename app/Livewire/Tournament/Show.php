@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Livewire\Tournament;
 
-use App\Enums\ToastType;
 use App\Jobs\GenerateTeams;
 use App\Jobs\StartTournament;
 use App\Livewire\Component;
@@ -49,7 +48,7 @@ class Show extends Component
 
         GenerateTeams::dispatch($this->tournament);
         $this->generationInProgress = true;
-        $this->toast(ToastType::INFO, __('Teams generation in progress'));
+        $this->toast(__('Teams generation in progress...'));
     }
 
     public function start(): void
@@ -62,7 +61,7 @@ class Show extends Component
 
         StartTournament::dispatch($this->tournament);
         $this->generationInProgress = true;
-        $this->toast(ToastType::INFO, __('The tournament will soon start ! Matches are being generated and players will be notified.'));
+        $this->toast(__('The tournament will soon start ! Matches are being generated and players will be notified.'));
     }
 
     private function generationInProgress(): bool

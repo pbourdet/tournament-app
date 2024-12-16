@@ -43,7 +43,7 @@ class Elimination extends Component
         ]);
 
         PhaseCreated::dispatch($this->tournament);
-        $this->toast(ToastType::SUCCESS, __('Elimination phase created successfully !'));
+        $this->toast(__('Elimination phase created successfully !'), variant: ToastType::SUCCESS->value);
         event(new TournamentUpdated($this->tournament));
     }
 }
