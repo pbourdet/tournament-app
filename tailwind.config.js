@@ -7,6 +7,8 @@ export default {
         './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
         './storage/framework/views/*.php',
         './resources/views/**/*.blade.php',
+        './vendor/livewire/flux-pro/stubs/**/*.blade.php',
+        './vendor/livewire/flux/stubs/**/*.blade.php',
     ],
 
     safelist: [
@@ -18,7 +20,7 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                body: ['"Comic Sans MS"', 'cursive', 'sans-serif'],
+                sans: ['Inter', 'sans-serif'],
             },
             boxShadow: {
                 soft: '4px 4px 8px 0 rgba(0, 0, 0, 0.1)',

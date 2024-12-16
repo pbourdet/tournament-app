@@ -10,6 +10,7 @@
         "laravel/reverb": "^1.0",
         "laravel/tinker": "^2.9",
         "league/flysystem-aws-s3-v3": "^3.0",
+        "livewire/flux-pro": "^1.0",
         "livewire/livewire": "^3.5"
     },
     "require-dev": {
@@ -80,5 +81,11 @@
         }
     },
     "minimum-stability": "stable",
-    "prefer-stable": true
+    "prefer-stable": true,
+    "repositories": {
+        "flux-pro": {
+            "type": "composer",
+            "url": "https://composer.fluxui.dev"
+        }
+    }
 }
