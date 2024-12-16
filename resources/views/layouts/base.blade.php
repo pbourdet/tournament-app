@@ -23,17 +23,18 @@
             [x-cloak] {display: none;}
         </style>
     </head>
-    <body class="@yield('body-class', 'font-sans antialiased')">
+    <body class="min-h-screen bg-white dark:bg-zinc-800">
+        <x-toast-container/>
         @guest
             @include('layouts.navigation-guest')
         @endguest
         @auth
             @include('layouts.navigation')
         @endauth
-        <x-toast-container/>
-        <div class="@yield('container-class', 'min-h-screen bg-gray-100')">
+        <flux:main>
             @yield('content')
-        </div>
+        </flux:main>
+
         @livewireScripts
         @fluxScripts
     </body>
