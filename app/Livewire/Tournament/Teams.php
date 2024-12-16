@@ -69,7 +69,7 @@ class Teams extends Component
 
         $this->createForm->reset('name', 'members');
         $this->toast(ToastType::SUCCESS, __('Team :name created !', ['name' => $team->name]));
-        $this->dispatch('team-created');
+        $this->modal('create-team')->close();
     }
 
     private function checkAuthorization(): void
