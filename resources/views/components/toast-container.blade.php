@@ -1,15 +1,10 @@
-<div id="toaster" class="relative z-[9999]">
-    @foreach(App\Enums\ToastType::cases() as $type)
-        @if(session($type->value))
-            <x-toast :type="$type" :message="session($type->value)"/>
-        @endif
-    @endforeach
-    <x-toast :type="'info'" :message="''"/>
+@persist('toast')
+    <flux:toast position="top right"/>
+@endpersist
+@if (null !== session('toast'))
     <script>
-        function triggerToast(type, message) {
-            window.dispatchEvent(new CustomEvent('toast-trigger', {
-                detail: { type, message }
-            }));
-        }
+        document.addEventListener('DOMContentLoaded', function() {
+            Flux.toast({text: '{{ session('toast')['text'] }}', variant: '{{ session('toast')['variant'] }}'});
+        });
     </script>
-</div>
+@endif

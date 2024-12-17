@@ -1,18 +1,8 @@
 <div x-data>
-    <x-primary-button dusk="new-tournament" type="button" x-on:click.prevent="$dispatch('open-modal', 'new-tournament')">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-             stroke="currentColor" class="mr-1 w-5 h-5">
-            <path stroke-linecap="round" stroke-linejoin="round"
-                  d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
-        </svg>
-        {{ __('New tournament') }}
-    </x-primary-button>
-
-    <x-modal name="new-tournament" focusable>
+    <flux:modal :dismissible="true" name="new-tournament" class="md:w-96 space-y-6">
         <div>
             <div class="flex items-center justify-between">
                 <h2 class="text-lg text-gray-900">{{ __('Join a tournament') }}</h2>
-                <x-close-modal-button/>
             </div>
             <p class="mt-1 text-sm text-gray-600">{{ __('Enter the tournament invitation code') }}</p>
             <div class="mt-6 flex justify-center items-center">
@@ -23,7 +13,7 @@
                                   name="invitation-code"
                                   @input.debounce="if ($event.target.value.length === 6) $wire.find()"
                     />
-                    <div wire:loading class="absolute size-8 right-1/3" >
+                    <div wire:loading class="absolute size-8 right-1/3">
                         <x-loader class="ml-2 size-8"/>
                     </div>
                 </div>
@@ -92,5 +82,5 @@
                 <x-input-error class="mt-1" :messages="__('You cannot create more tournaments')"/>
             @endcannot
         </div>
-    </x-modal>
+    </flux:modal>
 </div>

@@ -12,27 +12,30 @@
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet"/>
+        <link href="https://fonts.bunny.net/css?family=inter:400,500,600&display=swap" rel="stylesheet"/>
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         @livewireStyles
+        @fluxStyles
 
         <style>
             [x-cloak] {display: none;}
         </style>
     </head>
-    <body class="@yield('body-class', 'font-sans antialiased')">
+    <body class="min-h-screen bg-white dark:bg-zinc-800">
         @guest
             @include('layouts.navigation-guest')
         @endguest
         @auth
             @include('layouts.navigation')
         @endauth
-        <x-toast-container/>
-        <div class="@yield('container-class', 'min-h-screen bg-gray-100')">
+        <flux:main>
             @yield('content')
-        </div>
+        </flux:main>
+
         @livewireScripts
+        @fluxScripts
+        <x-toast-container/>
     </body>
 </html>

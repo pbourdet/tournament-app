@@ -63,7 +63,7 @@ class ShowTest extends TestCase
             ->test(Show::class, ['tournament' => $tournament])
             ->call('generate')
             ->assertSuccessful()
-            ->assertDispatched('toast-trigger');
+            ->assertDispatched('toast-show');
 
         Queue::assertPushed(GenerateTeams::class);
     }
@@ -79,7 +79,7 @@ class ShowTest extends TestCase
             ->test(Show::class, ['tournament' => $tournament])
             ->call('generate')
             ->assertForbidden()
-            ->assertNotDispatched('toast-trigger');
+            ->assertNotDispatched('toast-show');
 
         Queue::assertNotPushed(GenerateTeams::class);
     }
@@ -93,7 +93,7 @@ class ShowTest extends TestCase
             ->test(Show::class, ['tournament' => $tournament])
             ->call('generate')
             ->assertForbidden()
-            ->assertNotDispatched('toast-trigger');
+            ->assertNotDispatched('toast-show');
 
         Queue::assertNotPushed(GenerateTeams::class);
     }
@@ -107,7 +107,7 @@ class ShowTest extends TestCase
             ->test(Show::class, ['tournament' => $tournament])
             ->call('generate')
             ->assertForbidden()
-            ->assertNotDispatched('toast-trigger');
+            ->assertNotDispatched('toast-show');
 
         Queue::assertNotPushed(GenerateTeams::class);
     }
@@ -121,7 +121,7 @@ class ShowTest extends TestCase
             ->test(Show::class, ['tournament' => $tournament])
             ->call('generate')
             ->assertForbidden()
-            ->assertNotDispatched('toast-trigger');
+            ->assertNotDispatched('toast-show');
 
         Queue::assertNotPushed(GenerateTeams::class);
     }
@@ -137,7 +137,7 @@ class ShowTest extends TestCase
             ->test(Show::class, ['tournament' => $tournament])
             ->call('generate')
             ->assertConflict()
-            ->assertNotDispatched('toast-trigger');
+            ->assertNotDispatched('toast-show');
 
         Queue::assertNotPushed(GenerateTeams::class);
     }
@@ -153,7 +153,7 @@ class ShowTest extends TestCase
             ->test(Show::class, ['tournament' => $tournament])
             ->call('start')
             ->assertSuccessful()
-            ->assertDispatched('toast-trigger')
+            ->assertDispatched('toast-show')
             ->assertSet('generationInProgress', true);
 
         Queue::assertPushed(StartTournament::class);
@@ -171,7 +171,7 @@ class ShowTest extends TestCase
             ->test(Show::class, ['tournament' => $tournament])
             ->call('start')
             ->assertForbidden()
-            ->assertNotDispatched('toast-trigger');
+            ->assertNotDispatched('toast-show');
 
         Queue::assertNotPushed(StartTournament::class);
     }
@@ -185,7 +185,7 @@ class ShowTest extends TestCase
             ->test(Show::class, ['tournament' => $tournament])
             ->call('start')
             ->assertForbidden()
-            ->assertNotDispatched('toast-trigger');
+            ->assertNotDispatched('toast-show');
 
         Queue::assertNotPushed(StartTournament::class);
     }
@@ -203,7 +203,7 @@ class ShowTest extends TestCase
             ->test(Show::class, ['tournament' => $tournament])
             ->call('start')
             ->assertConflict()
-            ->assertNotDispatched('toast-trigger');
+            ->assertNotDispatched('toast-show');
 
         Queue::assertNotPushed(StartTournament::class);
     }

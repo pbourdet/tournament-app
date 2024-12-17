@@ -67,6 +67,7 @@ class TournamentTest extends DuskTestCase
                 ->waitForText(__('Finally, do you also want to participate in your tournament ?'))
                 ->press('#save-button')
                 ->waitForText(__('Tournament :name created !', ['name' => 'My tournament']))
+                ->waitForRoute('tournaments.show', ['tournament' => Tournament::first()])
             ;
 
             $browser->assertRouteIs('tournaments.show', ['tournament' => Tournament::first()]);
@@ -95,6 +96,7 @@ class TournamentTest extends DuskTestCase
                 ->click('#toggle_join_tournament')
                 ->press('#save-button')
                 ->waitForText(__('Tournament :name created !', ['name' => 'My team tournament']))
+                ->waitForRoute('tournaments.show', ['tournament' => Tournament::first()])
             ;
 
             $browser->assertRouteIs('tournaments.show', ['tournament' => Tournament::first()]);

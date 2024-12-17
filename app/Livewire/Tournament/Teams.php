@@ -46,7 +46,7 @@ class Teams extends Component
         $this->checkAuthorization();
 
         $team->delete();
-        $this->toast(ToastType::SUCCESS, __('Team :name deleted !', ['name' => $team->name]));
+        $this->toast(__('Team :name deleted !', ['name' => $team->name]), variant: ToastType::SUCCESS->value);
     }
 
     public function create(): void
@@ -68,8 +68,8 @@ class Teams extends Component
         $team->members()->attach($this->createForm->members);
 
         $this->createForm->reset('name', 'members');
-        $this->toast(ToastType::SUCCESS, __('Team :name created !', ['name' => $team->name]));
-        $this->dispatch('team-created');
+        $this->toast(__('Team created !'), variant: ToastType::SUCCESS->value);
+        $this->modal('create-team')->close();
     }
 
     private function checkAuthorization(): void

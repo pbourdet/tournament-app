@@ -21,6 +21,9 @@ jobs:
           php-version: 8.4
           tools: composer:v2
 
+      - name: Setup flux authentication
+        run: composer config http-basic.composer.fluxui.dev ${{ secrets.FLUX_EMAIL }} ${{ secrets.FLUX_KEY }}
+
       - name: Install Composer dependencies
         uses: ramsey/composer-install@v3
 

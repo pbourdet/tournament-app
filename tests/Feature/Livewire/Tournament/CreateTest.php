@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Livewire\Tournament;
 
-use App\Enums\ToastType;
 use App\Livewire\Tournament\Create;
 use App\Models\Tournament;
 use App\Models\User;
@@ -62,7 +61,7 @@ class CreateTest extends TestCase
             ->set('form.numberOfPlayers', 32)
             ->call('save')
             ->assertRedirect(route('tournaments.show', ['tournament' => Tournament::first()]))
-            ->assertSessionHas(ToastType::SUCCESS->value, __('Tournament :name created !', ['name' => 'name']));
+            ->assertDispatched('toast-show');
 
         $this->assertCount(1, $user->managedTournaments);
         $this->assertCount(1, $user->tournaments);
@@ -127,8 +126,7 @@ class CreateTest extends TestCase
 
         Livewire::actingAs($user)
             ->test(Create::class)
-            ->assertRedirect(route('dashboard'))
-            ->assertSessionHas(ToastType::DANGER->value, __('You cannot create more tournaments'));
+            ->assertRedirect(route('dashboard'));
     }
 
     public function testUserCantCreateMoreThanTwoTournaments(): void

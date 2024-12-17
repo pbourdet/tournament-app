@@ -1,19 +1,24 @@
 <div x-data="{generationStarted: false, generationInProgress: @js($generationInProgress)}">
     <div class="flex justify-between items-center">
-        <div class="flex">
+        <div class="flex flex-col sm:flex-row">
             @can('manage', $tournament)
                 <div class="mr-2">
-                    <x-secondary-button :disabled="$tournament->hasAllTeams() || $this->generationInProgress"
-                                        x-on:click.prevent="$dispatch('open-modal', 'create-team')">
-                        <span>{{ __('Create team') }}</span>
-                    </x-secondary-button>
+                    <flux:modal.trigger name="create-team">
+                        <flux:button :disabled="$tournament->hasAllTeams() || $this->generationInProgress">
+                            {{ __('Create team') }}
+                        </flux:button>
+                    </flux:modal.trigger>
                 </div>
                 @if($tournament->canGenerateTeams())
                     <div wire:replace class="flex items-center">
-                        <x-primary-button x-on:click="generationStarted = true" x-bind:disabled="generationStarted || generationInProgress"
-                                          type="button" wire:click="$parent.generate" id="button-generate-teams">
+                        <flux:button x-on:click="generationStarted = true" variant="primary"
+                                     x-bind:disabled="generationStarted || generationInProgress"
+                                     type="button" wire:click="$parent.generate" id="button-generate-teams">
                             <span>{{ __('Generate teams') }}</span>
-                        </x-primary-button>
+                        </flux:button>
+                        <flux:tooltip content="{{ __('This will generate the remaining teams randomly. Some other actions such as deleting teams will be prevented during this process') }}">
+                            <flux:icon.information-circle class="text-zinc-500"/>
+                        </flux:tooltip>
                         <x-loader x-show="generationStarted" class="size-5 ml-1"/>
                     </div>
                 @endif
@@ -34,41 +39,39 @@
         </div>
     @endif
 
-    <x-modal :overflowable="true" name="create-team" focusable>
-        <div x-data>
+    <flux:modal class="w-5/6 sm:w-2/3 md:w-1/2 lg:w-1/3" name="create-team">
+        <div>
             <div class="flex items-center justify-between mb-4">
                 <h2 class="text-lg text-gray-900">{{ __('Create new team') }}</h2>
-                <x-close-modal-button/>
             </div>
             <div>
                 <form x-data="{ members: [] }" wire:submit="create">
                     <div class="mb-4">
-                        <x-input-label for="team-name" value="{!! __('Team name') !!}"/>
-                        <x-text-input wire:model="createForm.name" id="team-name" label="{!! __('Team name') !!}"
-                                      placeholder="{{ __('Team name') }}..."/>
-                        <x-input-error :messages="$errors->get('createForm.name')" class="mt-1"/>
+                        <flux:input wire:model="createForm.name" label="{{ __('Team name') }}"/>
                     </div>
 
-                    <div @selection-added.window="members = [...members, $event.detail.id]"
-                         @selection-removed.window="members = members.filter(id => id !== $event.detail.id)"
-                         @team-created.window="members = []"
-                         x-effect="$wire.createForm.members = members">
-                        <x-input-label :mandatory="true" for="team-members" value="{!! __('Team members') !!}"/>
-                        <x-multi-select-dropdown :reset-event="'team-created'"
-                                                 :placeholder="__('Select :count players', ['count' => $tournament->team_size])"
-                                                 :options="$selectablePlayers"
-                                                 :selections-count="$tournament->team_size"/>
-                        <x-input-error :messages="$errors->get('createForm.members')" class="mt-1"/>
-                    </div>
-
+                    <flux:field>
+                        <flux:label>{{ __('Team members') }}</flux:label>
+                        <flux:select variant="listbox" searchable multiple selected-suffix="{{ __('users selected') }}"
+                                     :placeholder="__('Select :count players', ['count' => $tournament->team_size])"
+                                     clear="close"
+                                     @change="if ($wire.createForm.members.length === {{ $tournament->team_size }}) $dispatch('click')"
+                                     wire:model="createForm.members">
+                            @foreach($selectablePlayers as $id => $selectablePlayer)
+                                <flux:option x-bind:disabled="$wire.createForm.members.length >= {{ $tournament->team_size }}" :value="$id">{{ $selectablePlayer }}</flux:option>
+                            @endforeach
+                        </flux:select>
+                    </flux:field>
                     <div class="flex items-center mt-4">
-                        <x-primary-button wire:loading.attr="disabled" x-bind:disabled="members.length < {{ $tournament->team_size }}" type="submit">
-                            <span>{{ __('Create team') }}</span>
-                        </x-primary-button>
+                        <flux:button variant="primary" type="submit" :loading="false"
+                                     wire:loading.attr="disabled"
+                                     x-bind:disabled="$wire.createForm.members.length !== {{ $tournament->team_size }}">
+                            {{ __('Create team') }}
+                        </flux:button>
                         <x-loader wire:loading wire:target="create" class="size-5 ml-1"/>
                     </div>
                 </form>
             </div>
         </div>
-    </x-modal>
+    </flux:modal>
 </div>

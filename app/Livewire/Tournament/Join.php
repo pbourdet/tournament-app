@@ -6,13 +6,13 @@ namespace App\Livewire\Tournament;
 
 use App\Enums\ToastType;
 use App\Events\TournamentFull;
+use App\Livewire\Component;
 use App\Models\Tournament;
 use App\Models\TournamentInvitation;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Livewire\Attributes\Locked;
-use Livewire\Component;
 
 class Join extends Component
 {
@@ -39,8 +39,8 @@ class Join extends Component
             TournamentFull::dispatch($tournament);
         }
 
-        session()->flash(ToastType::SUCCESS->value, __('You joined tournament :name', ['name' => $tournament->name]));
-        $this->redirect(route('tournaments.show', ['tournament' => $tournament]), navigate: true);
+        $this->toast(__('You joined tournament :name', ['name' => $tournament->name]), variant: ToastType::SUCCESS->value);
+        $this->redirectRoute('tournaments.show', ['tournament' => $tournament], navigate: true);
     }
 
     public function find(): void

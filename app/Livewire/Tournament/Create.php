@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace App\Livewire\Tournament;
 
 use App\Enums\ToastType;
+use App\Livewire\Component;
 use App\Livewire\Forms\Tournament\CreateForm;
 use App\Models\Tournament;
 use App\Models\TournamentInvitation;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\View\View;
 use Livewire\Attributes\Locked;
-use Livewire\Component;
 
 class Create extends Component
 {
@@ -31,8 +31,8 @@ class Create extends Component
     public function mount(): void
     {
         if (!Gate::allows('create', Tournament::class)) {
-            session()->flash(ToastType::DANGER->value, __('You cannot create more tournaments'));
-            $this->redirectIntended(route('dashboard'));
+            session()->flash('toast', ['text' => __('You cannot create more tournaments'), 'variant' => ToastType::DANGER->value]);
+            $this->redirectRoute('dashboard', navigate: true);
         }
     }
 
@@ -89,7 +89,7 @@ class Create extends Component
             $tournament->players()->attach(auth()->user());
         }
 
-        session()->flash(ToastType::SUCCESS->value, __('Tournament :name created !', ['name' => $tournament->name]));
-        $this->redirect(route('tournaments.show', ['tournament' => $tournament]), navigate: true);
+        $this->toast(__('Tournament :name created !', ['name' => $tournament->name]), variant: ToastType::SUCCESS->value);
+        $this->redirectRoute('tournaments.show', ['tournament' => $tournament], navigate: true);
     }
 }
