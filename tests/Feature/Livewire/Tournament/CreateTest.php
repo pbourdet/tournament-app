@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Livewire\Tournament;
 
-use App\Enums\ToastType;
 use App\Livewire\Tournament\Create;
 use App\Models\Tournament;
 use App\Models\User;
