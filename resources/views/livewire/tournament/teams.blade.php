@@ -13,7 +13,7 @@
                     <div wire:replace class="flex items-center">
                         <flux:button x-on:click="generationStarted = true" variant="primary"
                                      x-bind:disabled="generationStarted || locked"
-                                     type="button" wire:click="generate" id="button-generate-teams">
+                                     type="button" wire:click="generate" dusk="generate-teams">
                             <span>{{ __('Generate teams') }}</span>
                         </flux:button>
                         <flux:tooltip content="{{ __('This will generate the remaining teams randomly. Some other actions such as deleting teams will be prevented during this process') }}">

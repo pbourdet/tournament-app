@@ -1,11 +1,12 @@
 <div>
     <flux:header class="bg-zinc-50">
         <flux:navbar scrollable>
-            <flux:navbar.item wire:navigate href="{{ route('tournaments.show', ['tournament' => $tournament, 'page' => 'overview']) }}">
-                Overview
+            <flux:navbar.item wire:navigate
+                              href="{{ route('tournaments.show', ['tournament' => $tournament, 'page' => 'overview']) }}">
+                {{ __('Overview') }}
             </flux:navbar.item>
             @if($tournament->team_based)
-                <flux:navbar.item wire:navigate
+                <flux:navbar.item wire:navigate dusk="link-teams"
                                   href="{{ route('tournaments.show', ['tournament' => $tournament, 'page' => 'teams']) }}">
                     {{ __('Teams') }}
                 </flux:navbar.item>
