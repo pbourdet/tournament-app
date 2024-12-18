@@ -26,7 +26,7 @@ class User extends Authenticatable implements MustVerifyEmail
     /** @use WithMatches<$this> */
     use WithMatches;
 
-    /** @var array<int, string> */
+    /** @var list<string> */
     protected $fillable = [
         'username',
         'email',
@@ -34,7 +34,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'profile_picture',
     ];
 
-    /** @var array<int, string> */
+    /** @var list<string> */
     protected $hidden = [
         'password',
         'remember_token',

@@ -32,7 +32,6 @@ class Matchup extends Model
     /** @phpstan-return MorphToMany<User|Team, $this> */
     public function contestants(): MorphToMany
     {
-        /* @phpstan-ignore-next-line */
         return $this->morphedByMany($this->getContestantType(), 'contestant', 'match_contestant', 'match_id');
     }
 
