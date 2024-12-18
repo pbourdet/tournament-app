@@ -5,32 +5,28 @@ declare(strict_types=1);
 namespace App\Livewire\Tournament;
 
 use App\Enums\ToastType;
+use App\Jobs\GenerateTeams;
 use App\Livewire\Component;
 use App\Livewire\Forms\CreateTeamForm;
 use App\Models\Team;
 use App\Models\Tournament;
 use App\Models\User;
 use Illuminate\View\View;
-use Livewire\Attributes\Locked;
 use Livewire\Attributes\Modelable;
-use Livewire\Attributes\Reactive;
 
 class Teams extends Component
 {
+    use WithTournamentLock;
+
     #[Modelable]
     public Tournament $tournament;
 
     public CreateTeamForm $createForm;
 
-    #[Locked]
-    #[Reactive]
-    public bool $generationInProgress = false;
-
-    public function mount(Tournament $tournament, bool $generationInProgress): void
+    public function mount(Tournament $tournament): void
     {
         $this->createForm->tournament = $tournament;
         $this->tournament = $tournament;
-        $this->generationInProgress = $generationInProgress;
     }
 
     public function render(): View
@@ -41,9 +37,22 @@ class Teams extends Component
         ]);
     }
 
+    public function generate(): void
+    {
+        $this->checkLock();
+
+        if (!$this->tournament->canGenerateTeams()) {
+            abort(403);
+        }
+
+        GenerateTeams::dispatch($this->tournament);
+        $this->locked = true;
+        $this->toast(__('Teams generation in progress...'));
+    }
+
     public function delete(Team $team): void
     {
-        $this->checkAuthorization();
+        $this->checkLock();
 
         $team->delete();
         $this->toast(__('Team :name deleted !', ['name' => $team->name]), variant: ToastType::SUCCESS->value);
@@ -51,7 +60,7 @@ class Teams extends Component
 
     public function create(): void
     {
-        $this->checkAuthorization();
+        $this->checkLock();
 
         if (!$this->tournament->team_based || $this->tournament->hasAllTeams()) {
             abort(403);
@@ -70,14 +79,5 @@ class Teams extends Component
         $this->createForm->reset('name', 'members');
         $this->toast(__('Team created !'), variant: ToastType::SUCCESS->value);
         $this->modal('create-team')->close();
-    }
-
-    private function checkAuthorization(): void
-    {
-        $this->authorize('manage', $this->tournament);
-
-        if ($this->generationInProgress) {
-            abort(409);
-        }
     }
 }

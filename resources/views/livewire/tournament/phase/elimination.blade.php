@@ -18,6 +18,7 @@
             </form>
         @endcan
     @else
+        Elimination Phase
         <div class="flex flex-col items-center">
             <div class="flex space-x-8 overflow-x-auto">
                 @foreach ($eliminationPhase->rounds as $roundIndex => $round)

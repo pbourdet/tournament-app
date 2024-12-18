@@ -1,10 +1,10 @@
-<div x-data="{generationStarted: false, generationInProgress: @js($generationInProgress)}">
+<div x-data="{generationStarted: false, locked: @js($locked)}">
     <div class="flex justify-between items-center">
         <div class="flex flex-col sm:flex-row">
             @can('manage', $tournament)
                 <div class="mr-2">
                     <flux:modal.trigger name="create-team">
-                        <flux:button :disabled="$tournament->hasAllTeams() || $this->generationInProgress">
+                        <flux:button :disabled="$tournament->hasAllTeams() || $this->locked">
                             {{ __('Create team') }}
                         </flux:button>
                     </flux:modal.trigger>
@@ -12,14 +12,13 @@
                 @if($tournament->canGenerateTeams())
                     <div wire:replace class="flex items-center">
                         <flux:button x-on:click="generationStarted = true" variant="primary"
-                                     x-bind:disabled="generationStarted || generationInProgress"
-                                     type="button" wire:click="$parent.generate" id="button-generate-teams">
+                                     x-bind:disabled="generationStarted || locked"
+                                     type="button" wire:click="generate" id="button-generate-teams">
                             <span>{{ __('Generate teams') }}</span>
                         </flux:button>
                         <flux:tooltip content="{{ __('This will generate the remaining teams randomly. Some other actions such as deleting teams will be prevented during this process') }}">
                             <flux:icon.information-circle class="text-zinc-500"/>
                         </flux:tooltip>
-                        <x-loader x-show="generationStarted" class="size-5 ml-1"/>
                     </div>
                 @endif
             @endcan
@@ -34,7 +33,7 @@
     @else
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-1 mt-3">
             @foreach($tournament->teams as $team)
-                <livewire:tournament.team-card :$generationInProgress :$team :$tournament :key="$team->id . '-' . $generationInProgress"/>
+                <livewire:tournament.team-card :$locked :$team :$tournament :key="$team->id . '-' . $locked"/>
             @endforeach
         </div>
     @endif
@@ -57,6 +56,9 @@
                                      clear="close"
                                      @change="if ($wire.createForm.members.length === {{ $tournament->team_size }}) $dispatch('click')"
                                      wire:model="createForm.members">
+                            <x-slot name="search">
+                                <flux:select.search name="players-search"/>
+                            </x-slot>
                             @foreach($selectablePlayers as $id => $selectablePlayer)
                                 <flux:option x-bind:disabled="$wire.createForm.members.length >= {{ $tournament->team_size }}" :value="$id">{{ $selectablePlayer }}</flux:option>
                             @endforeach
