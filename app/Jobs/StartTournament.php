@@ -35,7 +35,7 @@ class StartTournament implements ShouldQueue
     public function middleware(): array
     {
         return [
-            (new WithoutOverlapping($this->tournament->getLockKey()))->withPrefix('')->shared()->dontRelease(),
+            new WithoutOverlapping($this->tournament->getLockKey())->withPrefix('')->shared()->dontRelease(),
         ];
     }
 

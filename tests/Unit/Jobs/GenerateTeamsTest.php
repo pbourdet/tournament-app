@@ -30,7 +30,7 @@ class GenerateTeamsTest extends TestCase
         $lock = Cache::lock($tournament->getLockKey(), 20);
         $lock->get();
 
-        (new GenerateTeams($tournament))->handle();
+        new GenerateTeams($tournament)->handle();
 
         $this->assertDatabaseCount('teams', 3);
 
@@ -49,7 +49,7 @@ class GenerateTeamsTest extends TestCase
         $lock = Cache::lock($tournament->getLockKey(), 20);
         $lock->get();
 
-        (new GenerateTeams($tournament))->handle();
+        new GenerateTeams($tournament)->handle();
 
         $this->assertDatabaseCount('teams', 0);
         $this->assertTrue($lock->get());
@@ -61,7 +61,7 @@ class GenerateTeamsTest extends TestCase
         $lock = Cache::lock($tournament->getLockKey(), 20);
         $lock->get();
 
-        (new GenerateTeams($tournament))->handle();
+        new GenerateTeams($tournament)->handle();
 
         $this->assertDatabaseCount('teams', 0);
         $this->assertTrue($lock->get());
