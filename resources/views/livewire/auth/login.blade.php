@@ -1,4 +1,4 @@
-<flux:card class="w-5/6 sm:max-w-96 space-y-6 shadow-md">
+<flux:card class="w-full sm:max-w-md space-y-6 shadow-md">
     <div>
         <flux:heading size="lg">{{ __('Log in to your account') }}</flux:heading>
         <flux:subheading>{{ __('Welcome back !') }}</flux:subheading>
@@ -6,7 +6,7 @@
 
     <form class="space-y-6" wire:submit="login">
         <div class="space-y-4">
-            <flux:input label="Email" name="email" type="email" autofocus placeholder="{{ __('Your email address') }}"
+            <flux:input label="{{ __('Email') }}" name="email" type="email" autofocus placeholder="{{ __('Your email address') }}"
                         wire:model="form.email" required/>
 
             <flux:field>
@@ -30,7 +30,7 @@
         <div class="space-y-4">
             <flux:button type="submit" variant="primary" class="w-full">{{ __('Log in') }}</flux:button>
             <flux:separator text="{{ __('or') }}"/>
-            <flux:button href="{{ route('register') }}" class="w-full">{{ __('Create a new account') }}</flux:button>
+            <flux:button wire:navigate href="{{ route('register') }}" class="w-full">{{ __('Create a new account') }}</flux:button>
         </div>
     </form>
 </flux:card>

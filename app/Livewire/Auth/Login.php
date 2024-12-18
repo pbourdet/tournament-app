@@ -25,6 +25,7 @@ class Login extends Component
     {
         $this->request = $request;
 
+        $this->form->validate();
         $this->authenticate();
         session()->regenerate();
         $this->redirectIntended(route('dashboard'), navigate: true);
