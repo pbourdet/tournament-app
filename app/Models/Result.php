@@ -25,7 +25,6 @@ class Result extends Model
     /** @return MorphOne<Team|User, $this> */
     public function winner(): MorphOne
     {
-        /* @phpstan-ignore-next-line */
         return $this->morphOne($this->match->getContestantType(), 'winner');
     }
 }

@@ -14,7 +14,10 @@ readonly class ValidTeamSize implements ValidationRule
     ) {
     }
 
-    /** @param  \Closure(string, string): PotentiallyTranslatedString  $fail */
+    /**
+     * @param \Closure(string, string): PotentiallyTranslatedString $fail
+     * @param int $value
+     */
     public function validate(string $attribute, mixed $value, \Closure $fail): void
     {
         if ($value >= 2

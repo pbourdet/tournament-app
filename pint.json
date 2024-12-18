@@ -6,6 +6,7 @@
             "property": "single",
             "const": "single",
             "method": "single"
-        }
+        },
+        "phpdoc_align": {"align": "left"}
     }
 }

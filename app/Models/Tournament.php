@@ -24,7 +24,7 @@ class Tournament extends Model
     use HasFactory;
     use HasUuids;
 
-    /** @var array<int, string> */
+    /** @var list<string> */
     protected $fillable = [
         'name',
         'description',

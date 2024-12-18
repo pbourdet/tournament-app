@@ -18,7 +18,7 @@ class TournamentInvitation extends Model
     /** @use HasFactory<TournamentInvitationFactory> */
     use HasFactory;
 
-    /** @var array<int, string> */
+    /** @var list<string> */
     protected $fillable = [
         'tournament_id',
         'code',

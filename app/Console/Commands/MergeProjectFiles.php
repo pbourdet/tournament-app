@@ -38,6 +38,7 @@ class MergeProjectFiles extends Command
     private function getConfigFiles(): array
     {
         $files = $this->getFilesFromDirectories(['config', 'routes']);
+        /** @var list<string> $jsConfigFiles */
         $jsConfigFiles = File::glob(base_path('*.config.js'));
 
         foreach ($jsConfigFiles as $jsConfigFile) {

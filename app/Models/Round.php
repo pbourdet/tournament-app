@@ -22,7 +22,7 @@ class Round extends Model
         'stage',
     ];
 
-    /** @return MorphTo<EliminationPhase, $this> */
+    /** @return MorphTo<Model, $this> */
     public function phase(): MorphTo
     {
         return $this->morphTo(EliminationPhase::class);
