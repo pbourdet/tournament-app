@@ -18,7 +18,7 @@ class TeamCardTest extends TestCase
     {
         $tournament = Tournament::factory()->withAllTeams()->create();
 
-        Livewire::test(TeamCard::class, ['team' => $tournament->teams->first(), 'tournament' => $tournament, 'generationInProgress' => false])
+        Livewire::test(TeamCard::class, ['team' => $tournament->teams->first(), 'tournament' => $tournament, 'locked' => false])
             ->assertStatus(200);
     }
 
@@ -28,7 +28,7 @@ class TeamCardTest extends TestCase
         $team = $tournament->teams->first();
 
         Livewire::actingAs($tournament->organizer)
-            ->test(TeamCard::class, ['team' => $team, 'tournament' => $tournament, 'generationInProgress' => false])
+            ->test(TeamCard::class, ['team' => $team, 'tournament' => $tournament, 'locked' => false])
             ->set('newName', 'New Team Name')
             ->call('update')
             ->assertDispatched('toast-show');
@@ -42,7 +42,7 @@ class TeamCardTest extends TestCase
         $team = $tournament->teams->first();
 
         Livewire::actingAs($tournament->players->first())
-            ->test(TeamCard::class, ['team' => $team, 'tournament' => $tournament, 'generationInProgress' => false])
+            ->test(TeamCard::class, ['team' => $team, 'tournament' => $tournament, 'locked' => false])
             ->set('newName', 'New Team Name')
             ->call('update')
             ->assertForbidden();

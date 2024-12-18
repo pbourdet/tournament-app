@@ -14,7 +14,6 @@
         "livewire/livewire": "^3.5"
     },
     "require-dev": {
-        "barryvdh/laravel-debugbar": "^3.13",
         "barryvdh/laravel-ide-helper": "^3.0",
         "brianium/paratest": "^7.4",
         "driftingly/rector-laravel": "^2.0",

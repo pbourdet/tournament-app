@@ -7,7 +7,6 @@ namespace Tests\Browser;
 use App\Models\Tournament;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTruncation;
-use Illuminate\Support\Str;
 use Laravel\Dusk\Browser;
 use Tests\DuskTestCase;
 
@@ -114,8 +113,9 @@ class TournamentTest extends DuskTestCase
             $browser
                 ->loginAs($tournament->organizer)
                 ->visit(route('tournaments.show', ['tournament' => $tournament]))
-                ->click('#tab-teams')
-                ->press('#button-generate-teams')
+                ->click('@link-teams')
+                ->waitForRoute('tournaments.show', ['tournament' => $tournament, 'page' => 'teams'])
+                ->press('@generate-teams')
                 ->waitForText(__('Teams generation in progress'))
             ;
         });
@@ -131,7 +131,7 @@ class TournamentTest extends DuskTestCase
             $browser
                 ->loginAs($tournament->organizer)
                 ->visit(route('tournaments.show', ['tournament' => $tournament]))
-                ->waitForText(Str::headline($tournament->name));
+                ->waitForText($tournament->name);
         });
     }
 }

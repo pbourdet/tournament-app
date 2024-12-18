@@ -3,8 +3,9 @@
 @section('body-class', 'font-sans antialiased')
 @section('container-class', 'min-h-screen bg-gray-100')
 @section('content')
-
-    {{ $slot }}
+    <div>
+        {{ $slot }}
+    </div>
 
     @auth
         <script>

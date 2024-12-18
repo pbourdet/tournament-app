@@ -16,18 +16,18 @@ class TeamCard extends Component
     public string $newName = '';
 
     #[Locked]
-    public bool $generationInProgress = false;
+    public bool $locked = false;
 
     public Team $team;
 
     public Tournament $tournament;
 
-    public function mount(Team $team, Tournament $tournament, bool $generationInProgress): void
+    public function mount(Team $team, Tournament $tournament, bool $locked): void
     {
         $this->team = $team;
         $this->tournament = $tournament;
         $this->newName = $team->name;
-        $this->generationInProgress = $generationInProgress;
+        $this->$locked = $locked;
     }
 
     public function update(): void

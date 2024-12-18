@@ -1,9 +1,9 @@
 <flux:sidebar sticky stashable class="bg-zinc-50 dark:bg-zinc-900 border-r border-zinc-200 dark:border-zinc-700">
     <flux:sidebar.toggle class="lg:hidden" icon="x-mark"/>
 
-    <flux:brand href="#" logo="{{ Vite::asset('resources/images/app-logo.png')  }}" name="MyTournaments"
+    <flux:brand href="{{ route('dashboard') }}" logo="{{ Vite::asset('resources/images/app-logo.png')  }}" name="MyTournaments"
                 class="px-2 dark:hidden"/>
-    <flux:brand href="#" logo="{{ Vite::asset('resources/images/app-logo.png')  }}" name="MyTournaments"
+    <flux:brand href="route('dashboard')" logo="{{ Vite::asset('resources/images/app-logo.png')  }}" name="MyTournaments"
                 class="px-2 hidden dark:flex"/>
 
     <flux:modal.trigger name="new-tournament">

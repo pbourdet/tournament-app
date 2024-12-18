@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Livewire\Tournament;
 
+use App\Jobs\GenerateTeams;
 use App\Livewire\Tournament\Teams;
 use App\Models\Team;
 use App\Models\Tournament;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Queue;
 use Livewire\Livewire;
 use Ramsey\Uuid\Uuid;
 use Tests\TestCase;
@@ -28,7 +31,7 @@ class TeamsTest extends TestCase
     {
         $tournament = Tournament::factory()->withAllTeams()->create();
 
-        Livewire::test(Teams::class, ['tournament' => $tournament, 'generationInProgress' => false])
+        Livewire::test(Teams::class, ['tournament' => $tournament])
             ->assertStatus(200);
     }
 
@@ -38,7 +41,7 @@ class TeamsTest extends TestCase
         $team = $tournament->teams->firstOrFail();
 
         Livewire::actingAs($tournament->organizer)
-            ->test(Teams::class, ['tournament' => $tournament, 'generationInProgress' => false])
+            ->test(Teams::class, ['tournament' => $tournament])
             ->call('delete', $team)
             ->assertSuccessful()
             ->assertDispatched('toast-show');
@@ -53,7 +56,7 @@ class TeamsTest extends TestCase
         $team = $tournament->teams->firstOrFail();
 
         Livewire::actingAs($user)
-            ->test(Teams::class, ['tournament' => $tournament, 'generationInProgress' => false])
+            ->test(Teams::class, ['tournament' => $tournament])
             ->call('delete', $team)
             ->assertForbidden()
             ->assertNotDispatched('toast-show');
@@ -66,8 +69,10 @@ class TeamsTest extends TestCase
         $tournament = Tournament::factory()->withAllTeams()->create();
         $team = $tournament->teams->firstOrFail();
 
+        Cache::lock($tournament->getLockKey(), 20)->get();
+
         Livewire::actingAs($tournament->organizer)
-            ->test(Teams::class, ['tournament' => $tournament, 'generationInProgress' => true])
+            ->test(Teams::class, ['tournament' => $tournament])
             ->call('delete', $team)
             ->assertConflict()
             ->assertNotDispatched('toast-show');
@@ -85,7 +90,7 @@ class TeamsTest extends TestCase
         ]);
 
         Livewire::actingAs($organizer)
-            ->test(Teams::class, ['tournament' => $tournament, 'generationInProgress' => false])
+            ->test(Teams::class, ['tournament' => $tournament])
             ->set('createForm.name', 'team name')
             ->set('createForm.members', [$users[0]->id, $users[1]->id])
             ->call('create')
@@ -106,7 +111,7 @@ class TeamsTest extends TestCase
         ]);
 
         Livewire::actingAs($organizer)
-            ->test(Teams::class, ['tournament' => $tournament, 'generationInProgress' => false])
+            ->test(Teams::class, ['tournament' => $tournament])
             ->set('createForm.name', 'team name')
             ->set('createForm.members', $users->pluck('id')->toArray())
             ->call('create')
@@ -123,7 +128,7 @@ class TeamsTest extends TestCase
         ]);
 
         Livewire::actingAs($organizer)
-            ->test(Teams::class, ['tournament' => $tournament, 'generationInProgress' => false])
+            ->test(Teams::class, ['tournament' => $tournament])
             ->set('createForm.name', 'team name')
             ->set('createForm.members', [Uuid::uuid4()->toString(), Uuid::uuid4()->toString()])
             ->call('create')
@@ -141,7 +146,7 @@ class TeamsTest extends TestCase
         ]);
 
         Livewire::actingAs($organizer)
-            ->test(Teams::class, ['tournament' => $tournament, 'generationInProgress' => false])
+            ->test(Teams::class, ['tournament' => $tournament])
             ->set('createForm.name', 'team name')
             ->set('createForm.members', [$user->id])
             ->call('create')
@@ -160,7 +165,7 @@ class TeamsTest extends TestCase
         Team::factory()->withMembers($users)->create(['tournament_id' => $tournament->id]);
 
         Livewire::actingAs($organizer)
-            ->test(Teams::class, ['tournament' => $tournament, 'generationInProgress' => false])
+            ->test(Teams::class, ['tournament' => $tournament])
             ->set('createForm.name', 'team name')
             ->set('createForm.members', $users->pluck('id')->toArray())
             ->call('create')
@@ -178,7 +183,7 @@ class TeamsTest extends TestCase
         ]);
 
         Livewire::actingAs($organizer)
-            ->test(Teams::class, ['tournament' => $tournament, 'generationInProgress' => false])
+            ->test(Teams::class, ['tournament' => $tournament])
             ->set('createForm.name', 'team name')
             ->set('createForm.members', $users->pluck('id')->toArray())
             ->call('create')
@@ -194,6 +199,8 @@ class TeamsTest extends TestCase
         $tournament = Tournament::factory()->teamBased()->withPlayers($users)->create([
             'organizer_id' => $organizer->id,
         ]);
+
+        Cache::lock($tournament->getLockKey(), 20)->get();
 
         Livewire::actingAs($organizer)
             ->test(Teams::class, ['tournament' => $tournament, 'generationInProgress' => true])
@@ -215,7 +222,7 @@ class TeamsTest extends TestCase
         ]);
 
         Livewire::actingAs($user)
-            ->test(Teams::class, ['tournament' => $tournament, 'generationInProgress' => false])
+            ->test(Teams::class, ['tournament' => $tournament])
             ->set('createForm.name', 'team name')
             ->set('createForm.members', $users->pluck('id')->toArray())
             ->call('create')
@@ -237,11 +244,100 @@ class TeamsTest extends TestCase
         Team::factory()->withMembers($users->slice(2, 2))->create(['tournament_id' => $tournament->id]);
 
         Livewire::actingAs($organizer)
-            ->test(Teams::class, ['tournament' => $tournament, 'generationInProgress' => false])
+            ->test(Teams::class, ['tournament' => $tournament])
             ->set('createForm.name', 'team name')
             ->set('createForm.members', $users->pluck('id')->toArray())
             ->call('create')
             ->assertForbidden()
             ->assertNotDispatched('toast-show');
+    }
+
+    public function testOrganizerCanGenerateTeams(): void
+    {
+        Queue::fake();
+
+        $tournament = Tournament::factory()->full()->teamBased()->create();
+
+        Livewire::actingAs($tournament->organizer)
+            ->test(Teams::class, ['tournament' => $tournament])
+            ->call('generate')
+            ->assertSuccessful()
+            ->assertDispatched('toast-show');
+
+        Queue::assertPushed(GenerateTeams::class);
+    }
+
+    public function testNonOrganizerCantGenerateTeams(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $tournament = Tournament::factory()->teamBased()->withPlayers([$user])->full()->create();
+
+        Livewire::actingAs($user)
+            ->test(Teams::class, ['tournament' => $tournament])
+            ->call('generate')
+            ->assertForbidden()
+            ->assertNotDispatched('toast-show');
+
+        Queue::assertNotPushed(GenerateTeams::class);
+    }
+
+    public function testOrganizerCantGenerateTeamsOnNonFullTournament(): void
+    {
+        Queue::fake();
+        $tournament = Tournament::factory()->teamBased()->create();
+
+        Livewire::actingAs($tournament->organizer)
+            ->test(Teams::class, ['tournament' => $tournament])
+            ->call('generate')
+            ->assertForbidden()
+            ->assertNotDispatched('toast-show');
+
+        Queue::assertNotPushed(GenerateTeams::class);
+    }
+
+    public function testOrganizerCantGenerateTeamsOnNonTeamBasedTournament(): void
+    {
+        Queue::fake();
+        $tournament = Tournament::factory()->full()->create();
+
+        Livewire::actingAs($tournament->organizer)
+            ->test(Teams::class, ['tournament' => $tournament])
+            ->call('generate')
+            ->assertForbidden()
+            ->assertNotDispatched('toast-show');
+
+        Queue::assertNotPushed(GenerateTeams::class);
+    }
+
+    public function testOrganizerCantGenerateTeamsOnTournamentWithAllTeams(): void
+    {
+        Queue::fake();
+        $tournament = Tournament::factory()->withAllTeams()->create();
+
+        Livewire::actingAs($tournament->organizer)
+            ->test(Teams::class, ['tournament' => $tournament])
+            ->call('generate')
+            ->assertForbidden()
+            ->assertNotDispatched('toast-show');
+
+        Queue::assertNotPushed(GenerateTeams::class);
+    }
+
+    public function testOrganizerCantGenerateTeamsOnTournamentIfGenerationAlreadyOngoing(): void
+    {
+        Queue::fake();
+        $tournament = Tournament::factory()->full()->teamBased()->create();
+
+        Cache::lock($tournament->getLockKey(), 20)->get();
+
+        Livewire::actingAs($tournament->organizer)
+            ->test(Teams::class, ['tournament' => $tournament])
+            ->call('generate')
+            ->assertConflict()
+            ->assertNotDispatched('toast-show');
+
+        Queue::assertNotPushed(GenerateTeams::class);
     }
 }
