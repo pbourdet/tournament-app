@@ -1,50 +1,35 @@
-<x-section>
-    <x-tab-container :default-tab="'general'">
-        <x-slot:tabs>
-            <x-tab :tab-name="'general'"/>
+<div>
+    <flux:header class="bg-zinc-50">
+        <flux:navbar scrollable>
+            <flux:navbar.item wire:navigate href="{{ route('tournaments.show', ['tournament' => $tournament, 'page' => 'overview']) }}">
+                Overview
+            </flux:navbar.item>
             @if($tournament->team_based)
-                <x-tab :tab-name="'teams'"/>
+                <flux:navbar.item wire:navigate
+                                  href="{{ route('tournaments.show', ['tournament' => $tournament, 'page' => 'teams']) }}">
+                    {{ __('Teams') }}
+                </flux:navbar.item>
             @endif
-            <x-tab :tab-name="'elimination'"/>
-        </x-slot:tabs>
-        <x-slot:tabContents>
-            <x-tab-content :tab-name="'general'">
-                <div class="text-4xl capitalize">
-                    {{ $tournament->name }}
-                </div>
-                <div>
-                    {{ $tournament->players->count() }} / {{ $tournament->number_of_players }}
-                </div>
-                <div>
-                    {{ __($tournament->status->value) }}
-                </div>
+            <flux:navbar.item wire:navigate
+                              href="{{ route('tournaments.show', ['tournament' => $tournament, 'page' => 'phase-elimination']) }}">
+                {{ __('Elimination') }}
+            </flux:navbar.item>
+        </flux:navbar>
+    </flux:header>
 
-                @if($tournament->isNotStarted())
-                    <div>
-                        <x-primary-button type="button" :disabled="!$tournament->isReadyToStart() || $generationInProgress"
-                                          wire:click="start" wire:loading.attr="disabled" wire:target="start">
-                            {{ __('Start tournament') }}
-                        </x-primary-button>
-                    </div>
-                @endif
+    <flux:main>
+        <livewire:is :component="$page" :$tournament/>
+    </flux:main>
 
-            </x-tab-content>
-            @if($tournament->team_based)
-                <x-tab-content :tab-name="'teams'">
-                    <livewire:tournament.teams wire:model="tournament" :$tournament :$generationInProgress/>
-                </x-tab-content>
-            @endif
-
-            <x-tab-content :tab-name="'elimination'">
-                <livewire:tournament.phase.elimination wire:model="tournament" :$tournament/>
-            </x-tab-content>
-        </x-slot:tabContents>
-    </x-tab-container>
     @script
     <script>
         window.Echo.private('App.Models.Tournament.{{ $tournament->id }}')
-            .listen('TournamentUpdated', () => $wire.$refresh())
+            .listen('TournamentUpdated', function() {
+                let parentComponent = Livewire.getByName('tournament.show')[0];
+                let childComponent = Livewire.getByName(parentComponent.page)[0];
+                childComponent.$refresh();
+            });
         ;
     </script>
     @endscript
-</x-section>
+</div>

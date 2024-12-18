@@ -18,7 +18,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/tournaments/{tournament}/invitations/store', [TournamentInvitationController::class, 'store'])->name('tournament-invitations.store');
 
     Route::get('/tournaments/create', Livewire\Tournament\Create::class)->name('tournaments.create');
-    Route::get('/tournaments/{tournament}', Livewire\Tournament\Show::class)->name('tournaments.show');
+    Route::get('/tournaments/{tournament}/{page?}', Livewire\Tournament\Show::class)->name('tournaments.show');
 });
 
 Route::middleware('auth')->group(function () {
