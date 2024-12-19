@@ -25,11 +25,14 @@ class Register extends Component
     {
         $this->form->validate();
 
+        /** @var string $disk */
+        $disk = config('filesystems.default');
+
         $user = User::create([
             'username' => $this->form->username,
             'email' => $this->form->email,
             'password' => Hash::make($this->form->password),
-            'profile_picture' => $this->form->profilePicture?->store('profile_pictures', 's3'),
+            'profile_picture' => $this->form->profilePicture?->store('profile_pictures', $disk),
         ]);
 
         event(new Registered($user));

@@ -53,7 +53,7 @@ class RegisterTest extends TestCase
 
         $this->assertAuthenticated();
         $this->assertDatabaseCount('users', 1);
-        Storage::disk('s3')->assertExists(auth()->user()->profile_picture);
+        Storage::disk(config('filesystems.default'))->assertExists(auth()->user()->profile_picture);
     }
 
     public function testUserCannotRegisterWithUsedEmailOrUsername(): void

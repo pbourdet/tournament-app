@@ -65,7 +65,7 @@ return [
     */
 
     'temporary_file_upload' => [
-        'disk' => 'local',        // Example: 'local', 's3'              | Default: 'default'
+        'disk' => env('TEMP_FILESYSTEM_DISK', config('filesystems.default')),        // Example: 'local', 's3'              | Default: 'default'
         'rules' => null,       // Example: ['file', 'mimes:png,jpg']  | Default: ['required', 'file', 'max:12288'] (12MB)
         'directory' => null,   // Example: 'tmp'                      | Default: 'livewire-tmp'
         'middleware' => 'throttle:10,1',  // Example: 'throttle:5,1'             | Default: 'throttle:60,1'
