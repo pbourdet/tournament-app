@@ -3,7 +3,7 @@
 
     <flux:brand href="{{ route('dashboard') }}" logo="{{ Vite::asset('resources/images/app-logo.png')  }}" name="MyTournaments"
                 class="px-2 dark:hidden"/>
-    <flux:brand href="route('dashboard')" logo="{{ Vite::asset('resources/images/app-logo.png')  }}" name="MyTournaments"
+    <flux:brand href="{{ route('dashboard') }}" logo="{{ Vite::asset('resources/images/app-logo.png')  }}" name="MyTournaments"
                 class="px-2 hidden dark:flex"/>
 
     <flux:modal.trigger name="new-tournament">

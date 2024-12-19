@@ -25,7 +25,7 @@ class EliminationPhaseFactory extends Factory
     public function withRounds(): static
     {
         return $this->afterCreating(function (EliminationPhase $phase): void {
-            (new EliminationRoundsGenerator())->generate($phase);
+            new EliminationRoundsGenerator()->generate($phase);
         });
     }
 

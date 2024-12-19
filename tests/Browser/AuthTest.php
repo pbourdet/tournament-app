@@ -19,17 +19,33 @@ class AuthTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($user) {
             $browser
-                ->visit('/login')
+                ->visit(route('login'))
                 ->type('email', $user->email)
                 ->type('password', 'wrong password')
                 ->press('button[type="submit"]')
-                ->assertSee(__('auth.failed'))
+                ->waitForText(__('auth.failed'))
             ;
 
             $browser
                 ->type('password', 'password')
                 ->press('button[type="submit"]')
-                ->assertPathIs('/dashboard')
+                ->waitForRoute('dashboard')
+                ->assertAuthenticated()
+            ;
+        });
+    }
+
+    public function testRegister(): void
+    {
+        $this->browse(function (Browser $browser) {
+            $browser
+                ->visit(route('register'))
+                ->type('#username', 'JohnDoe')
+                ->type('#email', 'test@tournament.test')
+                ->type('#password', 'password')
+                ->type('#passwordConfirmation', 'password')
+                ->press('@register-button')
+                ->waitForRoute('verification.notice', seconds: 10)
                 ->assertAuthenticated()
             ;
         });
