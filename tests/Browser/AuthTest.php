@@ -34,4 +34,20 @@ class AuthTest extends DuskTestCase
             ;
         });
     }
+
+    public function testRegister(): void
+    {
+        $this->browse(function (Browser $browser) {
+            $browser
+                ->visit(route('register'))
+                ->type('#username', 'JohnDoe')
+                ->type('#email', 'test@tournament.test')
+                ->type('#password', 'password')
+                ->type('#passwordConfirmation', 'password')
+                ->press('@register-button')
+                ->waitForRoute('verification.notice', seconds: 10)
+                ->assertAuthenticated()
+            ;
+        });
+    }
 }
