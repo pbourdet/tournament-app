@@ -6,6 +6,9 @@
     <div>
         {{ __($tournament->status->value) }}
     </div>
+    <div>
+        {{ $tournament->invitation?->code }}
+    </div>
 
     @if($tournament->isNotStarted())
         <div>
@@ -14,4 +17,6 @@
             </x-primary-button>
         </div>
     @endif
+
+    <livewire:tournament.players-table :$tournament :$locked/>
 </div>

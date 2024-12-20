@@ -13,7 +13,7 @@
                                   name="invitation-code"
                                   @input.debounce="if ($event.target.value.length === 6) $wire.find()"
                     />
-                    <div wire:loading class="absolute size-8 right-1/3">
+                    <div wire:loading class="absolute size-8 right-14 md:right-20">
                         <x-loader class="ml-2 size-8"/>
                     </div>
                 </div>
