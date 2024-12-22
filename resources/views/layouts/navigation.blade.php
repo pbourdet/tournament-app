@@ -21,7 +21,7 @@
         <flux:profile avatar="{{ Storage::url(Auth::user()->getProfilePicture()) }}" name="{{ Auth::user()->username }}"/>
 
         <flux:menu>
-            <flux:menu.item href="{{ route('profile.edit') }}" icon="user">Profile</flux:menu.item>
+            <flux:menu.item wire:navigate href="{{ route('profile.edit') }}" icon="user">Profile</flux:menu.item>
             <flux:menu.separator/>
 
             <form method="POST" action="{{ route('logout') }}">
@@ -52,7 +52,7 @@
             <flux:profile avatar="{{ Storage::url(Auth::user()->getProfilePicture()) }}"/>
 
             <flux:menu>
-                <flux:menu.item href="{{ route('profile.edit') }}" icon="user">Profile</flux:menu.item>
+                <flux:menu.item wire:navigate href="{{ route('profile.edit') }}" icon="user">Profile</flux:menu.item>
 
                 <flux:menu.separator/>
 
