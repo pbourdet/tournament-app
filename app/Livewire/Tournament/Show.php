@@ -10,8 +10,6 @@ use Illuminate\Contracts\View\View;
 
 class Show extends Component
 {
-    use WithTournamentLock;
-
     /** @var array<int, string> */
     private const array SUPPORTED_PAGES = [
         'overview',
