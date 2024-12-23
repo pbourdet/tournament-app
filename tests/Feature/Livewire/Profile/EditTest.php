@@ -94,6 +94,25 @@ class EditTest extends TestCase
         Notification::assertNotSentTo($user, VerifyEmail::class);
     }
 
+    public function testUserHitsRateLimitWhenSendingVerificationEmail(): void
+    {
+        Notification::fake();
+
+        $user = User::factory()->unverified()->create();
+
+        Livewire::actingAs($user)
+            ->test(Edit::class)
+            ->call('sendVerification')
+            ->call('sendVerification')
+            ->call('sendVerification')
+            ->call('sendVerification')
+            ->call('sendVerification')
+            ->call('sendVerification')
+            ->assertDispatched('toast-show');
+
+        Notification::assertSentTimes(VerifyEmail::class, 5);
+    }
+
     public function testUserCanUpdateTheirPassword(): void
     {
         $user = User::factory()->create();
