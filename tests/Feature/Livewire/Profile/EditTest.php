@@ -122,4 +122,34 @@ class EditTest extends TestCase
             ->call('updatePassword')
             ->assertHasErrors(['passwordForm.currentPassword']);
     }
+
+    public function testUserCanDeleteTheirAccount(): void
+    {
+        $user = User::factory()->create();
+
+        Livewire::actingAs($user)
+            ->test(Edit::class)
+            ->set('deletionForm.password', 'password')
+            ->call('deleteAccount')
+            ->assertRedirect(route('login'))
+            ->assertDispatched('toast-show')
+        ;
+
+        $this->assertGuest();
+        $this->assertNull($user->fresh());
+    }
+
+    public function testUserMustProvideCorrectPasswordToDeleteAccount(): void
+    {
+        $user = User::factory()->create();
+
+        Livewire::actingAs($user)
+            ->test(Edit::class)
+            ->set('deletionForm.password', 'wrong-password')
+            ->call('deleteAccount')
+            ->assertHasErrors(['deletionForm.password'])
+        ;
+
+        $this->assertAuthenticatedAs($user);
+    }
 }

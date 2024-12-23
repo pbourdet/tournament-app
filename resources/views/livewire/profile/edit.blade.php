@@ -34,13 +34,42 @@
         <form wire:submit="updatePassword" class="space-y-4">
             <flux:input autocomplete id="currentPassword" type="password" placeholder="{{ __('Your current password') }}" required
                          viewable label="{{ __('Current Password') }}" wire:model="passwordForm.currentPassword" />
-            <flux:input autocomplete id="password" type="password" placeholder="{{ __('Your new password') }}" required
+            <flux:input autocomplete id="newPassword" type="password" placeholder="{{ __('Your new password') }}" required
                         viewable label="{{ __('New Password') }}" wire:model="passwordForm.password"/>
-            <flux:input autocomplete id="passwordConfirmation" type="password" placeholder="{{ __('Confirm your new password') }}" required
+            <flux:input autocomplete id="newPasswordConfirmation" type="password" placeholder="{{ __('Confirm your new password') }}" required
                         viewable label="{{ __('Confirm Password') }}" wire:model="passwordForm.passwordConfirmation"/>
             <div>
                 <flux:button type="submit" variant="primary">{{ __('Save') }}</flux:button>
             </div>
         </form>
     </flux:card>
+
+    <flux:card class="space-y-6 shadow-md">
+        <div>
+            <flux:heading>{{ __('Delete Account') }}</flux:heading>
+            <flux:subheading>{{ __('Once your account is deleted, all of its resources and data will be permanently deleted. Before deleting your account, please download any data or information that you wish to retain.') }}</flux:subheading>
+        </div>
+        <div>
+            <flux:modal.trigger name="delete-account">
+                <flux:button variant="danger">{{ __('Delete Account') }}</flux:button>
+            </flux:modal.trigger>
+        </div>
+    </flux:card>
+    <flux:modal name="delete-account" class="min-w-[22rem] space-y-6">
+        <div>
+            <flux:heading>{{ __('Are you sure you want to delete your account?') }}</flux:heading>
+            <flux:subheading>{{ __('Once your account is deleted, all of its resources and data will be permanently deleted. Please enter your password to confirm you would like to permanently delete your account.') }}</flux:subheading>
+        </div>
+        <form wire:submit="deleteAccount" class="space-y-4">
+            <flux:input autocomplete id="password" type="password" placeholder="{{ __('Your password') }}" required
+                        viewable label="{{ __('Password') }}" wire:model="deletionForm.password"/>
+            <div class="flex gap-2">
+                <flux:spacer/>
+                <flux:modal.close>
+                    <flux:button variant="ghost">{{ __('Cancel') }}</flux:button>
+                </flux:modal.close>
+                <flux:button type="submit" variant="danger">{{ __('Delete Account') }}</flux:button>
+            </div>
+        </form>
+    </flux:modal>
 </flux:main>
