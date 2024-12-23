@@ -8,6 +8,7 @@ use App\Livewire\Profile\Edit;
 use App\Models\User;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Notification;
 use Livewire\Livewire;
 use Tests\TestCase;
@@ -91,5 +92,34 @@ class EditTest extends TestCase
             ->assertDispatched('toast-show');
 
         Notification::assertNotSentTo($user, VerifyEmail::class);
+    }
+
+    public function testUserCanUpdateTheirPassword(): void
+    {
+        $user = User::factory()->create();
+
+        Livewire::actingAs($user)
+            ->test(Edit::class)
+            ->set('passwordForm.currentPassword', 'password')
+            ->set('passwordForm.password', 'new-password')
+            ->set('passwordForm.passwordConfirmation', 'new-password')
+            ->call('updatePassword')
+            ->assertSuccessful()
+            ->assertDispatched('toast-show');
+
+        $this->assertTrue(Hash::check('new-password', $user->refresh()->password));
+    }
+
+    public function testUserMustProvideCorrectPasswordToUpdatePassword(): void
+    {
+        $user = User::factory()->create();
+
+        Livewire::actingAs($user)
+            ->test(Edit::class)
+            ->set('passwordForm.currentPassword', 'wrong-password')
+            ->set('passwordForm.password', 'new-password')
+            ->set('passwordForm.passwordConfirmation', 'new-password')
+            ->call('updatePassword')
+            ->assertHasErrors(['passwordForm.currentPassword']);
     }
 }

@@ -1,4 +1,4 @@
-<flux:main class="max-w-xl">
+<flux:main class="max-w-xl space-y-6">
     <flux:card class="space-y-6 shadow-md">
         <div>
             <flux:heading>{{ __('Profile Information') }}</flux:heading>
@@ -22,6 +22,24 @@
             <div>
                 <flux:button type="submit" variant="primary">{{ __('Save') }}</flux:button>
                 <p class="text-sm text-gray-500" wire:dirty wire:target="informationForm">{{ __('Unsaved changes...') }}</p>
+            </div>
+        </form>
+    </flux:card>
+
+    <flux:card class="space-y-6 shadow-md">
+        <div>
+            <flux:heading>{{ __('Update Password') }}</flux:heading>
+            <flux:subheading>{{ __('Ensure your account is using a long, random password to stay secure.') }}</flux:subheading>
+        </div>
+        <form wire:submit="updatePassword" class="space-y-4">
+            <flux:input autocomplete id="currentPassword" type="password" placeholder="{{ __('Your current password') }}" required
+                         viewable label="{{ __('Current Password') }}" wire:model="passwordForm.currentPassword" />
+            <flux:input autocomplete id="password" type="password" placeholder="{{ __('Your new password') }}" required
+                        viewable label="{{ __('New Password') }}" wire:model="passwordForm.password"/>
+            <flux:input autocomplete id="passwordConfirmation" type="password" placeholder="{{ __('Confirm your new password') }}" required
+                        viewable label="{{ __('Confirm Password') }}" wire:model="passwordForm.passwordConfirmation"/>
+            <div>
+                <flux:button type="submit" variant="primary">{{ __('Save') }}</flux:button>
             </div>
         </form>
     </flux:card>

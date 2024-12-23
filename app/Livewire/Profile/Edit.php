@@ -6,14 +6,19 @@ namespace App\Livewire\Profile;
 
 use App\Enums\ToastType;
 use App\Livewire\Component;
+use App\Livewire\Forms\Profile\PasswordForm;
 use App\Livewire\Forms\Profile\UserInformationForm;
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
 
 class Edit extends Component
 {
     public User $user;
 
     public UserInformationForm $informationForm;
+
+    public PasswordForm $passwordForm;
 
     public function mount(): void
     {
@@ -47,5 +52,19 @@ class Edit extends Component
         $this->user->sendEmailVerificationNotification();
 
         $this->toast(__('A new verification link has been sent to the email address you provided during registration.'));
+    }
+
+    public function updatePassword(): void
+    {
+        try {
+            $this->passwordForm->validate();
+
+            $this->user->update(['password' => Hash::make($this->passwordForm->password)]);
+            $this->toast(__('Your password was successfully updated !'), variant: ToastType::SUCCESS->value);
+        } catch (ValidationException $e) {
+            throw $e;
+        } finally {
+            $this->passwordForm->reset();
+        }
     }
 }
