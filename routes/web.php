@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use App\Http\Controllers\Account\ProfileController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Tournaments\TournamentInvitationController;
 use App\Livewire;
@@ -23,8 +22,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', Livewire\Profile\Edit::class)->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
 require __DIR__.'/auth.php';
