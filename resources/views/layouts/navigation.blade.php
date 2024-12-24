@@ -24,14 +24,7 @@
             <flux:menu.item wire:navigate href="{{ route('profile.edit') }}" icon="user">Profile</flux:menu.item>
             <flux:menu.separator/>
 
-            <form method="POST" action="{{ route('logout') }}">
-                @csrf
-
-                <flux:menu.item onclick="event.preventDefault(); this.closest('form').submit();"
-                                icon="arrow-right-start-on-rectangle">
-                    {{ __('Log Out') }}
-                </flux:menu.item>
-            </form>
+            <livewire:auth.logout/>
         </flux:menu>
     </flux:dropdown>
 </flux:sidebar>
@@ -56,14 +49,7 @@
 
                 <flux:menu.separator/>
 
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-
-                    <flux:menu.item onclick="event.preventDefault(); this.closest('form').submit();"
-                                    icon="arrow-right-start-on-rectangle">
-                        {{ __('Log Out') }}
-                    </flux:menu.item>
-                </form>
+                <livewire:auth.logout/>
             </flux:menu>
         </flux:dropdown>
     </flux:navbar>
