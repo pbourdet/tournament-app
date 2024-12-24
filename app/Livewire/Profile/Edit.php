@@ -10,16 +10,12 @@ use App\Livewire\Forms\Profile\PasswordForm;
 use App\Livewire\Forms\Profile\UserDeletionForm;
 use App\Livewire\Forms\Profile\UserInformationForm;
 use App\Models\User;
-use DanHarrin\LivewireRateLimiting\Exceptions\TooManyRequestsException;
-use DanHarrin\LivewireRateLimiting\WithRateLimiting;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
 class Edit extends Component
 {
-    use WithRateLimiting;
-
     public User $user;
 
     public UserInformationForm $informationForm;
@@ -47,27 +43,6 @@ class Edit extends Component
 
         $this->user->save();
         $this->toast(__('Your profile was successfully updated !'), variant: ToastType::SUCCESS->value);
-    }
-
-    public function sendVerification(): void
-    {
-        try {
-            $this->rateLimit(5);
-        } catch (TooManyRequestsException) {
-            $this->toast(__('Slow down ! You can try again later.'), variant: ToastType::DANGER->value);
-
-            return;
-        }
-
-        if ($this->user->hasVerifiedEmail()) {
-            $this->toast(__('Your email address is already verified.'), variant: ToastType::DANGER->value);
-
-            return;
-        }
-
-        $this->user->sendEmailVerificationNotification();
-
-        $this->toast(__('A new verification link has been sent to the email address you provided during registration.'));
     }
 
     public function updatePassword(): void

@@ -11,11 +11,7 @@
                 <div>
                     <p class="text-xs mt-2 text-gray-800">
                         {{ __('Your email address is unverified.') }}
-
-                        <button type="button" wire:click="sendVerification"
-                            class="underline text-xs text-accent hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent">
-                            {{ __('Click here to re-send the verification email.') }}
-                        </button>
+                        <livewire:auth.send-verification-email :text="__('Click here to re-send the verification email.')"/>
                     </p>
                 </div>
             @endif

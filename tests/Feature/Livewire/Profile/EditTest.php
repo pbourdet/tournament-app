@@ -6,10 +6,8 @@ namespace Tests\Feature\Livewire\Profile;
 
 use App\Livewire\Profile\Edit;
 use App\Models\User;
-use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Notification;
 use Livewire\Livewire;
 use Tests\TestCase;
 
@@ -62,55 +60,6 @@ class EditTest extends TestCase
             'email' => $user->email,
             'email_verified_at' => $user->email_verified_at,
         ]);
-    }
-
-    public function testUserCanSendVerificationEmail(): void
-    {
-        Notification::fake();
-
-        $user = User::factory()->unverified()->create();
-
-        Livewire::actingAs($user)
-            ->test(Edit::class)
-            ->call('sendVerification')
-            ->assertSuccessful()
-            ->assertDispatched('toast-show');
-
-        Notification::assertSentTo($user, VerifyEmail::class);
-    }
-
-    public function testUserCannotSendVerificationEmailIfAlreadyVerified(): void
-    {
-        Notification::fake();
-
-        $user = User::factory()->create();
-
-        Livewire::actingAs($user)
-            ->test(Edit::class)
-            ->call('sendVerification')
-            ->assertSuccessful()
-            ->assertDispatched('toast-show');
-
-        Notification::assertNotSentTo($user, VerifyEmail::class);
-    }
-
-    public function testUserHitsRateLimitWhenSendingVerificationEmail(): void
-    {
-        Notification::fake();
-
-        $user = User::factory()->unverified()->create();
-
-        Livewire::actingAs($user)
-            ->test(Edit::class)
-            ->call('sendVerification')
-            ->call('sendVerification')
-            ->call('sendVerification')
-            ->call('sendVerification')
-            ->call('sendVerification')
-            ->call('sendVerification')
-            ->assertDispatched('toast-show');
-
-        Notification::assertSentTimes(VerifyEmail::class, 5);
     }
 
     public function testUserCanUpdateTheirPassword(): void
