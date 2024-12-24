@@ -7,15 +7,6 @@
             </flux:subheading>
         </div>
 
-        <div>
-            <livewire:auth.send-verification-email :text="__('Resend verification email')"/>
-            <form method="POST" action="{{ route('logout') }}">
-                @csrf
-
-                <button type="submit" class="underline text-xs text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                    {{ __('Log Out') }}
-                </button>
-            </form>
-        </div>
+        <livewire:auth.send-verification-email :text="__('Resend verification email')"/>
     </flux:card>
 </flux:main>
