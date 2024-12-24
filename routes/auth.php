@@ -5,7 +5,6 @@ declare(strict_types=1);
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\ConfirmablePasswordController;
 use App\Http\Controllers\Auth\EmailVerificationPromptController;
-use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Livewire;
 use Illuminate\Support\Facades\Route;
@@ -17,11 +16,7 @@ Route::middleware('guest')->group(function () {
 
     Route::get('forgot-password', Livewire\Auth\ForgotPassword::class)->name('password.request');
 
-    Route::get('reset-password/{token}', [NewPasswordController::class, 'create'])
-                ->name('password.reset');
-
-    Route::post('reset-password', [NewPasswordController::class, 'store'])
-                ->name('password.store');
+    Route::get('reset-password/{token}', Livewire\Auth\ResetPassword::class)->name('password.reset');
 });
 
 Route::middleware('auth')->group(function () {

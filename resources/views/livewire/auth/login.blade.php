@@ -13,7 +13,7 @@
                 <div class="mb-3 flex justify-between">
                     <flux:label>{{ __('Password') }}</flux:label>
 
-                    <flux:link href="{{ route('password.request') }}" variant="subtle" class="text-sm">
+                    <flux:link wire:navigate href="{{ route('password.request') }}" variant="subtle" class="text-sm">
                         {{ __('Forgot your password?') }}
                     </flux:link>
                 </div>

@@ -109,7 +109,7 @@
     "Register": "Register",
     "Remember me": "Remember me",
     "Resend Verification Email": "Resend Verification Email",
-    "Reset Password": "Reset Password",
+    "Reset your password": "Reset your password",
     "Reset Password Notification": "Reset Password Notification",
     "results": "results",
     "Save": "Save",
@@ -177,8 +177,9 @@
     "Your password": "Your password",
     "Your current password": "Your current password",
     "Your new password": "Your new password",
-    "Your password was successfully updated !": "Your password was successfully updated !",
+    "Your password has been reset ! You can now log in with your new password.": "Your password has been reset ! You can now log in with your new password.",
     "Your profile was successfully updated !": "Your profile was successfully updated !",
+    "Your password was successfully updated !": "Your password was successfully updated !",
     "Your tournament :tournament is full ! You can start it once the tournaments phases are set up.": "Your tournament \":tournament\" is full ! You can start it once the tournaments phases are set up.",
     "Your username": "Your username"
 }

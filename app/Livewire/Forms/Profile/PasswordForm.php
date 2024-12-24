@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Livewire\Forms\Profile;
 
+use Illuminate\Contracts\Validation\ValidationRule;
+use Illuminate\Validation\Rules\Password;
 use Livewire\Form;
 
 class PasswordForm extends Form
@@ -14,12 +16,12 @@ class PasswordForm extends Form
 
     public string $passwordConfirmation = '';
 
-    /** @return array<string, array<int, string>> */
+    /** @return array<string, ValidationRule|array<int, mixed>|string> */
     public function rules(): array
     {
         return [
             'currentPassword' => ['required', 'current_password'],
-            'password' => ['required', 'confirmed:passwordConfirmation', 'min:8'],
+            'password' => ['required', 'confirmed:passwordConfirmation', Password::defaults()],
         ];
     }
 }
