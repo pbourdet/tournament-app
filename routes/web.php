@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Tournaments\TournamentInvitationController;
 use App\Livewire;
 use Illuminate\Support\Facades\Route;
@@ -12,7 +11,7 @@ Route::get('/', function () {
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard', Livewire\Dashboard::class)->name('dashboard');
 
     Route::post('/tournaments/{tournament}/invitations/store', [TournamentInvitationController::class, 'store'])->name('tournament-invitations.store');
 

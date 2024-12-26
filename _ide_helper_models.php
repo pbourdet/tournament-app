@@ -23,6 +23,7 @@ namespace App\Models{
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Round> $rounds
  * @property-read int|null $rounds_count
  * @property-read \App\Models\Tournament $tournament
+ * @method static \Database\Factories\EliminationPhaseFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|EliminationPhase newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|EliminationPhase newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|EliminationPhase query()
