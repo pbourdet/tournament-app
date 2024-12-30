@@ -1,3 +1,5 @@
+<x-slot name="title">{{ __('Register') }} - {{ config('app.name', 'Laravel') }}</x-slot>
+
 <flux:card class="w-full sm:max-w-lg space-y-6 shadow-md overflow-y-hidden">
     <div>
         <flux:heading size="lg">{{ __('Create a new account') }}</flux:heading>

@@ -1,3 +1,5 @@
+<x-slot name="title">{{ __('Profile') }} - {{ config('app.name', 'Laravel') }}</x-slot>
+
 <flux:main class="max-w-xl space-y-6">
     <flux:card class="space-y-6 shadow-md">
         <div>
