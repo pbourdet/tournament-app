@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use App\Http\Controllers\Tournaments\TournamentInvitationController;
 use App\Livewire;
 use Illuminate\Support\Facades\Route;
 
@@ -12,8 +11,6 @@ Route::get('/', function () {
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', Livewire\Dashboard::class)->name('dashboard');
-
-    Route::post('/tournaments/{tournament}/invitations/store', [TournamentInvitationController::class, 'store'])->name('tournament-invitations.store');
 
     Route::get('/tournaments/create', Livewire\Tournament\Create::class)->name('tournaments.create');
     Route::get('/tournaments/{tournament}/{page?}', Livewire\Tournament\Show::class)->name('tournaments.show');
