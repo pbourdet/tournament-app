@@ -1,3 +1,5 @@
+<x-slot name="title">{{ __($title) }} - {{ $tournament->name }}</x-slot>
+
 <div>
     <flux:header class="bg-zinc-50">
         <flux:navbar scrollable>

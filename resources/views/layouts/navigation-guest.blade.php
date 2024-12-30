@@ -1,5 +1,5 @@
 <flux:header container class="bg-gray-50">
-    <flux:brand wire:navigate class="hidden sm:flex" href="{{ route('dashboard') }}" logo="{{ Vite::asset('resources/images/app-logo.png')  }}" name="MyTournaments"/>
+    <flux:brand wire:navigate class="hidden sm:flex" href="{{ route('dashboard') }}" logo="{{ Vite::asset('resources/images/app-logo.png')  }}" name="{{ config('app.name', 'Laravel') }}"/>
     <flux:brand wire:navigate class="sm:hidden" href="{{ route('dashboard') }}" logo="{{ Vite::asset('resources/images/app-logo.png')  }}"/>
 
     <flux:spacer/>

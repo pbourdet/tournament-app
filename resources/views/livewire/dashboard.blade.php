@@ -1,3 +1,5 @@
+<x-slot name="title">{{ __('Dashboard') }} - {{ config('app.name', 'Laravel') }}</x-slot>
+
 <flux:main>
     @if($managedTournaments->isNotEmpty())
         <x-section>

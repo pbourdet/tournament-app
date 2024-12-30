@@ -10,23 +10,27 @@ use Illuminate\Contracts\View\View;
 
 class Show extends Component
 {
-    /** @var array<int, string> */
+    /** @var array<string, string> */
     private const array SUPPORTED_PAGES = [
-        'overview',
-        'teams',
-        'phase-elimination',
+        'overview' => 'Overview',
+        'teams' => 'Teams',
+        'phase-elimination' => 'Elimination',
     ];
 
     public Tournament $tournament;
 
     public ?string $page;
+    public string $title;
 
     public function mount(Tournament $tournament, ?string $page = null): void
     {
         $this->authorize('view', $tournament);
         $this->tournament = $tournament;
 
-        $this->page = 'tournament.'.str_replace('-', '.', $this->sanitizePage($page));
+        $page = $this->sanitizePage($page);
+
+        $this->title = self::SUPPORTED_PAGES[$page];
+        $this->page = 'tournament.'.str_replace('-', '.', $page);
     }
 
     public function render(): View
@@ -42,6 +46,6 @@ class Show extends Component
             return 'overview';
         }
 
-        return in_array($page, self::SUPPORTED_PAGES, true) ? $page : 'overview';
+        return in_array($page, array_keys(self::SUPPORTED_PAGES), true) ? $page : 'overview';
     }
 }

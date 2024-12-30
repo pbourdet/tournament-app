@@ -1,3 +1,5 @@
+<x-slot name="title">{{ __('Login') }} - {{ config('app.name', 'Laravel') }}</x-slot>
+
 <flux:card class="w-full sm:max-w-md space-y-6 shadow-md">
     <div>
         <flux:heading size="lg">{{ __('Log in to your account') }}</flux:heading>
