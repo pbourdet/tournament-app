@@ -204,13 +204,13 @@ namespace App\Models{
  * @property int $id
  * @property string $tournament_id
  * @property string $code
- * @property string $expires_at
+ * @property \Illuminate\Support\Carbon $expires_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Tournament $tournament
- * @method static \Database\Factories\TournamentInvitationFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|TournamentInvitation newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|TournamentInvitation newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TournamentInvitation notExpired()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|TournamentInvitation query()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|TournamentInvitation whereCode($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|TournamentInvitation whereCreatedAt($value)

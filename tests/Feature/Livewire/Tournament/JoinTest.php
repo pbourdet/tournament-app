@@ -149,4 +149,25 @@ class JoinTest extends TestCase
         $this->assertDatabaseCount('tournament_player', 1);
         Notification::assertNothingSent();
     }
+
+    public function testUserCannotJoinWithExpiredInvitation(): void
+    {
+        Notification::fake();
+        $user = User::factory()->create();
+        $tournament = Tournament::factory()->create();
+        $tournament->invitation->update(['expires_at' => now()->subDay()]);
+
+        Livewire::actingAs($user)
+            ->test(Join::class)
+            ->set('tournamentCode', $tournament->invitation->code)
+            ->call('find')
+            ->assertSee(__('No tournament with this invitation code.'));
+
+        $this->assertDatabaseMissing('tournament_player', [
+            'tournament_id' => $tournament->id,
+            'user_id' => $user->id,
+        ]);
+
+        Notification::assertNothingSent();
+    }
 }

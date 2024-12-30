@@ -45,7 +45,7 @@ class Join extends Component
 
     public function find(): void
     {
-        $tournamentInvitation = TournamentInvitation::where('code', mb_strtoupper($this->tournamentCode))->first();
+        $tournamentInvitation = TournamentInvitation::notExpired()->where('code', mb_strtoupper($this->tournamentCode))->first();
 
         $this->tournament = $tournamentInvitation?->tournament;
         $this->showResponse = true;

@@ -8,7 +8,6 @@ use App\Enums\ToastType;
 use App\Livewire\Component;
 use App\Livewire\Forms\Tournament\CreateForm;
 use App\Models\Tournament;
-use App\Models\TournamentInvitation;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\View\View;
 use Livewire\Attributes\Locked;
@@ -83,7 +82,7 @@ class Create extends Component
             'organizer_id' => auth()->id(),
         ]);
 
-        TournamentInvitation::fromTournament($tournament);
+        $tournament->createInvitation();
 
         if ($this->form->joinTournament) {
             $tournament->players()->attach(auth()->user());

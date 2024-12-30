@@ -7,7 +7,6 @@ namespace Database\Factories;
 use App\Enums\TournamentStatus;
 use App\Models\Team;
 use App\Models\Tournament;
-use App\Models\TournamentInvitation;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -78,7 +77,7 @@ class TournamentFactory extends Factory
                 $tournament->organizer_id = User::factory()->create()->id;
             }
         })->afterCreating(function (Tournament $tournament): void {
-            TournamentInvitation::factory()->create(['tournament_id' => $tournament->id]);
+            $tournament->createInvitation();
         })
         ;
     }

@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 
 /**
  * @mixin IdeHelperTournament
@@ -79,6 +80,14 @@ class Tournament extends Model
         return collect([
             $this->eliminationPhase,
         ])->filter();
+    }
+
+    public function createInvitation(): void
+    {
+        $this->invitation()->create([
+            'code' => mb_strtoupper(Str::random(6)),
+            'expires_at' => now()->addDays(7),
+        ]);
     }
 
     public function isFull(): bool

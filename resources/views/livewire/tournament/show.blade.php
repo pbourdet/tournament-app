@@ -27,10 +27,10 @@
         window.Echo.private('App.Models.Tournament.{{ $tournament->id }}')
             .listen('TournamentUpdated', function() {
                 let parentComponent = Livewire.getByName('tournament.show')[0];
+                if (parentComponent === undefined) return;
                 let childComponent = Livewire.getByName(parentComponent.page)[0];
                 childComponent.$refresh();
             });
-        ;
     </script>
     @endscript
 </div>
