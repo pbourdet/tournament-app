@@ -10,7 +10,7 @@
                             class:input="uppercase text-center !text-2xl !w-40"
                             wire:model="tournamentCode"
                             @input.debounce="if ($event.target.value.length === 6) $wire.find()"/>
-                <x-loader wire:loading class="absolute size-8 right-9 md:right-18"/>
+                <x-loader wire:loading wire:target="find" class="absolute size-8 right-9 md:right-18"/>
             </div>
         </div>
         @if($showResponse)
@@ -39,11 +39,9 @@
                             @elseif($tournament->isFull())
                                 @include('livewire.tournament.partials.join-error', ['errorMessage' => __('This tournament is full.')])
                             @else
-                                <x-primary-button dusk="join-tournament" type="button"
-                                                  wire:loading.attr="disabled"
-                                                  wire:click.prevent="join('{{ $tournament->id }}')">
+                                <flux:button dusk="join-tournament" variant="primary" wire:click="join('{{ $tournament->id }}')">
                                     <span class="text-lg">{{ __('Join tournament') }}</span>
-                                </x-primary-button>
+                                </flux:button>
                             @endif
                         </div>
                     @endif
