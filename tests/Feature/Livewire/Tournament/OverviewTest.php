@@ -9,6 +9,7 @@ use App\Jobs\StartTournament;
 use App\Livewire\Tournament\Overview;
 use App\Models\Tournament;
 use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Queue;
 use Livewire\Livewire;
@@ -16,6 +17,8 @@ use Tests\TestCase;
 
 class OverviewTest extends TestCase
 {
+    use RefreshDatabase;
+
     public function testRendersSuccessfully(): void
     {
         Livewire::test(Overview::class, ['tournament' => Tournament::factory()->create()])

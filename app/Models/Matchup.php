@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Collection;
 
 /**
  * @mixin IdeHelperMatchup
@@ -36,28 +36,21 @@ class Matchup extends Model
         return $this->belongsTo(Round::class);
     }
 
-    /** @return MorphToMany<Team, $this> */
-    public function teamContestants(): MorphToMany
+    /** @phpstan-return HasMany<MatchContestant, $this> */
+    public function contestants(): HasMany
     {
-        return $this->morphedByMany(Team::class, 'contestant', 'match_contestant', 'match_id');
+        return $this->hasMany(MatchContestant::class, 'match_id');
     }
 
-    /** @return MorphToMany<User, $this> */
-    public function userContestants(): MorphToMany
+    /** @param Collection<int, Team>|Collection<int, User> $contestants */
+    public function addContestants(Collection $contestants): void
     {
-        return $this->morphedByMany(User::class, 'contestant', 'match_contestant', 'match_id');
-    }
-
-    /** @return MorphToMany<User, $this>|MorphToMany<Team, $this> */
-    public function contestants(): MorphToMany
-    {
-        return $this->tournament()->firstOrFail()->team_based ? $this->teamContestants() : $this->userContestants();
-    }
-
-    /** @return Collection<int, User>|Collection<int, Team> */
-    public function getContestants(): Collection
-    {
-        return $this->tournament->team_based ? $this->teamContestants : $this->userContestants;
+        foreach ($contestants as $contestant) {
+            $this->contestants()->create([
+                'contestant_id' => $contestant->id,
+                'contestant_type' => $contestant->getMorphClass(),
+            ]);
+        }
     }
 
     /** @return class-string<User|Team> */

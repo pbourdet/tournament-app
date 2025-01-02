@@ -6,11 +6,14 @@ namespace Tests\Feature\Livewire\Auth;
 
 use App\Livewire\Auth\VerifyEmail;
 use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
 use Tests\TestCase;
 
 class VerifyEmailTest extends TestCase
 {
+    use RefreshDatabase;
+
     public function testRendersSuccessfully(): void
     {
         Livewire::actingAs(User::factory()->unverified()->create())

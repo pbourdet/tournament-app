@@ -6,12 +6,15 @@ namespace Tests\Feature\Livewire\Auth;
 
 use App\Livewire\Auth\ResetPassword;
 use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Password;
 use Livewire\Livewire;
 use Tests\TestCase;
 
 class ResetPasswordTest extends TestCase
 {
+    use RefreshDatabase;
+
     public function testRendersSuccessfully(): void
     {
         Livewire::test(ResetPassword::class, ['token' => 'token'])

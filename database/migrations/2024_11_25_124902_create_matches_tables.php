@@ -16,11 +16,12 @@ return new class extends Migration {
         });
 
         Schema::create('match_contestant', function (Blueprint $table) {
+            $table->id();
             $table->foreignUuid('match_id')->constrained()->cascadeOnDelete();
             $table->uuidMorphs('contestant');
             $table->timestamps();
 
-            $table->primary(['match_id', 'contestant_type', 'contestant_id']);
+            $table->unique(['match_id', 'contestant_type', 'contestant_id']);
             $table->index('match_id');
         });
     }
