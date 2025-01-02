@@ -48,7 +48,14 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property string $round_id
  * @property int $index
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $contestants
+ * @property-read int|null $contestants_count
+ * @property-read \App\Models\Round $round
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Team> $teamContestants
+ * @property-read int|null $team_contestants_count
  * @property-read \App\Models\Tournament $tournament
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $userContestants
+ * @property-read int|null $user_contestants_count
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Matchup newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Matchup newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Matchup query()

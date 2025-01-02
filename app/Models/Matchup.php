@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -29,10 +30,34 @@ class Matchup extends Model
         return $this->belongsTo(Tournament::class);
     }
 
-    /** @phpstan-return MorphToMany<User|Team, $this> */
+    /** @return BelongsTo<Round, $this> */
+    public function round(): BelongsTo
+    {
+        return $this->belongsTo(Round::class);
+    }
+
+    /** @return MorphToMany<Team, $this> */
+    public function teamContestants(): MorphToMany
+    {
+        return $this->morphedByMany(Team::class, 'contestant', 'match_contestant', 'match_id');
+    }
+
+    /** @return MorphToMany<User, $this> */
+    public function userContestants(): MorphToMany
+    {
+        return $this->morphedByMany(User::class, 'contestant', 'match_contestant', 'match_id');
+    }
+
+    /** @return MorphToMany<User, $this>|MorphToMany<Team, $this> */
     public function contestants(): MorphToMany
     {
-        return $this->morphedByMany($this->getContestantType(), 'contestant', 'match_contestant', 'match_id');
+        return $this->tournament()->firstOrFail()->team_based ? $this->teamContestants() : $this->userContestants();
+    }
+
+    /** @return Collection<int, User>|Collection<int, Team> */
+    public function getContestants(): Collection
+    {
+        return $this->tournament->team_based ? $this->teamContestants : $this->userContestants;
     }
 
     /** @return class-string<User|Team> */

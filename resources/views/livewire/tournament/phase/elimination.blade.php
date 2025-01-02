@@ -1,5 +1,5 @@
 <div>
-    @if(!$tournament->eliminationPhase()->exists())
+    @if(null === $eliminationPhase)
         {{ __('No elimination phase for this tournament') }}
         @can('manage', $tournament)
             <form wire:submit="create">
@@ -18,24 +18,13 @@
             </form>
         @endcan
     @else
-        Elimination Phase
         <div class="flex flex-col items-center">
             <div class="flex space-x-8 overflow-x-auto">
-                @foreach ($eliminationPhase->rounds as $roundIndex => $round)
-                    <div class="relative flex flex-col space-y-6">
+                @foreach ($eliminationPhase->rounds as $round)
+                    <div class="flex flex-col space-y-6">
                         <h2 class="text-lg font-semibold text-center">{{ $round->stage->value }}</h2>
-                        @foreach ($round->matches as $matchIndex => $match)
-                            <div class="relative flex flex-col border rounded-lg p-4 shadow-md w-52">
-                                <div class="flex justify-between items-center">
-                                    <span class="text-sm font-medium">{{ '$match->team1->name' }}</span>
-                                    <span class="text-sm font-bold">{{ '$match->score1' }}</span>
-                                </div>
-                                <div class="h-0.5 bg-gray-400 my-2"></div>
-                                <div class="flex justify-between items-center">
-                                    <span class="text-sm font-medium">{{ '$match->team2->name' }}</span>
-                                    <span class="text-sm font-bold">{{ '$match->score2' }}</span>
-                                </div>
-                            </div>
+                        @foreach ($round->matchesWithContestants($tournament->team_based) as $match)
+                            @include('livewire.tournament.partials.match', ['match' => $match])
                         @endforeach
                     </div>
                 @endforeach
