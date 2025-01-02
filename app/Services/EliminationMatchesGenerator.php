@@ -21,7 +21,6 @@ class EliminationMatchesGenerator
 
             for ($i = 0; $i < $matchesCount; ++$i) {
                 $match = $round->matches()->create([
-                    'tournament_id' => $phase->tournament->id,
                     'index' => $i + 1,
                 ]);
 

@@ -11,7 +11,6 @@ return new class extends Migration {
     {
         Schema::create('matches', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid('tournament_id')->index()->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
 

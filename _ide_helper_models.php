@@ -77,6 +77,8 @@ namespace App\Models{
  * @property int $index
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\MatchContestant> $contestants
  * @property-read int|null $contestants_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Result> $results
+ * @property-read int|null $results_count
  * @property-read \App\Models\Round $round
  * @property-read \App\Models\Tournament $tournament
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Matchup newModelQuery()
@@ -101,25 +103,23 @@ namespace App\Models{
  * @property string $id
  * @property string $match_id
  * @property string $contestant_type
- * @property string $winner_id
- * @property string $loser_id
- * @property int $winner_score
- * @property int $loser_score
+ * @property string $contestant_id
+ * @property \App\Enums\ResultOutcome $outcome
+ * @property int|null $score
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Matchup $match
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Result newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Result newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Result query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Result whereContestantId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Result whereContestantType($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Result whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Result whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Result whereLoserId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Result whereLoserScore($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Result whereMatchId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Result whereOutcome($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Result whereScore($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Result whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Result whereWinnerId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Result whereWinnerScore($value)
  * @mixin \Eloquent
  */
 	#[\AllowDynamicProperties]
@@ -138,7 +138,7 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Matchup> $matches
  * @property-read int|null $matches_count
- * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $phase
+ * @property-read \App\Models\EliminationPhase $phase
  * @property-read \App\Models\Tournament|null $tournament
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Round newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Round newQuery()
