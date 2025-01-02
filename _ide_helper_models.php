@@ -42,20 +42,43 @@ namespace App\Models{
 /**
  * 
  *
+ * @property int $id
+ * @property string $match_id
+ * @property string $contestant_type
+ * @property string $contestant_id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $contestant
+ * @property-read \App\Models\Matchup $match
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MatchContestant newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MatchContestant newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MatchContestant query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MatchContestant whereContestantId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MatchContestant whereContestantType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MatchContestant whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MatchContestant whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MatchContestant whereMatchId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MatchContestant whereUpdatedAt($value)
+ * @mixin \Eloquent
+ */
+	#[\AllowDynamicProperties]
+	class IdeHelperMatchContestant {}
+}
+
+namespace App\Models{
+/**
+ * 
+ *
  * @property string $id
  * @property string $tournament_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property string $round_id
  * @property int $index
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $contestants
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\MatchContestant> $contestants
  * @property-read int|null $contestants_count
  * @property-read \App\Models\Round $round
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Team> $teamContestants
- * @property-read int|null $team_contestants_count
  * @property-read \App\Models\Tournament $tournament
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $userContestants
- * @property-read int|null $user_contestants_count
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Matchup newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Matchup newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Matchup query()

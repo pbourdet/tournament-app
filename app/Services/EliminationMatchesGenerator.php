@@ -26,7 +26,7 @@ class EliminationMatchesGenerator
                 ]);
 
                 if (0 === $key) { // First round
-                    $match->contestants()->attach($contestants->splice(0, 2));
+                    $match->addContestants($contestants->splice(0, 2));
                 }
             }
         }
