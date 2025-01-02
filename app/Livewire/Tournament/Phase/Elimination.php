@@ -21,7 +21,10 @@ class Elimination extends Component
 
     public function render(): View
     {
-        $this->tournament->load('eliminationPhase.rounds.matches');
+        $this->tournament->load([
+            'eliminationPhase.rounds.tournament',
+            'eliminationPhase.rounds.matches.tournament',
+        ]);
 
         return view('livewire.tournament.phase.elimination', [
             'eliminationPhase' => $this->tournament->eliminationPhase,
