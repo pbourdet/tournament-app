@@ -7,12 +7,15 @@ namespace Tests\Feature\Livewire\Auth;
 use App\Livewire\Auth\SendVerificationEmail;
 use App\Models\User;
 use Illuminate\Auth\Notifications\VerifyEmail;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Notification;
 use Livewire\Livewire;
 use Tests\TestCase;
 
 class SendVerificationEmailTest extends TestCase
 {
+    use RefreshDatabase;
+
     public function testRendersSuccessfully(): void
     {
         Livewire::test(SendVerificationEmail::class)
