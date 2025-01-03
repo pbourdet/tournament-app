@@ -52,9 +52,8 @@ class Matchup extends Model
         return $this->hasMany(Result::class, 'match_id');
     }
 
-    /** @return class-string<User|Team> */
-    public function getContestantType(): string
+    public function getResultFor(Team|User $contestant): ?Result
     {
-        return $this->round->phase->tournament->team_based ? Team::class : User::class;
+        return $this->results->first(fn (Result $result) => $result->contestant->is($contestant));
     }
 }

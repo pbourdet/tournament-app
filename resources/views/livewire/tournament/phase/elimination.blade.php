@@ -24,7 +24,7 @@
                     <div class="flex flex-col space-y-6">
                         <h2 class="text-lg font-semibold text-center">{{ $round->stage->value }}</h2>
                         @foreach ($round->matchesWithContestants($tournament->team_based) as $match)
-                            @include('livewire.tournament.partials.match', ['match' => $match])
+                            <livewire:tournament.match-card wire:key="{{ $match->id }}" :$match>
                         @endforeach
                     </div>
                 @endforeach
