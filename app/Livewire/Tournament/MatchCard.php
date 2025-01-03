@@ -1,41 +1,65 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Livewire\Tournament;
 
 use App\Enums\ResultOutcome;
+use App\Enums\ToastType;
+use App\Events\ResultAdded;
+use App\Livewire\Component;
 use App\Models\Matchup;
 use App\Models\Team;
+use App\Models\User;
 use Illuminate\View\View;
-use Livewire\Component;
 
 class MatchCard extends Component
 {
     public Matchup $match;
 
+    /** @var array<string, array{outcome: ResultOutcome, score: int}> */
+    public array $contestants = [];
+
+    public function mount(Matchup $match): void
+    {
+        /** @var array<string, array{outcome: ResultOutcome, score: int}> $contestantsArray */
+        $contestantsArray = $this->match->getContestants()->mapWithKeys(
+            function (User|Team $contestant): array {
+                $result = $this->match->getResultFor($contestant);
+
+                return [
+                    $contestant->id => [
+                        'name' => $contestant->name,
+                        'outcome' => $result?->outcome,
+                        'score' => $result?->score,
+                    ],
+                ];
+            })->toArray();
+
+        $this->contestants = $contestantsArray;
+        $this->match = $match;
+    }
+
     public function render(): View
     {
-        $this->match->load('results.contestant')->loadContestants('.results');
-
         return view('livewire.tournament.match-card');
     }
 
     public function addResult(): void
     {
-        $contestants = $this->match->getContestants();
+        $this->match->results()->delete();
 
-        $this->match->results()->create([
-            'contestant_id' => $contestants->first()->id,
-            'contestant_type' => Team::class,
-            'score' => 1,
-            'outcome' => ResultOutcome::TIE->value,
-        ]);
-        $this->match->results()->create([
-            'contestant_id' => $contestants->last()->id,
-            'contestant_type' => Team::class,
-            'score' => 1,
-            'outcome' => ResultOutcome::TIE->value,
-        ]);
+        foreach ($this->contestants as $key => $contestant) {
+            $this->match->results()->create([
+                'contestant_id' => $key,
+                'contestant_type' => $this->match->getContestants()->first()?->getMorphClass(),
+                'outcome' => $contestant['outcome'],
+                'score' => $contestant['score'],
+            ]);
+        }
 
-        $this->match->refresh();
+        ResultAdded::dispatch($this->match);
+        $this->toast(__('Result added !'), variant: ToastType::SUCCESS->value);
+        $this->modals()->close();
     }
 }

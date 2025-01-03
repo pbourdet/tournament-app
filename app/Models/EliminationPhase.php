@@ -35,4 +35,21 @@ class EliminationPhase extends Model
     {
         return $this->morphMany(Round::class, 'phase');
     }
+
+    public function getNextMatchOf(Matchup $match): ?Matchup
+    {
+        $nextRound = null;
+        foreach ($this->rounds->load('matches') as $round) {
+            if ($round->stage === $match->round->stage->getNextRound()) {
+                $nextRound = $round;
+                break;
+            }
+        }
+
+        foreach ($nextRound->matches as $nextMatch) {
+            if ($nextMatch->index === $match->index / 2) {
+                return $nextMatch;
+            }
+        }
+    }
 }

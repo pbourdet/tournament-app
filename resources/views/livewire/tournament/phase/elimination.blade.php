@@ -18,13 +18,13 @@
             </form>
         @endcan
     @else
-        <div class="flex flex-col items-center">
+        <div class="flex flex-col">
             <div class="flex space-x-8 overflow-x-auto">
                 @foreach ($eliminationPhase->rounds as $round)
-                    <div class="flex flex-col space-y-6">
+                    <div class="flex flex-col space-y-6 justify-center">
                         <h2 class="text-lg font-semibold text-center">{{ $round->stage->value }}</h2>
-                        @foreach ($round->matchesWithContestants($tournament->team_based) as $match)
-                            <livewire:tournament.match-card wire:key="{{ $match->id }}" :$match>
+                        @foreach ($round->matches as $match)
+                            <livewire:tournament.match-card :key="$match->id . '-' .$match->contestants->count()" :$match>
                         @endforeach
                     </div>
                 @endforeach

@@ -18,7 +18,7 @@
     <flux:spacer/>
 
     <flux:dropdown position="top" align="start" class="max-lg:hidden">
-        <flux:profile avatar="{{ Storage::url(Auth::user()->getProfilePicture()) }}" name="{{ Auth::user()->username }}"/>
+        <flux:profile avatar="{{ Storage::url(Auth::user()->getProfilePicture()) }}" name="{{ Auth::user()->name }}"/>
 
         <flux:menu>
             <flux:menu.item wire:navigate href="{{ route('profile.edit') }}" icon="user">Profile</flux:menu.item>

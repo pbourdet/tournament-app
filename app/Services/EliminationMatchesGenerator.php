@@ -21,7 +21,7 @@ class EliminationMatchesGenerator
 
             for ($i = 0; $i < $matchesCount; ++$i) {
                 $match = $round->matches()->create([
-                    'index' => $i + 1,
+                    'index' => $i,
                 ]);
 
                 if (0 === $key) { // First round

@@ -7,7 +7,6 @@ namespace App\Models;
 use App\Enums\ResultOutcome;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 /**
@@ -28,6 +27,11 @@ class Result extends Model
     {
         /* @phpstan-ignore-next-line */
         return $this->morphTo();
+    }
+
+    public function isWin(): bool
+    {
+        return ResultOutcome::WIN === $this->outcome;
     }
 
     /** @return array<string, string> */

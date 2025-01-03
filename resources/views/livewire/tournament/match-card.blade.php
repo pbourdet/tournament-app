@@ -13,15 +13,47 @@
         <div class="relative flex flex-col border border-gray-300 rounded-lg p-4 shadow-md w-60 bg-white">
             @foreach($match->getContestants() as $contestant)
                 <div class="flex justify-between items-center py-1">
-                    <span class="text-sm font-medium text-gray-700 overflow-hidden text-ellipsis">{{ $contestant->name }}</span>
+                    <div class="flex items-center space-x-1">
+                        @if($match->results->isNotEmpty() && $contestant->won($match))
+                            <flux:icon name="check" class="text-green-500"/>
+                        @elseif($match->results->isNotEmpty())
+                            <flux:icon name="x-mark" class="text-red-400"/>
+                        @endif
+                        <span class="text-sm font-medium text-gray-700 overflow-hidden text-ellipsis">{{ $contestant->name }}</span>
+                    </div>
                     <span class="text-sm font-bold text-gray-800">{{ $match->getResultFor($contestant)?->score  }}</span>
                 </div>
                 @unless($loop->last)
                     <flux:separator class="my-2"/>
                 @endunless
             @endforeach
-            <flux:button wire:click="addResult" icon="plus">Results!</flux:button>
+                <flux:modal.trigger name="add-result-{{ $match->id }}">
+                    <flux:button icon="plus">Results!</flux:button>
+                </flux:modal.trigger>
+
         </div>
     @endif
 
+    <flux:modal variant="flyout" class="space-y-6" name="add-result-{{ $match->id }}">
+        <div>
+            <flux:heading>Add match result</flux:heading>
+            <flux:subheading>Specify the outcome and the score</flux:subheading>
+        </div>
+
+        <div class="space-y-4">
+            @foreach($contestants as $key => $contestant)
+                <flux:input.group class="max-sm:flex-col">
+                    <flux:input readonly wire:model="contestants.{{ $key }}.name"/>
+                    <flux:select variant="listbox" wire:model="contestants.{{ $key }}.outcome">
+                        @foreach(\App\Enums\ResultOutcome::cases() as $outcome)
+                            <flux:option value="{{ $outcome->value }}">{{ __($outcome->value) }}</flux:option>
+                        @endforeach
+                    </flux:select>
+                    <flux:input type="number" wire:model="contestants.{{ $key }}.score"/>
+                </flux:input.group>
+            @endforeach
+        </div>
+
+        <flux:button wire:click="addResult">Save</flux:button>
+    </flux:modal>
 </div>

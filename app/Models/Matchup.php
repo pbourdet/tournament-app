@@ -32,7 +32,7 @@ class Matchup extends Model
     /** @return HasMany<MatchContestant, $this> */
     public function contestants(): HasMany
     {
-        return $this->hasMany(MatchContestant::class, 'match_id');
+        return $this->hasMany(MatchContestant::class, 'match_id')->with('contestant');
     }
 
     /** @param Collection<int, Team>|Collection<int, User> $contestants */
@@ -49,11 +49,23 @@ class Matchup extends Model
     /** @return HasMany<Result, $this> */
     public function results(): HasMany
     {
-        return $this->hasMany(Result::class, 'match_id');
+        return $this->hasMany(Result::class, 'match_id')->with('contestant');
+    }
+
+    /** @return Collection<int, Team|User> */
+    public function getContestants(): Collection
+    {
+        /* @phpstan-ignore-next-line */
+        return $this->contestants->map(fn (MatchContestant $pivot) => $pivot->contestant);
     }
 
     public function getResultFor(Team|User $contestant): ?Result
     {
         return $this->results->first(fn (Result $result) => $result->contestant->is($contestant));
+    }
+
+    public function winner(): Team|User
+    {
+        return $this->getContestants()->firstOrFail(fn (Team|User $contestant) => $contestant->won($this));
     }
 }

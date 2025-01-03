@@ -70,7 +70,6 @@ namespace App\Models{
  * 
  *
  * @property string $id
- * @property string $tournament_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property string $round_id
@@ -80,7 +79,6 @@ namespace App\Models{
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Result> $results
  * @property-read int|null $results_count
  * @property-read \App\Models\Round $round
- * @property-read \App\Models\Tournament $tournament
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Matchup newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Matchup newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Matchup query()
@@ -88,7 +86,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Matchup whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Matchup whereIndex($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Matchup whereRoundId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Matchup whereTournamentId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Matchup whereUpdatedAt($value)
  * @mixin \Eloquent
  */
@@ -100,7 +97,7 @@ namespace App\Models{
 /**
  * 
  *
- * @property string $id
+ * @property int $id
  * @property string $match_id
  * @property string $contestant_type
  * @property string $contestant_id
@@ -108,6 +105,7 @@ namespace App\Models{
  * @property int|null $score
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $contestant
  * @property-read \App\Models\Matchup $match
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Result newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Result newQuery()
@@ -138,7 +136,7 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Matchup> $matches
  * @property-read int|null $matches_count
- * @property-read \App\Models\EliminationPhase $phase
+ * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $phase
  * @property-read \App\Models\Tournament|null $tournament
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Round newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Round newQuery()
@@ -168,6 +166,8 @@ namespace App\Models{
  * @property-read int|null $matches_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $members
  * @property-read int|null $members_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Result> $results
+ * @property-read int|null $results_count
  * @property-read \App\Models\Tournament $tournament
  * @method static \Database\Factories\TeamFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Team newModelQuery()
@@ -200,8 +200,6 @@ namespace App\Models{
  * @property \App\Enums\TournamentStatus $status
  * @property-read \App\Models\EliminationPhase|null $eliminationPhase
  * @property-read \App\Models\TournamentInvitation|null $invitation
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Matchup> $matches
- * @property-read int|null $matches_count
  * @property-read \App\Models\User $organizer
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $players
  * @property-read int|null $players_count
@@ -273,6 +271,8 @@ namespace App\Models{
  * @property-read int|null $matches_count
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
  * @property-read int|null $notifications_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Result> $results
+ * @property-read int|null $results_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Team> $teams
  * @property-read int|null $teams_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Tournament> $tournaments

@@ -17,8 +17,14 @@ trait WithMatches
         return $this->morphToMany(Matchup::class, 'contestant', 'match_contestant', 'contestant_id', 'match_id');
     }
 
+    /** @return MorphMany<Result, TDeclaringModel> */
     public function results(): MorphMany
     {
         return $this->morphMany(Result::class, 'contestant');
+    }
+
+    public function won(Matchup $match): bool
+    {
+        return $match->results->contains(fn (Result $result) => $result->contestant->is($this) && $result->isWin());
     }
 }
