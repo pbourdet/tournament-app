@@ -62,12 +62,6 @@ class Tournament extends Model
         return $this->hasMany(Team::class);
     }
 
-    /** @return HasMany<Matchup, $this> */
-    public function matches(): HasMany
-    {
-        return $this->hasMany(Matchup::class);
-    }
-
     /** @return HasOne<EliminationPhase, $this> */
     public function eliminationPhase(): HasOne
     {

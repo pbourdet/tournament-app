@@ -19,16 +19,7 @@ class Matchup extends Model
 
     protected $table = 'matches';
 
-    protected $fillable = [
-        'tournament_id',
-        'index',
-    ];
-
-    /** @return BelongsTo<Tournament, $this> */
-    public function tournament(): BelongsTo
-    {
-        return $this->belongsTo(Tournament::class);
-    }
+    protected $fillable = ['index'];
 
     /** @return BelongsTo<Round, $this> */
     public function round(): BelongsTo
@@ -53,9 +44,9 @@ class Matchup extends Model
         }
     }
 
-    /** @return class-string<User|Team> */
-    public function getContestantType(): string
+    /** @return HasMany<Result, $this> */
+    public function results(): HasMany
     {
-        return $this->tournament->team_based ? Team::class : User::class;
+        return $this->hasMany(Result::class, 'match_id');
     }
 }
