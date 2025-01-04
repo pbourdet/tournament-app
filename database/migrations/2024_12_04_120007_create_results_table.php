@@ -10,14 +10,14 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('results', function (Blueprint $table) {
-            $table->uuid('id')->primary();
+            $table->id();
             $table->foreignUuid('match_id')->index()->constrained()->cascadeOnDelete();
-            $table->string('contestant_type');
-            $table->uuid('winner_id');
-            $table->uuid('loser_id');
-            $table->integer('winner_score');
-            $table->integer('loser_score');
+            $table->uuidMorphs('contestant');
+            $table->enum('outcome', ['Win', 'Loss', 'Tie']);
+            $table->integer('score');
             $table->timestamps();
+
+            $table->unique(['match_id', 'contestant_type', 'contestant_id']);
         });
     }
 
