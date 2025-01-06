@@ -7,20 +7,17 @@ namespace App\Models;
 use Database\Factories\TeamFactory;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
  * @mixin IdeHelperTeam
  */
-class Team extends Model
+class Team extends Contestant
 {
     /** @use HasFactory<TeamFactory> */
     use HasFactory;
     use HasUuids;
-    /** @use WithMatches<$this> */
-    use WithMatches;
 
     protected $fillable = ['name', 'tournament_id'];
 
@@ -34,5 +31,10 @@ class Team extends Model
     public function tournament(): BelongsTo
     {
         return $this->belongsTo(Tournament::class);
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
     }
 }

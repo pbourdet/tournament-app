@@ -25,7 +25,7 @@ class Result extends Model
         return $this->belongsTo(Matchup::class);
     }
 
-    /** @return MorphTo<Team|User, $this> */
+    /** @return MorphTo<Contestant, $this> */
     public function contestant(): MorphTo
     {
         /* @phpstan-ignore-next-line */

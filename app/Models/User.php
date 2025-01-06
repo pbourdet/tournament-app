@@ -15,7 +15,6 @@ use Illuminate\Contracts\Auth\MustVerifyEmail as MustVerifyEmailContract;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\Access\Authorizable;
@@ -24,7 +23,7 @@ use Illuminate\Notifications\Notifiable;
 /**
  * @mixin IdeHelperUser
  */
-class User extends Model implements MustVerifyEmailContract, AuthenticatableContract, AuthorizableContract, CanResetPasswordContract
+class User extends Contestant implements MustVerifyEmailContract, AuthenticatableContract, AuthorizableContract, CanResetPasswordContract
 {
     use Authenticatable;
     use Authorizable;
@@ -35,9 +34,6 @@ class User extends Model implements MustVerifyEmailContract, AuthenticatableCont
     use HasFactory;
     use Notifiable;
     use HasUuids;
-
-    /** @use WithMatches<$this> */
-    use WithMatches;
 
     /** @var list<string> */
     protected $fillable = [
@@ -79,6 +75,11 @@ class User extends Model implements MustVerifyEmailContract, AuthenticatableCont
     public function teams(): BelongsToMany
     {
         return $this->belongsToMany(Team::class);
+    }
+
+    public function getName(): string
+    {
+        return $this->username;
     }
 
     public function getProfilePicture(): string
