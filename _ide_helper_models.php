@@ -48,7 +48,7 @@ namespace App\Models{
  * @property string $contestant_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $contestant
+ * @property-read \App\Models\Contestant $contestant
  * @property-read \App\Models\Matchup $match
  * @method static \Illuminate\Database\Eloquent\Builder<static>|MatchContestant newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|MatchContestant newQuery()
@@ -95,17 +95,17 @@ namespace App\Models{
 
 namespace App\Models{
 /**
- * 
+ *
  *
  * @property int $id
  * @property string $match_id
  * @property string $contestant_type
  * @property string $contestant_id
  * @property \App\Enums\ResultOutcome $outcome
- * @property int $score
+ * @property int|null $score
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $contestant
+ * @property-read \App\Models\Contestant $contestant
  * @property-read \App\Models\Matchup $match
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Result newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Result newQuery()

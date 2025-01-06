@@ -8,16 +8,17 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
-/** @template TDeclaringModel of Model */
-trait WithMatches
+abstract class Contestant extends Model
 {
-    /** @return MorphToMany<Matchup, TDeclaringModel> */
+    abstract public function getName(): string;
+
+    /** @return MorphToMany<Matchup, $this> */
     public function matches(): MorphToMany
     {
         return $this->morphToMany(Matchup::class, 'contestant', 'match_contestant', 'contestant_id', 'match_id');
     }
 
-    /** @return MorphMany<Result, TDeclaringModel> */
+    /** @return MorphMany<Result, $this> */
     public function results(): MorphMany
     {
         return $this->morphMany(Result::class, 'contestant');

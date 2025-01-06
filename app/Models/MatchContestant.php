@@ -19,7 +19,7 @@ class MatchContestant extends MorphPivot
         return $this->belongsTo(Matchup::class, 'match_id');
     }
 
-    /** @return MorphTo<Team|User, $this> */
+    /** @return MorphTo<Contestant, $this> */
     public function contestant(): MorphTo
     {
         /* @phpstan-ignore-next-line */
