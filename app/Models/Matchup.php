@@ -30,7 +30,7 @@ class Matchup extends Model
     /** @phpstan-return HasMany<MatchContestant, $this> */
     public function contestants(): HasMany
     {
-        return $this->hasMany(MatchContestant::class, 'match_id');
+        return $this->hasMany(MatchContestant::class, 'match_id')->with('contestant');
     }
 
     /** @param Collection<int, Team>|Collection<int, User> $contestants */
@@ -48,5 +48,11 @@ class Matchup extends Model
     public function results(): HasMany
     {
         return $this->hasMany(Result::class, 'match_id');
+    }
+
+    /** @return Collection<int, Contestant> */
+    public function getContestants(): Collection
+    {
+        return $this->contestants->map(fn (MatchContestant $contestant) => $contestant->contestant);
     }
 }
