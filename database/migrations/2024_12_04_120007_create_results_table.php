@@ -14,7 +14,7 @@ return new class extends Migration {
             $table->foreignUuid('match_id')->index()->constrained()->cascadeOnDelete();
             $table->uuidMorphs('contestant');
             $table->enum('outcome', ['Win', 'Loss', 'Tie']);
-            $table->integer('score');
+            $table->integer('score')->nullable();
             $table->timestamps();
 
             $table->unique(['match_id', 'contestant_type', 'contestant_id']);

@@ -5,12 +5,10 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Enums\RoundStage;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOneThrough;
-use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 /**
  * @mixin IdeHelperRound
@@ -23,35 +21,16 @@ class Round extends Model
         'stage',
     ];
 
-    /** @return MorphTo<Model, $this> */
-    public function phase(): MorphTo
+    /** @return BelongsTo<Phase, $this> */
+    public function phase(): BelongsTo // @phpstan-ignore-line
     {
-        return $this->morphTo();
+        return $this->belongsTo(Phase::class);
     }
 
     /** @return HasMany<Matchup, $this> */
     public function matches(): HasMany
     {
         return $this->hasMany(Matchup::class);
-    }
-
-    /** @return HasOneThrough<Tournament, EliminationPhase, $this> */
-    public function tournament(): HasOneThrough
-    {
-        return $this->hasOneThrough(
-            Tournament::class,
-            EliminationPhase::class,
-            'id',
-            'id',
-            'phase_id',
-            'tournament_id'
-        );
-    }
-
-    /** @return Collection<int, Matchup> */
-    public function matchesWithContestants(bool $teamBased): Collection
-    {
-        return $this->matches->load($teamBased ? 'teamContestants' : 'userContestants');
     }
 
     /** @return array<string, string> */

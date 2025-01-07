@@ -100,9 +100,8 @@ class JoinTest extends TestCase
     public function testStatusUpdatesToReadyToStartWhenTournamentIsFullWithAPhase(): void
     {
         $user = User::factory()->create();
-        $tournament = Tournament::factory()->create(['number_of_players' => 2]);
+        $tournament = Tournament::factory()->withEliminationPhase(['number_of_contestants' => 2])->create(['number_of_players' => 2]);
         $tournament->players()->attach($user);
-        $tournament->eliminationPhase()->create(['number_of_contestants' => 2]);
         $this->assertSame(TournamentStatus::WAITING_FOR_PLAYERS, $tournament->status);
 
         Livewire::actingAs(User::factory()->create())

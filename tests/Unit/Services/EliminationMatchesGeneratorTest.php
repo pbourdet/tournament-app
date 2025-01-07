@@ -19,7 +19,7 @@ class EliminationMatchesGeneratorTest extends TestCase
     public function testGenerate(): void
     {
         $tournament = Tournament::factory()->full()->create(['number_of_players' => 16]);
-        $phase = EliminationPhase::factory()->forTournament($tournament)->withRounds()->create(['number_of_contestants' => 16]);
+        $phase = EliminationPhase::factory()->withDetails(['number_of_contestants' => 16])->forTournament($tournament)->withRounds()->create();
 
         new EliminationMatchesGenerator()->generate($phase);
 

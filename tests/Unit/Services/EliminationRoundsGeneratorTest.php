@@ -16,7 +16,8 @@ class EliminationRoundsGeneratorTest extends TestCase
     public function testGenerate(): void
     {
         $tournament = Tournament::factory()->create(['number_of_players' => 16]);
-        $phase = $tournament->eliminationPhase()->create(['number_of_contestants' => 16]);
+        $phase = $tournament->eliminationPhase()->create();
+        $phase->details()->create(['number_of_contestants' => 16]);
 
         new EliminationRoundsGenerator()->generate($phase);
 

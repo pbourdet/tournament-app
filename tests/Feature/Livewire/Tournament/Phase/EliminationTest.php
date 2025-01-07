@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Livewire\Tournament\Phase;
 
+use App\Enums\PhaseType;
 use App\Enums\TournamentStatus;
 use App\Livewire\Tournament\Phase\Elimination;
 use App\Models\Tournament;
@@ -35,7 +36,8 @@ class EliminationTest extends TestCase
             ->assertDispatched('toast-show')
             ->assertSuccessful();
 
-        $this->assertDatabaseCount('elimination_phases', 1);
+        $this->assertDatabaseHas('phases', ['type' => PhaseType::ELIMINATION]);
+        $this->assertDatabaseHas('elimination_phase_details', ['number_of_contestants' => 8]);
     }
 
     public function testTournamentStatusIsUpdatedIfFullAfterCreation(): void
@@ -72,13 +74,12 @@ class EliminationTest extends TestCase
             ->call('create')
             ->assertHasErrors(['form.numberOfContestants']);
 
-        $this->assertDatabaseCount('elimination_phases', 0);
+        $this->assertDatabaseCount('phases', 0);
     }
 
     public function testUserCantCreateAnEliminationPhaseIfAlreadyExists(): void
     {
-        $tournament = Tournament::factory()->create();
-        $tournament->eliminationPhase()->create(['number_of_contestants' => 8]);
+        $tournament = Tournament::factory()->withEliminationPhase(['number_of_contestants' => 8])->create();
 
         Livewire::actingAs($tournament->organizer)
             ->test(Elimination::class, ['tournament' => $tournament])
@@ -86,7 +87,7 @@ class EliminationTest extends TestCase
             ->call('create')
             ->assertForbidden();
 
-        $this->assertDatabaseCount('elimination_phases', 1);
+        $this->assertDatabaseCount('phases', 1);
     }
 
     public function testUserCantCreateAnEliminationPhaseIfNotOrganizer(): void
@@ -99,6 +100,6 @@ class EliminationTest extends TestCase
             ->call('create')
             ->assertForbidden();
 
-        $this->assertDatabaseCount('elimination_phases', 0);
+        $this->assertDatabaseCount('phases', 0);
     }
 }

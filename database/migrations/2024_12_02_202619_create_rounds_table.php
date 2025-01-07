@@ -11,7 +11,7 @@ return new class extends Migration {
     {
         Schema::create('rounds', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->uuidMorphs('phase');
+            $table->foreignUuid('phase_id')->index()->constrained()->cascadeOnDelete();
             $table->enum('stage', ['W128', 'W64', 'W32', 'W16', 'W8', 'W4', 'W2']);
             $table->timestamps();
         });

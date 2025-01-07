@@ -4,35 +4,33 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\PhaseType;
 use Database\Factories\EliminationPhaseFactory;
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 /**
+ * @extends Phase<EliminationPhaseDetail>
+ *
  * @mixin IdeHelperEliminationPhase
  */
-class EliminationPhase extends Model
+class EliminationPhase extends Phase
 {
-    use HasUuids;
     /** @use HasFactory<EliminationPhaseFactory> */
     use HasFactory;
 
-    protected $fillable = [
-        'number_of_contestants',
-    ];
-
-    /** @return BelongsTo<Tournament, $this> */
-    public function tournament(): BelongsTo
+    public static function booted(): void
     {
-        return $this->belongsTo(Tournament::class);
+        static::addGlobalScope('type', function (Builder $query): void {
+            $query->where('type', PhaseType::ELIMINATION);
+        });
+        static::creating(function (EliminationPhase $phase): void {
+            $phase->type = PhaseType::ELIMINATION;
+        });
     }
 
-    /** @return MorphMany<Round, $this> */
-    public function rounds(): MorphMany
+    public function getDetailClassName(): string
     {
-        return $this->morphMany(Round::class, 'phase');
+        return EliminationPhaseDetail::class;
     }
 }
