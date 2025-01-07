@@ -62,18 +62,16 @@ class Tournament extends Model
         return $this->hasMany(Team::class);
     }
 
+    /** @return HasMany<Phase, $this> */
+    public function phases(): HasMany // @phpstan-ignore-line
+    {
+        return $this->hasMany(Phase::class);
+    }
+
     /** @return HasOne<EliminationPhase, $this> */
     public function eliminationPhase(): HasOne
     {
         return $this->hasOne(EliminationPhase::class);
-    }
-
-    /** @return Collection<int, EliminationPhase> */
-    public function phases(): Collection
-    {
-        return collect([
-            $this->eliminationPhase,
-        ])->filter();
     }
 
     public function createInvitation(): void

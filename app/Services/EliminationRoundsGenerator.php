@@ -11,7 +11,7 @@ class EliminationRoundsGenerator
 {
     public function generate(EliminationPhase $phase): void
     {
-        $rounds = RoundStage::getRoundsForContestants($phase->number_of_contestants);
+        $rounds = RoundStage::getRoundsForContestants($phase->getDetails()->number_of_contestants);
 
         foreach ($rounds as $round) {
             $phase->rounds()->create([

@@ -21,10 +21,7 @@ class Elimination extends Component
 
     public function render(): View
     {
-        $this->tournament->load([
-            'eliminationPhase.rounds.tournament',
-            'eliminationPhase.rounds.matches.contestants',
-        ]);
+        $this->tournament->load(['eliminationPhase.rounds.matches.contestants']);
 
         return view('livewire.tournament.phase.elimination', [
             'eliminationPhase' => $this->tournament->eliminationPhase,
@@ -39,9 +36,8 @@ class Elimination extends Component
 
         $this->form->validate();
 
-        $this->tournament->eliminationPhase()->create([
-            'number_of_contestants' => $this->form->numberOfContestants,
-        ]);
+        $phase = $this->tournament->eliminationPhase()->create();
+        $phase->details()->create(['number_of_contestants' => $this->form->numberOfContestants]);
 
         PhaseCreated::dispatch($this->tournament);
         $this->toast(__('Elimination phase created successfully !'), variant: ToastType::SUCCESS->value);
