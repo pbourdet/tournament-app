@@ -2,14 +2,23 @@
 
 declare(strict_types=1);
 
-namespace App\Services;
+namespace App\Services\Generators;
 
 use App\Models\EliminationPhase;
+use App\Models\Phase;
 use App\Models\Round;
 
-class EliminationMatchesGenerator
+/**
+ * @implements Generator<EliminationPhase>
+ */
+class EliminationMatchesGenerator implements Generator
 {
-    public function generate(EliminationPhase $phase): void
+    public function supports(Phase $phase): bool
+    {
+        return $phase->isElimination();
+    }
+
+    public function generate(Phase $phase): void
     {
         $contestants = $phase->tournament->contestants()->shuffle();
         $rounds = $phase->rounds
