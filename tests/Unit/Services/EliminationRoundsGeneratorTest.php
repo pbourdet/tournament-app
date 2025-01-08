@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\Services;
 
 use App\Models\Tournament;
-use App\Services\EliminationRoundsGenerator;
+use App\Services\Generators\EliminationRoundsGenerator;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 

@@ -74,6 +74,15 @@ class Tournament extends Model
         return $this->hasOne(EliminationPhase::class);
     }
 
+    /** @return Collection<int, Phase<Model>> */
+    public function getPhases(): Collection
+    {
+        // @phpstan-ignore-next-line
+        return collect([
+            $this->eliminationPhase,
+        ])->filter();
+    }
+
     public function createInvitation(): void
     {
         $this->invitation()->create([
@@ -144,6 +153,16 @@ class Tournament extends Model
     public function isReadyToStart(): bool
     {
         return TournamentStatus::READY_TO_START === $this->status && $this->hasAllContestants();
+    }
+
+    public function start(): void
+    {
+        $this->update(['status' => TournamentStatus::IN_PROGRESS]);
+    }
+
+    public function isStarted(): bool
+    {
+        return TournamentStatus::IN_PROGRESS === $this->status;
     }
 
     public function getLockKey(): string

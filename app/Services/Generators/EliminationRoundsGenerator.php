@@ -2,14 +2,23 @@
 
 declare(strict_types=1);
 
-namespace App\Services;
+namespace App\Services\Generators;
 
 use App\Enums\RoundStage;
 use App\Models\EliminationPhase;
+use App\Models\Phase;
 
-class EliminationRoundsGenerator
+/**
+ * @implements Generator<EliminationPhase>
+ */
+class EliminationRoundsGenerator implements Generator
 {
-    public function generate(EliminationPhase $phase): void
+    public function supports(Phase $phase): bool
+    {
+        return $phase->isElimination();
+    }
+
+    public function generate(Phase $phase): void
     {
         $rounds = RoundStage::getRoundsForContestants($phase->getDetails()->number_of_contestants);
 

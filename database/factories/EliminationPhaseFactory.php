@@ -6,7 +6,7 @@ namespace Database\Factories;
 
 use App\Enums\PhaseType;
 use App\Models\EliminationPhase;
-use App\Services\EliminationRoundsGenerator;
+use App\Services\Generators\EliminationRoundsGenerator;
 
 /**
  * @extends PhaseFactory<EliminationPhase>

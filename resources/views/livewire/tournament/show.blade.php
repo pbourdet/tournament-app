@@ -3,7 +3,7 @@
 <div>
     <flux:header class="bg-zinc-50">
         <flux:navbar scrollable>
-            <flux:navbar.item wire:navigate
+            <flux:navbar.item wire:navigate dusk="link-overview"
                               href="{{ route('tournaments.show', ['tournament' => $tournament, 'page' => 'overview']) }}">
                 {{ __('Overview') }}
             </flux:navbar.item>
@@ -13,7 +13,7 @@
                     {{ __('Teams') }}
                 </flux:navbar.item>
             @endif
-            <flux:navbar.item wire:navigate
+            <flux:navbar.item wire:navigate dusk="link-elimination"
                               href="{{ route('tournaments.show', ['tournament' => $tournament, 'page' => 'phase-elimination']) }}">
                 {{ __('Elimination') }}
             </flux:navbar.item>

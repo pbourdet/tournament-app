@@ -58,6 +58,11 @@ class Phase extends Model
         throw new \LogicException('Method getDetailClassName must be implemented in child class');
     }
 
+    public function isElimination(): bool
+    {
+        return PhaseType::ELIMINATION === $this->type;
+    }
+
     /** @return array<string, string> */
     protected function casts(): array
     {

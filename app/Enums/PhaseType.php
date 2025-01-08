@@ -7,4 +7,5 @@ namespace App\Enums;
 enum PhaseType: string
 {
     case ELIMINATION = 'elimination';
+    case GROUP = 'group';
 }

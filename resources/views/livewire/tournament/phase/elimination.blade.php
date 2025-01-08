@@ -4,7 +4,7 @@
         @can('manage', $tournament)
             <form wire:submit="create">
                 <x-input-label for="numberOfContestants" :value="$tournament->team_based ? __('Number of teams') : __('Number of players')" />
-                <select id="numberOfContestants" name="numberOfContestants" wire:model="form.numberOfContestants" class="block mt-1 w-20">
+                <select dusk="number-of-contestants" id="numberOfContestants" wire:model="form.numberOfContestants" class="block mt-1 w-20">
                     @foreach([2, 4, 8, 16, 32, 64, 128] as $number)
                         @if($number <= $tournament->contestantsCount())
                             <option value="{{ $number }}">{{ $number }}</option>
@@ -12,7 +12,7 @@
                     @endforeach
                 </select>
 
-                <x-secondary-button type="submit">
+                <x-secondary-button dusk="create-elimination" type="submit">
                     {{ __('Confirm') }}
                 </x-secondary-button>
             </form>
