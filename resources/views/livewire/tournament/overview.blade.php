@@ -21,7 +21,7 @@
 
     @if($tournament->isNotStarted())
         <div>
-            <flux:button variant="primary" :disabled="!$tournament->isReadyToStart() || $locked" wire:click="start">
+            <flux:button dusk="start-tournament" variant="primary" :disabled="!$tournament->isReadyToStart() || $locked" wire:click="start">
                 {{ __('Start tournament') }}
             </flux:button>
         </div>

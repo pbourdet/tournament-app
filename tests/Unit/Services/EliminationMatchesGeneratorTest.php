@@ -8,7 +8,7 @@ use App\Enums\RoundStage;
 use App\Models\EliminationPhase;
 use App\Models\Matchup;
 use App\Models\Tournament;
-use App\Services\EliminationMatchesGenerator;
+use App\Services\Generators\EliminationMatchesGenerator;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
