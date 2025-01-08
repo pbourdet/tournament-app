@@ -13,6 +13,17 @@
         <div class="relative flex flex-col border border-gray-300 rounded-lg p-4 shadow-md w-60 bg-white">
             @foreach($match->getContestants() as $contestant)
                 <div class="flex justify-between items-center py-1">
+                    @if($match->results->isNotEmpty())
+                        @if($contestant->won($match))
+                            <flux:icon name="check" class="text-green-500"/>
+                        @elseif($contestant->lost($match))
+                            <flux:icon name="x-mark" class="text-red-400"/>
+                        @else
+                            <flux:icon name="minus" class="text-gray-400"/>
+                        @endif
+                    @elseif($match->results->isNotEmpty())
+                        <flux:icon name="x-mark" class="text-red-400"/>
+                    @endif
                     <span class="text-sm font-medium text-gray-700 overflow-hidden text-ellipsis">{{ $contestant->name }}</span>
                     <span class="text-sm font-bold text-gray-800">{{ $match->getResultFor($contestant)?->score }}</span>
                 </div>

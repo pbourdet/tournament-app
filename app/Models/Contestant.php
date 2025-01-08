@@ -26,4 +26,14 @@ abstract class Contestant extends Model
     {
         return $this->morphMany(Result::class, 'contestant');
     }
+
+    public function won(Matchup $match): bool
+    {
+        return $match->results->contains(fn (Result $result) => $result->contestant->is($this) && $result->isWin());
+    }
+
+    public function lost(Matchup $match): bool
+    {
+        return $match->results->contains(fn (Result $result) => $result->contestant->is($this) && $result->isLoss());
+    }
 }

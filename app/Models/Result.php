@@ -28,6 +28,16 @@ class Result extends Model
         return $this->morphTo();
     }
 
+    public function isWin(): bool
+    {
+        return ResultOutcome::WIN === $this->outcome;
+    }
+
+    public function isLoss(): bool
+    {
+        return ResultOutcome::LOSS === $this->outcome;
+    }
+
     /** @return array<string, string> */
     protected function casts(): array
     {
