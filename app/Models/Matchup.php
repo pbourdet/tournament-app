@@ -53,6 +53,6 @@ class Matchup extends Model
     /** @return Collection<int, Contestant> */
     public function getContestants(): Collection
     {
-        return $this->contestants->map(fn (MatchContestant $contestant) => $contestant->contestant);
+        return $this->contestants->map(fn (MatchContestant $pivot) => $pivot->contestant);
     }
 }
