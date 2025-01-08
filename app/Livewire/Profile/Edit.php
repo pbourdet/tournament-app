@@ -26,7 +26,7 @@ class Edit extends Component
 
     public function mount(): void
     {
-        $this->user = User::findOrFail(auth()->id());
+        $this->user = $this->getUser();
         $this->informationForm->hydrate($this->user);
     }
 

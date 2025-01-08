@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace App\Livewire;
 
-use App\Models\User;
 use Illuminate\View\View;
 
 class Dashboard extends Component
 {
     public function render(): View
     {
-        $user = User::findOrFail(auth()->id());
+        $user = $this->getUser();
 
         $managedTournaments = $user->managedTournaments()->get();
         $joinedTournaments = $user->tournaments()
