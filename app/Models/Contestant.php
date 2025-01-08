@@ -8,6 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
+/**
+ * @property string $id Replace with property hooks when php-cs-fixer supports it.
+ */
 abstract class Contestant extends Model
 {
     abstract public function getName(): string;

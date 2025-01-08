@@ -60,4 +60,10 @@ class Matchup extends Model
     {
         return $this->results->first(fn (Result $result) => $result->contestant->is($contestant));
     }
+
+    /** @return class-string<Team|User> */
+    public function getContestantType(): string
+    {
+        return $this->round->phase->tournament->team_based ? Team::class : User::class;
+    }
 }
