@@ -14,7 +14,7 @@
             @foreach($match->getContestants() as $contestant)
                 <div class="flex justify-between items-center py-1">
                     <span class="text-sm font-medium text-gray-700 overflow-hidden text-ellipsis">{{ $contestant->name }}</span>
-                    <span class="text-sm font-bold text-gray-800">0</span>
+                    <span class="text-sm font-bold text-gray-800">{{ $match->getResultFor($contestant)?->score }}</span>
                 </div>
                 @unless($loop->last)
                     <flux:separator class="my-2"/>

@@ -47,12 +47,17 @@ class Matchup extends Model
     /** @return HasMany<Result, $this> */
     public function results(): HasMany
     {
-        return $this->hasMany(Result::class, 'match_id');
+        return $this->hasMany(Result::class, 'match_id')->with('contestant');
     }
 
     /** @return Collection<int, Contestant> */
     public function getContestants(): Collection
     {
         return $this->contestants->map(fn (MatchContestant $pivot) => $pivot->contestant);
+    }
+
+    public function getResultFor(Contestant $contestant): ?Result
+    {
+        return $this->results->first(fn (Result $result) => $result->contestant->is($contestant));
     }
 }
