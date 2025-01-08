@@ -8,4 +8,3 @@ parameters:
         - _ide_helper_models.php
     ignoreErrors:
         - '#Cannot call method close\(\) on mixed#'
-        - '#PHPDoc tag @mixin contains generic class App\\Models\\IdeHelperPhase but does not specify its types#'

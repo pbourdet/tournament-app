@@ -11,7 +11,6 @@ use App\Notifications\TournamentStarted;
 use App\Services\Generators\Generator;
 use Illuminate\Container\Attributes\Tag;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Queue\InteractsWithQueue;
@@ -41,8 +40,8 @@ class StartTournament implements ShouldQueue
     }
 
     /**
-     * @param array<int, Generator<Phase<Model>>> $roundsGenerator
-     * @param array<int, Generator<Phase<Model>>> $matchesGenerators
+     * @param array<int, Generator<Phase>> $roundsGenerator
+     * @param array<int, Generator<Phase>> $matchesGenerators
      */
     public function handle(
         #[Tag('rounds_generators')] iterable $roundsGenerator,

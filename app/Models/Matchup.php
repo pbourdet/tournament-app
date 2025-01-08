@@ -27,7 +27,7 @@ class Matchup extends Model
         return $this->belongsTo(Round::class);
     }
 
-    /** @phpstan-return HasMany<MatchContestant, $this> */
+    /** @return HasMany<MatchContestant, $this> */
     public function contestants(): HasMany
     {
         return $this->hasMany(MatchContestant::class, 'match_id')->with('contestant');

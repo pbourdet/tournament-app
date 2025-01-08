@@ -7,8 +7,8 @@ namespace App\Models;
 use App\Enums\RoundStage;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 /**
  * @mixin IdeHelperRound
@@ -21,10 +21,10 @@ class Round extends Model
         'stage',
     ];
 
-    /** @return BelongsTo<Phase, $this> */
-    public function phase(): BelongsTo // @phpstan-ignore-line
+    /** @return MorphTo<Model, $this> */
+    public function phase(): MorphTo
     {
-        return $this->belongsTo(Phase::class);
+        return $this->morphTo();
     }
 
     /** @return HasMany<Matchup, $this> */

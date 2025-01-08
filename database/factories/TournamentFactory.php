@@ -70,15 +70,6 @@ class TournamentFactory extends Factory
         });
     }
 
-    /** @param array<string, mixed> $attributes */
-    public function withEliminationPhase(array $attributes = []): static
-    {
-        return $this->afterCreating(function (Tournament $tournament) use ($attributes): void {
-            $phase = $tournament->eliminationPhase()->create();
-            $phase->details()->create($attributes);
-        });
-    }
-
     public function configure(): static
     {
         return $this->afterMaking(function (Tournament $tournament): void {

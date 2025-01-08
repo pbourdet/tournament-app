@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphPivot;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
@@ -19,10 +20,9 @@ class MatchContestant extends MorphPivot
         return $this->belongsTo(Matchup::class, 'match_id');
     }
 
-    /** @return MorphTo<Contestant, $this> */
+    /** @return MorphTo<Model, $this> */
     public function contestant(): MorphTo
     {
-        /* @phpstan-ignore-next-line */
         return $this->morphTo();
     }
 }
