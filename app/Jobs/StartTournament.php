@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace App\Jobs;
 
-use App\Enums\TournamentStatus;
 use App\Events\TournamentUpdated;
+use App\Models\Phase;
 use App\Models\Tournament;
 use App\Notifications\TournamentStarted;
-use App\Services\EliminationMatchesGenerator;
-use App\Services\EliminationRoundsGenerator;
+use App\Services\Generators\Generator;
+use Illuminate\Container\Attributes\Tag;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Queue\InteractsWithQueue;
@@ -39,13 +40,32 @@ class StartTournament implements ShouldQueue
         ];
     }
 
-    public function handle(EliminationRoundsGenerator $roundsGenerator, EliminationMatchesGenerator $matchesGenerator): void
-    {
+    /**
+     * @param array<int, Generator<Phase<Model>>> $roundsGenerator
+     * @param array<int, Generator<Phase<Model>>> $matchesGenerators
+     */
+    public function handle(
+        #[Tag('rounds_generators')] iterable $roundsGenerator,
+        #[Tag('matches_generators')] iterable $matchesGenerators,
+    ): void {
         try {
-            $roundsGenerator->generate($this->tournament->eliminationPhase()->firstOrFail());
-            $matchesGenerator->generate($this->tournament->eliminationPhase()->firstOrFail());
+            $phases = $this->tournament->getPhases();
 
-            $this->tournament->update(['status' => TournamentStatus::IN_PROGRESS]);
+            foreach ($phases as $phase) {
+                foreach ($roundsGenerator as $generator) {
+                    if ($generator->supports($phase)) {
+                        $generator->generate($phase);
+                    }
+                }
+
+                foreach ($matchesGenerators as $generator) {
+                    if ($generator->supports($phase)) {
+                        $generator->generate($phase);
+                    }
+                }
+            }
+
+            $this->tournament->start();
             Notification::send($this->tournament->players, new TournamentStarted($this->tournament));
             event(new TournamentUpdated($this->tournament));
         } finally {
