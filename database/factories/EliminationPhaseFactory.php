@@ -4,35 +4,35 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
-use App\Enums\PhaseType;
 use App\Models\EliminationPhase;
+use App\Models\Tournament;
 use App\Services\Generators\EliminationRoundsGenerator;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends PhaseFactory<EliminationPhase>
+ * @extends Factory<EliminationPhase>
  */
-class EliminationPhaseFactory extends PhaseFactory
+class EliminationPhaseFactory extends Factory
 {
     /** @return array<string, mixed> */
     public function definition(): array
     {
         return [
-            'type' => PhaseType::ELIMINATION,
+            'number_of_contestants' => 2,
         ];
-    }
-
-    /** @param array<string, mixed> $attributes */
-    public function withDetails(array $attributes): static
-    {
-        return $this->afterCreating(function (EliminationPhase $phase) use ($attributes): void {
-            $phase->details()->create($attributes);
-        });
     }
 
     public function withRounds(): static
     {
         return $this->afterCreating(function (EliminationPhase $phase): void {
             new EliminationRoundsGenerator()->generate($phase);
+        });
+    }
+
+    public function forTournament(Tournament $tournament): static
+    {
+        return $this->afterMaking(function (EliminationPhase $phase) use ($tournament): void {
+            $phase->tournament_id = $tournament->id;
         });
     }
 }
