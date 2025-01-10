@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\PhaseType;
 use App\Enums\TournamentStatus;
 use Database\Factories\TournamentFactory;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
@@ -62,13 +63,13 @@ class Tournament extends Model
         return $this->hasMany(Team::class);
     }
 
-    /** @return HasOne<EliminationPhase, $this> */
+    /** @return HasOne<Phase, $this> */
     public function eliminationPhase(): HasOne
     {
-        return $this->hasOne(EliminationPhase::class);
+        return $this->hasOne(Phase::class)->where('type', '=', PhaseType::ELIMINATION);
     }
 
-    /** @return Collection<int, EliminationPhase> */
+    /** @return Collection<int, Phase> */
     public function getPhases(): Collection
     {
         return collect([

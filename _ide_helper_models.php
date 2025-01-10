@@ -15,33 +15,6 @@ namespace App\Models{
 /**
  * 
  *
- * @property string $id
- * @property string $tournament_id
- * @property int $number_of_contestants
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Round> $rounds
- * @property-read int|null $rounds_count
- * @property-read \App\Models\Tournament $tournament
- * @method static \Database\Factories\EliminationPhaseFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder<static>|EliminationPhase newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|EliminationPhase newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|EliminationPhase query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|EliminationPhase whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|EliminationPhase whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|EliminationPhase whereNumberOfContestants($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|EliminationPhase whereTournamentId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|EliminationPhase whereUpdatedAt($value)
- * @mixin \Eloquent
- */
-	#[\AllowDynamicProperties]
-	class IdeHelperEliminationPhase {}
-}
-
-namespace App\Models{
-/**
- * 
- *
  * @property int $id
  * @property string $match_id
  * @property string $contestant_type
@@ -97,6 +70,36 @@ namespace App\Models{
 /**
  * 
  *
+ * @template TConfig of PhaseConfiguration = PhaseConfiguration
+ * @property TConfig $configuration
+ * @property string $id
+ * @property string $tournament_id
+ * @property \App\Enums\PhaseType $type
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Round> $rounds
+ * @property-read int|null $rounds_count
+ * @property-read \App\Models\Tournament $tournament
+ * @method static \Database\Factories\PhaseFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Phase newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Phase newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Phase query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Phase whereConfiguration($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Phase whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Phase whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Phase whereTournamentId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Phase whereType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Phase whereUpdatedAt($value)
+ * @mixin \Eloquent
+ */
+	#[\AllowDynamicProperties]
+	class IdeHelperPhase {}
+}
+
+namespace App\Models{
+/**
+ * 
+ *
  * @property int $id
  * @property string $match_id
  * @property string $contestant_type
@@ -129,21 +132,19 @@ namespace App\Models{
  * 
  *
  * @property string $id
- * @property string $phase_type
  * @property string $phase_id
  * @property \App\Enums\RoundStage $stage
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Matchup> $matches
  * @property-read int|null $matches_count
- * @property-read \App\Models\EliminationPhase $phase
+ * @property-read \App\Models\Phase $phase
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Round newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Round newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Round query()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Round whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Round whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Round wherePhaseId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Round wherePhaseType($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Round whereStage($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Round whereUpdatedAt($value)
  * @mixin \Eloquent
@@ -197,7 +198,7 @@ namespace App\Models{
  * @property bool $team_based
  * @property int|null $team_size
  * @property \App\Enums\TournamentStatus $status
- * @property-read \App\Models\EliminationPhase|null $eliminationPhase
+ * @property-read \App\Models\Phase|null $eliminationPhase
  * @property-read \App\Models\TournamentInvitation|null $invitation
  * @property-read \App\Models\User $organizer
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $players

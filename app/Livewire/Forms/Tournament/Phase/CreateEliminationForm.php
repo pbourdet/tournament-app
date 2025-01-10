@@ -17,4 +17,12 @@ class CreateEliminationForm extends Form
             'numberOfContestants' => ['required', 'integer', 'in:2,4,8,16,32,64,128'],
         ];
     }
+
+    /** @return array<string, mixed> */
+    public function toArray(): array
+    {
+        return [
+            'numberOfContestants' => $this->numberOfContestants,
+        ];
+    }
 }

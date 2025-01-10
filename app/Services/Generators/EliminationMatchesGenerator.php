@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace App\Services\Generators;
 
-use App\Models\EliminationPhase;
+use App\Models\EliminationConfiguration;
 use App\Models\Phase;
 use App\Models\Round;
 
-/**
- * @implements Generator<EliminationPhase>
- */
+/** @implements Generator<EliminationConfiguration> */
 class EliminationMatchesGenerator implements Generator
 {
     public function supports(Phase $phase): bool

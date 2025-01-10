@@ -4,21 +4,35 @@ declare(strict_types=1);
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration {
     public function up(): void
     {
-        Schema::create('elimination_phases', function (Blueprint $table) {
+        Schema::create('phases', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->foreignUuid('tournament_id')->unique()->constrained()->cascadeOnDelete();
-            $table->smallInteger('number_of_contestants')->unsigned();
+            $table->enum('type', ['group', 'elimination']);
+            $table->jsonb('configuration');
             $table->timestamps();
         });
+
+        DB::statement("
+            ALTER TABLE phases
+            ADD CONSTRAINT check_configuration_keys
+            CHECK (
+                configuration->'numberOfContestants' IS NULL OR
+                (
+                    jsonb_typeof(configuration->'numberOfContestants') = 'number' AND
+                    (configuration->>'numberOfContestants')::integer > 1
+                )
+            )
+        ");
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('elimination_phases');
+        Schema::dropIfExists('phases');
     }
 };

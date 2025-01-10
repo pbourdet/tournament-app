@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Database\Factories;
 
 use App\Enums\TournamentStatus;
+use App\Models\Phase;
 use App\Models\Team;
 use App\Models\Tournament;
 use App\Models\User;
@@ -41,6 +42,13 @@ class TournamentFactory extends Factory
     {
         return $this->afterCreating(function (Tournament $tournament) use ($users): void {
             $tournament->players()->attach(collect($users)->pluck('id'));
+        });
+    }
+
+    public function withEliminationPhase(): static
+    {
+        return $this->afterCreating(function (Tournament $tournament): void {
+            Phase::factory()->forTournament($tournament)->create();
         });
     }
 
