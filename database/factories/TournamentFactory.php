@@ -5,10 +5,14 @@ declare(strict_types=1);
 namespace Database\Factories;
 
 use App\Enums\TournamentStatus;
+use App\Events\PhaseCreated;
+use App\Jobs\StartTournament;
 use App\Models\Phase;
 use App\Models\Team;
 use App\Models\Tournament;
 use App\Models\User;
+use App\Services\Generators\EliminationMatchesGenerator;
+use App\Services\Generators\EliminationRoundsGenerator;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -49,6 +53,24 @@ class TournamentFactory extends Factory
     {
         return $this->afterCreating(function (Tournament $tournament): void {
             Phase::factory()->forTournament($tournament)->create();
+            PhaseCreated::dispatch($tournament);
+        });
+    }
+
+    public function withEliminationPhaseAndMatches(): static
+    {
+        return $this->withEliminationPhase()->afterCreating(function (Tournament $tournament): void {
+            new EliminationRoundsGenerator()->generate($tournament->eliminationPhase);
+            new EliminationMatchesGenerator()->generate($tournament->eliminationPhase);
+        });
+    }
+
+    public function started(): static
+    {
+        return $this->full()->afterCreating(function (Tournament $tournament): void {
+            Phase::factory()->forTournament($tournament)->create();
+            PhaseCreated::dispatch($tournament);
+            StartTournament::dispatchSync($tournament);
         });
     }
 

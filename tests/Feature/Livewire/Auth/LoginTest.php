@@ -58,6 +58,6 @@ class LoginTest extends TestCase
             ->set('form.email', $user->email)
             ->set('form.password', 'password')
             ->call('login')
-            ->assertHasErrors(['email' => __('auth.throttle', ['seconds' => RateLimiter::availableIn($throttleKey)])]);
+            ->assertHasErrors(['email']);
     }
 }

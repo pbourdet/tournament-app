@@ -33,8 +33,8 @@ class Matchup extends Model
         return $this->hasMany(MatchContestant::class, 'match_id')->with('contestant');
     }
 
-    /** @param Collection<int, Team>|Collection<int, User> $contestants */
-    public function addContestants(Collection $contestants): void
+    /** @param iterable<int, Contestant> $contestants */
+    public function addContestants(iterable $contestants): void
     {
         foreach ($contestants as $contestant) {
             $this->contestants()->create([
@@ -47,12 +47,29 @@ class Matchup extends Model
     /** @return HasMany<Result, $this> */
     public function results(): HasMany
     {
-        return $this->hasMany(Result::class, 'match_id');
+        return $this->hasMany(Result::class, 'match_id')->with('contestant');
     }
 
     /** @return Collection<int, Contestant> */
     public function getContestants(): Collection
     {
-        return $this->contestants->map(fn (MatchContestant $contestant) => $contestant->contestant);
+        return $this->contestants->map(fn (MatchContestant $pivot) => $pivot->contestant);
+    }
+
+    public function getResultFor(Contestant $contestant): ?Result
+    {
+        return $this->results->first(fn (Result $result) => $result->contestant->is($contestant));
+    }
+
+    /** @return class-string<Team|User> */
+    public function getContestantType(): string
+    {
+        return $this->round->phase->tournament->team_based ? Team::class : User::class;
+    }
+
+    /** @return Collection<int, Contestant> */
+    public function winners(): Collection
+    {
+        return $this->getContestants()->where(fn (Contestant $contestant) => $contestant->won($this));
     }
 }

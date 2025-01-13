@@ -8,6 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
+/**
+ * @property string $id Replace with property hooks when php-cs-fixer supports it.
+ */
 abstract class Contestant extends Model
 {
     abstract public function getName(): string;
@@ -22,5 +25,15 @@ abstract class Contestant extends Model
     public function results(): MorphMany
     {
         return $this->morphMany(Result::class, 'contestant');
+    }
+
+    public function won(Matchup $match): bool
+    {
+        return $match->results->contains(fn (Result $result) => $result->contestant->is($this) && $result->isWin());
+    }
+
+    public function lost(Matchup $match): bool
+    {
+        return $match->results->contains(fn (Result $result) => $result->contestant->is($this) && $result->isLoss());
     }
 }

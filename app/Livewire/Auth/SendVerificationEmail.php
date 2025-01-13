@@ -6,7 +6,6 @@ namespace App\Livewire\Auth;
 
 use App\Enums\ToastType;
 use App\Livewire\Component;
-use App\Models\User;
 use DanHarrin\LivewireRateLimiting\Exceptions\TooManyRequestsException;
 use DanHarrin\LivewireRateLimiting\WithRateLimiting;
 
@@ -26,7 +25,7 @@ class SendVerificationEmail extends Component
             return;
         }
 
-        $user = User::findOrFail(auth()->id());
+        $user = $this->getUser();
 
         if ($user->hasVerifiedEmail()) {
             $this->toast(__('Your email address is already verified.'), variant: ToastType::DANGER->value);

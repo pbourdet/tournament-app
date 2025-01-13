@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Enums\ResultOutcome;
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
@@ -15,8 +14,6 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  */
 class Result extends Model
 {
-    use HasUuids;
-
     protected $fillable = ['outcome', 'contestant_id', 'contestant_type', 'score'];
 
     /** @return BelongsTo<Matchup, $this> */
@@ -29,6 +26,16 @@ class Result extends Model
     public function contestant(): MorphTo
     {
         return $this->morphTo();
+    }
+
+    public function isWin(): bool
+    {
+        return ResultOutcome::WIN === $this->outcome;
+    }
+
+    public function isLoss(): bool
+    {
+        return ResultOutcome::LOSS === $this->outcome;
     }
 
     /** @return array<string, string> */
