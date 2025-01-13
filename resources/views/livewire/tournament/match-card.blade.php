@@ -34,7 +34,7 @@
 
             @can('manage', $match->round->phase->tournament)
                 <flux:modal.trigger name="add-result-{{ $match->id }}">
-                    <flux:button dusk="result-modal" icon="plus">Results!</flux:button>
+                    <flux:button dusk="result-modal" icon="plus">{{ __('Results') }}</flux:button>
                 </flux:modal.trigger>
             @endcan
         </div>
@@ -42,8 +42,8 @@
 
         <flux:modal variant="flyout" class="space-y-6" name="add-result-{{ $match->id }}">
             <div>
-                <flux:heading>Add match result</flux:heading>
-                <flux:subheading>Specify the outcome and the score</flux:subheading>
+                <flux:heading>{{ __('Add match result') }}</flux:heading>
+                <flux:subheading>{{ __('Specify the outcome and the score') }}</flux:subheading>
             </div>
 
             <div class="space-y-4">
@@ -60,6 +60,6 @@
                 @endforeach
             </div>
 
-            <flux:button variant="primary" dusk="add-result" wire:click="addResult">Save</flux:button>
+            <flux:button variant="primary" dusk="add-result" wire:click="addResult">{{ __('Add') }}</flux:button>
         </flux:modal>
 </div>
