@@ -6,6 +6,8 @@ namespace App\Livewire\Tournament;
 
 use App\Enums\ResultOutcome;
 use App\Enums\ToastType;
+use App\Events\ResultAdded;
+use App\Events\TournamentUpdated;
 use App\Livewire\Component;
 use App\Models\Contestant;
 use App\Models\Matchup;
@@ -36,7 +38,7 @@ class MatchCard extends Component
                 ];
             })->toArray();
 
-        $this->match = $match;
+        $this->match = $match->load('round.phase.tournament');
         $this->contestants = $contestantsArray;
     }
 
@@ -53,7 +55,9 @@ class MatchCard extends Component
             ]);
         }
 
+        ResultAdded::dispatch($this->match);
         $this->toast(__('Result added !'), variant: ToastType::SUCCESS->value);
         $this->modals()->close();
+        event(new TournamentUpdated($this->match->round->phase->tournament));
     }
 }

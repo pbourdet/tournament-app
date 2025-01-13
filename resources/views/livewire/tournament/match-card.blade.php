@@ -32,9 +32,11 @@
                 @endunless
             @endforeach
 
-            <flux:modal.trigger name="add-result-{{ $match->id }}">
-                <flux:button icon="plus">Results!</flux:button>
-            </flux:modal.trigger>
+            @can('manage', $match->round->phase->tournament)
+                <flux:modal.trigger name="add-result-{{ $match->id }}">
+                    <flux:button icon="plus">Results!</flux:button>
+                </flux:modal.trigger>
+            @endcan
         </div>
     @endif
 

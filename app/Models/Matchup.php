@@ -33,8 +33,8 @@ class Matchup extends Model
         return $this->hasMany(MatchContestant::class, 'match_id')->with('contestant');
     }
 
-    /** @param Collection<int, Team>|Collection<int, User> $contestants */
-    public function addContestants(Collection $contestants): void
+    /** @param iterable<int, Contestant> $contestants */
+    public function addContestants(iterable $contestants): void
     {
         foreach ($contestants as $contestant) {
             $this->contestants()->create([
@@ -65,5 +65,11 @@ class Matchup extends Model
     public function getContestantType(): string
     {
         return $this->round->phase->tournament->team_based ? Team::class : User::class;
+    }
+
+    /** @return Collection<int, Contestant> */
+    public function winners(): Collection
+    {
+        return $this->getContestants()->where(fn (Contestant $contestant) => $contestant->won($this));
     }
 }

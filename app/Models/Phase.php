@@ -45,6 +45,14 @@ class Phase extends Model
         return PhaseType::ELIMINATION === $this->type;
     }
 
+    public function getNextMatchOf(Matchup $match): ?Matchup
+    {
+        return $this->rounds->load('matches')
+            ->first(fn ($round) => $round->stage === $match->round->stage->getNextStage())
+            ?->matches->first(fn ($nextMatch) => $nextMatch->index === intval($match->index / 2))
+        ;
+    }
+
     /** @return array<string, string> */
     protected function casts(): array
     {

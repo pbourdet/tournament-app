@@ -24,7 +24,7 @@
                     <div class="flex flex-col space-y-6 justify-center">
                         <h2 class="text-lg font-semibold text-center">{{ $round->stage->value }}</h2>
                         @foreach ($round->matches as $match)
-                            <livewire:tournament.match-card :$match :key="$match->id . '-' . $match->contestants->count()">
+                            <livewire:tournament.match-card :$match :key="$match->id . '-' . $match->contestants->pluck('contestant_id')->join('-')">
                         @endforeach
                     </div>
                 @endforeach

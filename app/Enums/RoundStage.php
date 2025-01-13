@@ -28,6 +28,19 @@ enum RoundStage: string
         return $rounds;
     }
 
+    public function getNextStage(): ?RoundStage
+    {
+        return match ($this) {
+            self::R128 => self::R64,
+            self::R64 => self::R32,
+            self::R32 => self::R16,
+            self::R16 => self::QF,
+            self::QF => self::SF,
+            self::SF => self::F,
+            default => null,
+        };
+    }
+
     public function getMatchCount(): int
     {
         return (int) substr($this->value, 1) / 2;
