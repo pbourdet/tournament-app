@@ -137,15 +137,11 @@ class TournamentTest extends DuskTestCase
 
     public function testStartTournament(): void
     {
-        $organizer = User::factory()->create();
-        $tournament = Tournament::factory()->withPlayers([$organizer])->full()->create([
-            'number_of_players' => 4,
-            'organizer_id' => $organizer->id,
-        ]);
+        $tournament = Tournament::factory()->full()->create(['number_of_players' => 4]);
 
-        $this->browse(function (Browser $browser) use ($tournament, $organizer) {
+        $this->browse(function (Browser $browser) use ($tournament) {
             $browser
-                ->loginAs($organizer)
+                ->loginAs($tournament->organizer)
                 ->visit(route('tournaments.show', ['tournament' => $tournament]))
                 ->click('@link-elimination')
                 ->waitForRoute('tournaments.show', ['tournament' => $tournament, 'page' => 'phase-elimination'])
@@ -162,5 +158,29 @@ class TournamentTest extends DuskTestCase
         $this->assertTrue($tournament->fresh()->isStarted());
         $this->assertDatabaseCount('matches', 3);
         $this->assertDatabaseCount('rounds', 2);
+    }
+
+    public function testAddMatchResult(): void
+    {
+        $tournament = Tournament::factory()->started()->create(['number_of_players' => 4]);
+
+        $this->browse(function (Browser $browser) use ($tournament) {
+            $browser
+                ->loginAs($tournament->organizer)
+                ->visit(route('tournaments.show', ['tournament' => $tournament, 'page' => 'phase-elimination']))
+                ->click('@result-modal')
+                ->click('@result-outcome-0')
+                ->click('@outcome-0-Win')
+                ->type('@result-score-0', '2')
+                ->click('@result-outcome-1')
+                ->click('@outcome-1-Loss')
+                ->type('@result-score-1', '1')
+                ->screenshot('add-result')
+                ->click('@add-result')
+                ->waitForText(__('Result added !'))
+            ;
+        });
+
+        $this->assertDatabaseCount('results', 2);
     }
 }

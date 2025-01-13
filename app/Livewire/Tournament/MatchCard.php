@@ -11,6 +11,7 @@ use App\Events\TournamentUpdated;
 use App\Livewire\Component;
 use App\Models\Contestant;
 use App\Models\Matchup;
+use Illuminate\Support\Facades\Gate;
 
 /**
  * @phpstan-type contestantsArray = array<string, array{name: string, outcome: ResultOutcome, score: int}>
@@ -44,6 +45,12 @@ class MatchCard extends Component
 
     public function addResult(): void
     {
+        $tournament = $this->match->round->phase->tournament;
+
+        if (Gate::denies('manage', $tournament) || !$tournament->isStarted()) {
+            abort(403);
+        }
+
         $this->match->results()->delete();
 
         foreach ($this->contestants as $id => $contestant) {
@@ -58,6 +65,6 @@ class MatchCard extends Component
         ResultAdded::dispatch($this->match);
         $this->toast(__('Result added !'), variant: ToastType::SUCCESS->value);
         $this->modals()->close();
-        event(new TournamentUpdated($this->match->round->phase->tournament));
+        event(new TournamentUpdated($tournament));
     }
 }

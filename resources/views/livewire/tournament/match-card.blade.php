@@ -24,7 +24,7 @@
                     @elseif($match->results->isNotEmpty())
                         <flux:icon name="x-mark" class="text-red-400"/>
                     @endif
-                    <span class="text-sm font-medium text-gray-700 overflow-hidden text-ellipsis">{{ $contestant->name }}</span>
+                    <span class="text-sm font-medium text-gray-700 overflow-hidden text-ellipsis">{{ $contestant->getName() }}</span>
                     <span class="text-sm font-bold text-gray-800">{{ $match->getResultFor($contestant)?->score }}</span>
                 </div>
                 @unless($loop->last)
@@ -34,7 +34,7 @@
 
             @can('manage', $match->round->phase->tournament)
                 <flux:modal.trigger name="add-result-{{ $match->id }}">
-                    <flux:button icon="plus">Results!</flux:button>
+                    <flux:button dusk="result-modal" icon="plus">Results!</flux:button>
                 </flux:modal.trigger>
             @endcan
         </div>
@@ -49,17 +49,17 @@
             <div class="space-y-4">
                 @foreach($contestants as $key => $contestant)
                     <flux:input.group class="max-sm:flex-col">
-                        <flux:input readonly wire:model="contestants.{{ $key }}.name"/>
-                        <flux:select variant="listbox" wire:model="contestants.{{ $key }}.outcome">
+                        <flux:input variant="filled" readonly wire:model="contestants.{{ $key }}.name"/>
+                        <flux:select dusk="result-outcome-{{ $loop->index }}" variant="listbox" wire:model="contestants.{{ $key }}.outcome">
                             @foreach(\App\Enums\ResultOutcome::cases() as $outcome)
-                                <flux:option value="{{ $outcome->value }}">{{ __($outcome->value) }}</flux:option>
+                                <flux:option dusk="outcome-{{ $loop->parent->index }}-{{ $outcome->value }}" value="{{ $outcome->value }}">{{ __($outcome->value) }}</flux:option>
                             @endforeach
                         </flux:select>
-                        <flux:input type="number" wire:model="contestants.{{ $key }}.score"/>
+                        <flux:input dusk="result-score-{{ $loop->index }}" type="number" wire:model="contestants.{{ $key }}.score"/>
                     </flux:input.group>
                 @endforeach
             </div>
 
-            <flux:button wire:click="addResult">Save</flux:button>
+            <flux:button variant="primary" dusk="add-result" wire:click="addResult">Save</flux:button>
         </flux:modal>
 </div>

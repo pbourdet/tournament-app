@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Database\Factories;
 
 use App\Enums\PhaseType;
+use App\Events\PhaseCreated;
 use App\Models\EliminationConfiguration;
 use App\Models\Phase;
 use App\Models\Tournament;
@@ -53,6 +54,13 @@ class PhaseFactory extends Factory
     {
         return $this->afterMaking(function (Phase $phase) use ($tournament): void {
             $phase->tournament_id = $tournament->id;
+        });
+    }
+
+    public function configure(): static
+    {
+        return $this->afterCreating(function (Phase $phase): void {
+            PhaseCreated::dispatch($phase->tournament);
         });
     }
 }
