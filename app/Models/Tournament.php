@@ -69,11 +69,18 @@ class Tournament extends Model
         return $this->hasOne(Phase::class)->where('type', '=', PhaseType::ELIMINATION);
     }
 
+    /** @return HasOne<Phase, $this> */
+    public function qualificationPhase(): HasOne
+    {
+        return $this->hasOne(Phase::class)->whereIn('type', PhaseType::QUALIFICATION_TYPES);
+    }
+
     /** @return Collection<int, Phase> */
     public function getPhases(): Collection
     {
         return collect([
             $this->eliminationPhase,
+            $this->qualificationPhase,
         ])->filter();
     }
 

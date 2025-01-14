@@ -256,6 +256,7 @@ namespace App\Models{
  * @property-read \App\Models\User $organizer
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $players
  * @property-read int|null $players_count
+ * @property-read \App\Models\Phase|null $qualificationPhase
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Team> $teams
  * @property-read int|null $teams_count
  * @method static \Database\Factories\TournamentFactory factory($count = null, $state = [])
