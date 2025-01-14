@@ -15,6 +15,59 @@ namespace App\Models{
 /**
  * 
  *
+ * @property string $id
+ * @property string $phase_id
+ * @property string|null $name
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\GroupContestant> $contestants
+ * @property-read int|null $contestants_count
+ * @property-read \App\Models\Phase $phase
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Group newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Group newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Group query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Group whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Group whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Group whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Group wherePhaseId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Group whereUpdatedAt($value)
+ * @mixin \Eloquent
+ */
+	#[\AllowDynamicProperties]
+	class IdeHelperGroup {}
+}
+
+namespace App\Models{
+/**
+ * 
+ *
+ * @property int $id
+ * @property string $group_id
+ * @property string $contestant_type
+ * @property string $contestant_id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Contestant $contestant
+ * @property-read \App\Models\Group $group
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GroupContestant newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GroupContestant newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GroupContestant query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GroupContestant whereContestantId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GroupContestant whereContestantType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GroupContestant whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GroupContestant whereGroupId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GroupContestant whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GroupContestant whereUpdatedAt($value)
+ * @mixin \Eloquent
+ */
+	#[\AllowDynamicProperties]
+	class IdeHelperGroupContestant {}
+}
+
+namespace App\Models{
+/**
+ * 
+ *
  * @property int $id
  * @property string $match_id
  * @property string $contestant_type
