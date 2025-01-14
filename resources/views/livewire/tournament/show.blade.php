@@ -13,6 +13,10 @@
                     {{ __('Teams') }}
                 </flux:navbar.item>
             @endif
+            <flux:navbar.item wire:navigate dusk="link-qualification"
+                              href="{{ route('tournaments.show', ['tournament' => $tournament, 'page' => 'phase-qualification']) }}">
+                {{ __('Qualification') }}
+            </flux:navbar.item>
             <flux:navbar.item wire:navigate dusk="link-elimination"
                               href="{{ route('tournaments.show', ['tournament' => $tournament, 'page' => 'phase-elimination']) }}">
                 {{ __('Elimination') }}
