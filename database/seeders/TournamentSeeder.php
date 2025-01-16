@@ -51,5 +51,11 @@ class TournamentSeeder extends Seeder
             'organizer_id' => $fullTeamTournamentUser->id,
             'number_of_players' => 8,
         ]);
+
+        $fullTeamTournamentUser = User::where('email', 'full@example.com')->firstOrFail();
+        Tournament::factory()->full()->create([
+            'organizer_id' => $fullTeamTournamentUser->id,
+            'number_of_players' => 16,
+        ]);
     }
 }

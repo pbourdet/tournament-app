@@ -27,5 +27,10 @@ class UserSeeder extends Seeder
             'username' => 'Full Team tournament',
             'email' => 'full-team@example.com',
         ]);
+
+        User::factory()->create([
+            'username' => 'Full tournament',
+            'email' => 'full@example.com',
+        ]);
     }
 }
