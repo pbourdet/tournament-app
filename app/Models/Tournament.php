@@ -145,7 +145,7 @@ class Tournament extends Model
             return 0;
         }
 
-        return $this->number_of_players / $this->team_size;
+        return intdiv($this->number_of_players, (int) $this->team_size);
     }
 
     public function isNotStarted(): bool

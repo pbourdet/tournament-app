@@ -20,6 +20,7 @@ class Qualification extends Component
     public function mount(Tournament $tournament): void
     {
         $this->tournament = $tournament;
+        $this->groupForm->setTournament($tournament);
     }
 
     public function create(): void
