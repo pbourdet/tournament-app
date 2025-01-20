@@ -16,7 +16,7 @@
             </div>
         </flux:radio.group>
 
-        <div x-transition:enter x-show="$wire.type === '{{ \App\Enums\PhaseType::GROUP }}'" class="space-y-6">
+        <div x-cloak x-transition:enter x-show="$wire.type === '{{ \App\Enums\PhaseType::GROUP }}'" class="space-y-6">
 
             <flux:subheading class="flex items-center">
                 <flux:icon.information-circle class="mr-2"/>
@@ -107,6 +107,24 @@
                     };
                 }
             </script>
+        </div>
+    @else
+        <div>
+            <flux:heading size="lg">{{ __('Qualification Phase') }}</flux:heading>
+            <div class="grid grid-cols-4 gap-1">
+                @foreach($tournament->qualificationPhase->groups as $group)
+                    <flux:card class="space-y-6">
+                        <flux:heading size="lg">{{ $group->name  }}</flux:heading>
+                        <div class="flex flex-col">
+                            @foreach($group->getContestants() as $contestant)
+                                <div>
+                                    {{ $contestant->getName() }}
+                                </div>
+                            @endforeach
+                        </div>
+                    </flux:card>
+                @endforeach
+            </div>
         </div>
     @endif
 </div>

@@ -18,9 +18,9 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
 /**
- * @mixin IdeHelperTournament
- *
  * @property ?Phase<EliminationConfiguration> $eliminationPhase
+ *
+ * @mixin IdeHelperTournament
  */
 class Tournament extends Model
 {
