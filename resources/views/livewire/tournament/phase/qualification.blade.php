@@ -29,16 +29,16 @@
                     <div class="flex max-sm:flex-col">
                         <flux:input class="!w-20 max-sm:mb-4" label="{{ __('Number of groups') }}" type="number"
                                     wire:model="groupForm.numberOfGroups" min="2" :max="$tournament->contestantsCount() / 2"
-                                    @input="calculateGroups()"/>
+                                    @input="calculateGroups()" dusk="input-number-of-groups"/>
                         <flux:separator vertical class="mx-3"/>
                         <flux:input class="!w-20" label="{{ __('Contestants qualifying per group') }}" type="number"
                                     wire:model="groupForm.contestantsQualifying"
                                     @input="computeContestantsQualifying()"
-                                    min="1" x-bind:max="Math.min(...groups)"/>
+                                    min="1" x-bind:max="Math.min(...groups)" dusk="input-contestants-qualifying"/>
                     </div>
                     <div>
-                        <p>Total contestants qualifying : <span x-text="groups.length * $wire.groupForm.contestantsQualifying"></span></p>
-                        <p>Total matches : <span x-text="computeMatches()"></span></p>
+                        <p>{{ __('Total contestants qualifying') }} : <span x-text="groups.length * $wire.groupForm.contestantsQualifying"></span></p>
+                        <p>{{ __('Total matches') }} : <span x-text="computeMatches()"></span></p>
                     </div>
                     <div x-bind:class="groups.length <= 3 ? '2xl:grid-cols-3' : '2xl:grid-cols-' + Math.ceil(Math.sqrt(groups.length))"
                          class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-1 mt-3">
@@ -63,7 +63,7 @@
                         </template>
                     </div>
                 </div>
-                <flux:button variant="primary" wire:click="create">{{ __('Create') }}</flux:button>
+                <flux:button variant="primary" dusk="create-group-phase" wire:click="create">{{ __('Create') }}</flux:button>
             </flux:card>
 
             <script>
