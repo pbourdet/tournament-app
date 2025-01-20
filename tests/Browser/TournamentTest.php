@@ -116,7 +116,7 @@ class TournamentTest extends DuskTestCase
                 ->click('@link-teams')
                 ->waitForRoute('tournaments.show', ['tournament' => $tournament, 'page' => 'teams'])
                 ->press('@generate-teams')
-                ->waitForText(__('Teams generation in progress'))
+                ->waitForText(__('Teams generation in progress...'))
             ;
         });
 
@@ -175,7 +175,6 @@ class TournamentTest extends DuskTestCase
                 ->click('@result-outcome-1')
                 ->click('@outcome-1-Loss')
                 ->type('@result-score-1', '1')
-                ->screenshot('add-result')
                 ->click('@add-result')
                 ->waitForText(__('Result added !'))
             ;

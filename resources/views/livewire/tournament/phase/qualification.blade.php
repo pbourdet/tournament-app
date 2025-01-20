@@ -63,7 +63,7 @@
                         </template>
                     </div>
                 </div>
-                <flux:button variant="primary" dusk="create-group-phase" wire:click="create">{{ __('Create') }}</flux:button>
+                <flux:button variant="primary" dusk="create-group-phase" wire:click="create">{{ __('Save') }}</flux:button>
             </flux:card>
 
             <script>
@@ -110,7 +110,7 @@
         </div>
     @else
         <div>
-            <flux:heading size="lg">{{ __('Qualification Phase') }}</flux:heading>
+            <flux:heading size="lg">{{ __('Qualification phase') }}</flux:heading>
             <div class="grid grid-cols-4 gap-1">
                 @foreach($tournament->qualificationPhase->groups as $group)
                     <flux:card class="space-y-6">

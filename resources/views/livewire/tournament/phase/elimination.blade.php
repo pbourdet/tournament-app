@@ -1,6 +1,6 @@
 <div>
     @if(null === $eliminationPhase)
-        {{ __('No elimination phase for this tournament') }}
+        {{ __('No elimination phase for this tournament.') }}
         @can('manage', $tournament)
             <form wire:submit="create">
                 <x-input-label for="numberOfContestants" :value="$tournament->team_based ? __('Number of teams') : __('Number of players')" />
