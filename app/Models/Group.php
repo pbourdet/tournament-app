@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Collection;
 
 /**
  * @mixin IdeHelperGroup
@@ -16,7 +17,7 @@ class Group extends Model
 {
     use HasUuids;
 
-    protected $fillable = ['name'];
+    protected $fillable = ['name', 'size'];
 
     /** @return BelongsTo<Phase, $this> */
     public function phase(): BelongsTo
@@ -28,6 +29,12 @@ class Group extends Model
     public function contestants(): HasMany
     {
         return $this->hasMany(GroupContestant::class)->with('contestant');
+    }
+
+    /** @return Collection<int, Contestant> */
+    public function getContestants(): Collection
+    {
+        return $this->contestants->map(fn (GroupContestant $pivot) => $pivot->contestant);
     }
 
     /** @param iterable<int, Contestant> $contestants */

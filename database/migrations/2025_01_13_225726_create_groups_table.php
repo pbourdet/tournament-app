@@ -12,7 +12,8 @@ return new class extends Migration {
         Schema::create('groups', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->foreignUuid('phase_id')->constrained()->cascadeOnDelete();
-            $table->string('name')->nullable();
+            $table->unsignedSmallInteger('size');
+            $table->string('name');
             $table->timestamps();
 
             $table->index('phase_id');
