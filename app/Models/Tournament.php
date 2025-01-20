@@ -18,6 +18,8 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
 /**
+ * @property ?Phase<EliminationConfiguration> $eliminationPhase
+ *
  * @mixin IdeHelperTournament
  */
 class Tournament extends Model
@@ -69,11 +71,18 @@ class Tournament extends Model
         return $this->hasOne(Phase::class)->where('type', '=', PhaseType::ELIMINATION);
     }
 
+    /** @return HasOne<Phase, $this> */
+    public function qualificationPhase(): HasOne
+    {
+        return $this->hasOne(Phase::class)->whereIn('type', PhaseType::QUALIFICATION_TYPES);
+    }
+
     /** @return Collection<int, Phase> */
     public function getPhases(): Collection
     {
         return collect([
             $this->eliminationPhase,
+            $this->qualificationPhase,
         ])->filter();
     }
 
@@ -136,7 +145,7 @@ class Tournament extends Model
             return 0;
         }
 
-        return $this->number_of_players / $this->team_size;
+        return intdiv($this->number_of_players, (int) $this->team_size);
     }
 
     public function isNotStarted(): bool

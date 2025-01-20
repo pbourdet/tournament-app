@@ -40,9 +40,22 @@ class Phase extends Model
         return $this->hasMany(Round::class);
     }
 
+    /** @return HasMany<Group, $this> */
+    public function groups(): HasMany
+    {
+        return $this->hasMany(Group::class);
+    }
+
+    /** @phpstan-assert-if-true =Phase<EliminationConfiguration> $this */
     public function isElimination(): bool
     {
         return PhaseType::ELIMINATION === $this->type;
+    }
+
+    /** @phpstan-assert-if-true =Phase<GroupConfiguration> $this */
+    public function isGroup(): bool
+    {
+        return PhaseType::GROUP === $this->type;
     }
 
     public function getNextMatchOf(Matchup $match): ?Matchup

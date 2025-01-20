@@ -6,6 +6,7 @@ namespace App\Casts;
 
 use App\Enums\PhaseType;
 use App\Models\EliminationConfiguration;
+use App\Models\GroupConfiguration;
 use App\Models\Phase;
 use App\Models\PhaseConfiguration;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
@@ -28,7 +29,7 @@ class PhaseConfigurationCast implements CastsAttributes
 
         return match ($model->type) {
             PhaseType::ELIMINATION => EliminationConfiguration::fromArray($data),
-            default => throw new \RuntimeException("Unknown phase type: {$model->type->value}"),
+            PhaseType::GROUP => GroupConfiguration::fromArray($data),
         };
     }
 

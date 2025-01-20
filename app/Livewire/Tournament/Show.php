@@ -15,6 +15,7 @@ class Show extends Component
         'overview' => 'Overview',
         'teams' => 'Teams',
         'phase-elimination' => 'Elimination',
+        'phase-qualification' => 'Qualification',
     ];
 
     public Tournament $tournament;

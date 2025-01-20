@@ -17,7 +17,8 @@ namespace App\Models{
  *
  * @property string $id
  * @property string $phase_id
- * @property string|null $name
+ * @property int $size
+ * @property string $name
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\GroupContestant> $contestants
@@ -30,6 +31,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Group whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Group whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Group wherePhaseId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Group whereSize($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Group whereUpdatedAt($value)
  * @mixin \Eloquent
  */
@@ -130,6 +132,8 @@ namespace App\Models{
  * @property \App\Enums\PhaseType $type
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Group> $groups
+ * @property-read int|null $groups_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Round> $rounds
  * @property-read int|null $rounds_count
  * @property-read \App\Models\Tournament $tournament
@@ -241,6 +245,7 @@ namespace App\Models{
 /**
  * 
  *
+ * @property ?Phase<EliminationConfiguration> $eliminationPhase
  * @property string $id
  * @property string $organizer_id
  * @property string $name
@@ -251,11 +256,11 @@ namespace App\Models{
  * @property bool $team_based
  * @property int|null $team_size
  * @property \App\Enums\TournamentStatus $status
- * @property-read \App\Models\Phase|null $eliminationPhase
  * @property-read \App\Models\TournamentInvitation|null $invitation
  * @property-read \App\Models\User $organizer
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $players
  * @property-read int|null $players_count
+ * @property-read \App\Models\Phase|null $qualificationPhase
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Team> $teams
  * @property-read int|null $teams_count
  * @method static \Database\Factories\TournamentFactory factory($count = null, $state = [])

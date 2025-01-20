@@ -12,10 +12,12 @@ return new class extends Migration {
     {
         Schema::create('phases', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid('tournament_id')->unique()->constrained()->cascadeOnDelete();
+            $table->foreignUuid('tournament_id')->constrained()->cascadeOnDelete();
             $table->enum('type', ['group', 'elimination']);
             $table->jsonb('configuration');
             $table->timestamps();
+
+            $table->unique(['tournament_id', 'type']);
         });
 
         DB::statement("

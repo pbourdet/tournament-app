@@ -8,4 +8,9 @@ enum PhaseType: string
 {
     case ELIMINATION = 'elimination';
     case GROUP = 'group';
+
+    /** @var array<int, PhaseType> */
+    public const array QUALIFICATION_TYPES = [
+        self::GROUP,
+    ];
 }

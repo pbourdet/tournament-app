@@ -116,7 +116,7 @@ class TournamentTest extends DuskTestCase
                 ->click('@link-teams')
                 ->waitForRoute('tournaments.show', ['tournament' => $tournament, 'page' => 'teams'])
                 ->press('@generate-teams')
-                ->waitForText(__('Teams generation in progress'))
+                ->waitForText(__('Teams generation in progress...'))
             ;
         });
 
@@ -175,12 +175,34 @@ class TournamentTest extends DuskTestCase
                 ->click('@result-outcome-1')
                 ->click('@outcome-1-Loss')
                 ->type('@result-score-1', '1')
-                ->screenshot('add-result')
                 ->click('@add-result')
                 ->waitForText(__('Result added !'))
             ;
         });
 
         $this->assertDatabaseCount('results', 2);
+    }
+
+    public function testCreateGroupPhase(): void
+    {
+        $tournament = Tournament::factory()->full()->create(['number_of_players' => 8]);
+
+        $this->browse(function (Browser $browser) use ($tournament) {
+            $browser
+                ->loginAs($tournament->organizer)
+                ->visit(route('tournaments.show', ['tournament' => $tournament]))
+                ->click('@link-qualification')
+                ->waitForRoute('tournaments.show', ['tournament' => $tournament, 'page' => 'phase-qualification'])
+                ->type('@input-number-of-groups', 2)
+                ->type('@input-contestants-qualifying', 2)
+                ->click('@create-group-phase')
+                ->waitForText(__('Phase created !'))
+            ;
+        });
+
+        $this->assertNotNull($tournament->qualificationPhase);
+        $this->assertSame(2, $tournament->qualificationPhase->configuration->numberOfGroups);
+        $this->assertSame(2, $tournament->qualificationPhase->configuration->contestantsQualifying);
+        $this->assertDatabaseCount('group_contestant', 8);
     }
 }
