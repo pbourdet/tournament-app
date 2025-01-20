@@ -17,13 +17,14 @@ class GroupPhaseCreatedListener
         }
 
         $groups = $this->splitInGroups($event->tournament->contestantsCount(), $phase->configuration->numberOfGroups);
+        $contestants = $event->tournament->contestants()->shuffle();
         $currentConstantsGroups = $this->splitInGroups($event->tournament->contestants()->count(), $phase->configuration->numberOfGroups);
 
         foreach ($groups as $index => $groupSize) {
             $phase->groups()->create([
                 'name' => sprintf('%s %s', __('Group'), $index + 1),
                 'size' => $groupSize,
-            ])->addContestants($event->tournament->contestants()->take($currentConstantsGroups[$index]));
+            ])->addContestants($contestants->splice(0, $currentConstantsGroups[$index]));
         }
     }
 
