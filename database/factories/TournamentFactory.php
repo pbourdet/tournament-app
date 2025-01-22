@@ -7,7 +7,7 @@ namespace Database\Factories;
 use App\Enums\TournamentStatus;
 use App\Events\PhaseCreated;
 use App\Jobs\StartTournament;
-use App\Models\Phase;
+use App\Models\EliminationPhase;
 use App\Models\Team;
 use App\Models\Tournament;
 use App\Models\User;
@@ -52,7 +52,7 @@ class TournamentFactory extends Factory
     public function withEliminationPhase(): static
     {
         return $this->afterCreating(function (Tournament $tournament): void {
-            Phase::factory()->forTournament($tournament)->create();
+            EliminationPhase::factory()->forTournament($tournament)->create();
             PhaseCreated::dispatch($tournament);
         });
     }
@@ -68,7 +68,7 @@ class TournamentFactory extends Factory
     public function started(): static
     {
         return $this->full()->afterCreating(function (Tournament $tournament): void {
-            Phase::factory()->forTournament($tournament)->create();
+            EliminationPhase::factory()->forTournament($tournament)->create();
             PhaseCreated::dispatch($tournament);
             StartTournament::dispatchSync($tournament);
         });

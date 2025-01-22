@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Tests\Unit\Services;
 
 use App\Enums\RoundStage;
+use App\Models\EliminationPhase;
 use App\Models\Matchup;
-use App\Models\Phase;
 use App\Models\Tournament;
 use App\Services\Generators\EliminationMatchesGenerator;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -19,7 +19,7 @@ class EliminationMatchesGeneratorTest extends TestCase
     public function testGenerate(): void
     {
         $tournament = Tournament::factory()->full()->create(['number_of_players' => 16]);
-        $phase = Phase::factory()->withRounds()->forTournament($tournament)->withConfiguration(['numberOfContestants' => 16])->create();
+        $phase = EliminationPhase::factory()->forTournament($tournament)->withRounds()->create(['number_of_contestants' => 16]);
 
         new EliminationMatchesGenerator()->generate($phase);
 

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Jobs;
 
 use App\Events\TournamentUpdated;
+use App\Models\Phase;
 use App\Models\Tournament;
 use App\Notifications\TournamentStarted;
 use App\Services\Generators\Generator;
@@ -39,8 +40,8 @@ class StartTournament implements ShouldQueue
     }
 
     /**
-     * @param array<int, Generator> $roundsGenerator
-     * @param array<int, Generator> $matchesGenerators
+     * @param array<int, Generator<Phase>> $roundsGenerator
+     * @param array<int, Generator<Phase>> $matchesGenerators
      */
     public function handle(
         #[Tag('rounds_generators')] iterable $roundsGenerator,

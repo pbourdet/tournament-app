@@ -29,6 +29,7 @@ class OverviewTest extends TestCase
     {
         Queue::fake();
         $tournament = Tournament::factory()->full()->create();
+        $tournament->eliminationPhase()->create(['number_of_contestants' => 2]);
         $tournament->update(['status' => TournamentStatus::READY_TO_START]);
 
         Livewire::actingAs($tournament->organizer)
@@ -45,7 +46,8 @@ class OverviewTest extends TestCase
     {
         Queue::fake();
         $user = User::factory()->create();
-        $tournament = Tournament::factory()->full()->withEliminationPhase()->withPlayers([$user])->create();
+        $tournament = Tournament::factory()->full()->withPlayers([$user])->create();
+        $tournament->eliminationPhase()->create(['number_of_contestants' => 2]);
         $tournament->update(['status' => TournamentStatus::READY_TO_START]);
 
         Livewire::actingAs($user)
@@ -74,7 +76,8 @@ class OverviewTest extends TestCase
     public function testOrganizerCantStartTournamentIfGenerationAlreadyOngoing(): void
     {
         Queue::fake();
-        $tournament = Tournament::factory()->full()->withEliminationPhase()->create(['number_of_players' => 4]);
+        $tournament = Tournament::factory()->full()->create(['number_of_players' => 4]);
+        $tournament->eliminationPhase()->create(['number_of_contestants' => 2]);
         $tournament->update(['status' => TournamentStatus::READY_TO_START]);
 
         Cache::lock($tournament->getLockKey(), 20)->get();

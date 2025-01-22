@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Enums\PhaseType;
 use App\Enums\TournamentStatus;
 use Database\Factories\TournamentFactory;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
@@ -18,8 +17,6 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
 /**
- * @property ?Phase<EliminationConfiguration> $eliminationPhase
- *
  * @mixin IdeHelperTournament
  */
 class Tournament extends Model
@@ -65,24 +62,24 @@ class Tournament extends Model
         return $this->hasMany(Team::class);
     }
 
-    /** @return HasOne<Phase, $this> */
+    /** @return HasOne<EliminationPhase, $this> */
     public function eliminationPhase(): HasOne
     {
-        return $this->hasOne(Phase::class)->where('type', '=', PhaseType::ELIMINATION);
+        return $this->hasOne(EliminationPhase::class);
     }
 
-    /** @return HasOne<Phase, $this> */
-    public function qualificationPhase(): HasOne
+    /** @return HasOne<GroupPhase, $this> */
+    public function groupPhase(): HasOne
     {
-        return $this->hasOne(Phase::class)->whereIn('type', PhaseType::QUALIFICATION_TYPES);
+        return $this->hasOne(GroupPhase::class);
     }
 
-    /** @return Collection<int, Phase> */
+    /** @return Collection<int, covariant Phase> */
     public function getPhases(): Collection
     {
         return collect([
             $this->eliminationPhase,
-            $this->qualificationPhase,
+            $this->groupPhase,
         ])->filter();
     }
 
