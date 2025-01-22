@@ -38,13 +38,4 @@ class CreateGroupForm extends Form
             ],
         ];
     }
-
-    /** @return array<string, mixed> */
-    public function toArray(): array
-    {
-        return [
-            'numberOfGroups' => $this->numberOfGroups,
-            'contestantsQualifying' => $this->contestantsQualifying,
-        ];
-    }
 }

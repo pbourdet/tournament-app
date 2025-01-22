@@ -23,7 +23,7 @@ readonly class TotalContestantsQualifying implements ValidationRule
             return;
         }
 
-        if (is_int($value) && $value * $this->numberOfGroups <= $this->tournament->eliminationPhase->configuration->numberOfContestants) {
+        if (is_int($value) && $value * $this->numberOfGroups <= $this->tournament->eliminationPhase->number_of_contestants) {
             return;
         }
 

@@ -10,15 +10,15 @@ class GroupPhaseCreatedListener
 {
     public function handle(PhaseCreated $event): void
     {
-        $phase = $event->tournament->qualificationPhase;
+        $phase = $event->tournament->groupPhase;
 
-        if (null === $phase || !$phase->isGroup() || $phase->groups->isNotEmpty()) {
+        if (null === $phase || $phase->groups->isNotEmpty()) {
             return;
         }
 
-        $groups = $this->splitInGroups($event->tournament->contestantsCount(), $phase->configuration->numberOfGroups);
+        $groups = $this->splitInGroups($event->tournament->contestantsCount(), $phase->number_of_groups);
         $contestants = $event->tournament->contestants()->shuffle();
-        $currentConstantsGroups = $this->splitInGroups($event->tournament->contestants()->count(), $phase->configuration->numberOfGroups);
+        $currentConstantsGroups = $this->splitInGroups($event->tournament->contestants()->count(), $phase->number_of_groups);
 
         foreach ($groups as $index => $groupSize) {
             $phase->groups()->create([

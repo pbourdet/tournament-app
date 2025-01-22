@@ -19,10 +19,10 @@ class Group extends Model
 
     protected $fillable = ['name', 'size'];
 
-    /** @return BelongsTo<Phase, $this> */
+    /** @return BelongsTo<GroupPhase, $this> */
     public function phase(): BelongsTo
     {
-        return $this->belongsTo(Phase::class);
+        return $this->belongsTo(GroupPhase::class, 'group_phase_id');
     }
 
     /** @return HasMany<GroupContestant, $this> */

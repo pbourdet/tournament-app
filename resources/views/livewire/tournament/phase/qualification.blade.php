@@ -1,5 +1,5 @@
 <div class="w-full 2xl:w-2/3 space-y-6">
-    @if(null === $tournament->qualificationPhase)
+    @if(null === $tournament->groupPhase)
         <div>
             <flux:heading size="lg">{{ __('Create Qualification Phase') }}</flux:heading>
             <flux:subheading>{{ __('Chose a format and custom it to your needs.') }}</flux:subheading>
@@ -112,7 +112,7 @@
         <div>
             <flux:heading size="lg">{{ __('Qualification phase') }}</flux:heading>
             <div class="grid grid-cols-4 gap-1">
-                @foreach($tournament->qualificationPhase->groups as $group)
+                @foreach($tournament->groupPhase->groups as $group)
                     <flux:card class="space-y-6">
                         <flux:heading size="lg">{{ $group->name  }}</flux:heading>
                         <div class="flex flex-col">

@@ -200,9 +200,9 @@ class TournamentTest extends DuskTestCase
             ;
         });
 
-        $this->assertNotNull($tournament->qualificationPhase);
-        $this->assertSame(2, $tournament->qualificationPhase->configuration->numberOfGroups);
-        $this->assertSame(2, $tournament->qualificationPhase->configuration->contestantsQualifying);
+        $this->assertNotNull($tournament->groupPhase);
+        $this->assertSame(2, $tournament->groupPhase->number_of_groups);
+        $this->assertSame(2, $tournament->groupPhase->qualifying_per_group);
         $this->assertDatabaseCount('group_contestant', 8);
     }
 }

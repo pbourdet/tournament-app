@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace App\Services\Generators;
 
 use App\Enums\RoundStage;
-use App\Models\EliminationConfiguration;
+use App\Models\EliminationPhase;
 use App\Models\Phase;
 
 /**
- * @implements Generator<EliminationConfiguration>
+ * @implements Generator<EliminationPhase>
  */
 class EliminationRoundsGenerator implements Generator
 {
@@ -20,7 +20,7 @@ class EliminationRoundsGenerator implements Generator
 
     public function generate(Phase $phase): void
     {
-        $rounds = RoundStage::getRoundsForContestants($phase->configuration->numberOfContestants);
+        $rounds = RoundStage::getRoundsForContestants($phase->number_of_contestants);
 
         foreach ($rounds as $round) {
             $phase->rounds()->create([

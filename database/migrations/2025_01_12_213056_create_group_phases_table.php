@@ -9,16 +9,17 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up(): void
     {
-        Schema::create('elimination_phases', function (Blueprint $table) {
+        Schema::create('group_phases', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->foreignUuid('tournament_id')->unique()->constrained()->cascadeOnDelete();
-            $table->smallInteger('number_of_contestants')->unsigned();
+            $table->unsignedSmallInteger('number_of_groups');
+            $table->unsignedSmallInteger('qualifying_per_group');
             $table->timestamps();
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('elimination_phases');
+        Schema::dropIfExists('group_phases');
     }
 };

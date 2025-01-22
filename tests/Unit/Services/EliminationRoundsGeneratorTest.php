@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Services;
 
-use App\Models\Phase;
 use App\Models\Tournament;
 use App\Services\Generators\EliminationRoundsGenerator;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -17,9 +16,9 @@ class EliminationRoundsGeneratorTest extends TestCase
     public function testGenerate(): void
     {
         $tournament = Tournament::factory()->create(['number_of_players' => 16]);
-        Phase::factory()->forTournament($tournament)->withConfiguration(['numberOfContestants' => 16])->create();
+        $phase = $tournament->eliminationPhase()->create(['number_of_contestants' => 16]);
 
-        new EliminationRoundsGenerator()->generate($tournament->eliminationPhase);
+        new EliminationRoundsGenerator()->generate($phase);
 
         $this->assertDatabaseCount('rounds', 4);
         $this->assertDatabaseHas('rounds', ['stage' => 'W16']);

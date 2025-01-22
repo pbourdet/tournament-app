@@ -11,12 +11,12 @@ return new class extends Migration {
     {
         Schema::create('groups', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid('phase_id')->constrained()->cascadeOnDelete();
+            $table->foreignUuid('group_phase_id')->constrained()->cascadeOnDelete();
             $table->unsignedSmallInteger('size');
             $table->string('name');
             $table->timestamps();
 
-            $table->index('phase_id');
+            $table->index('group_phase_id');
         });
 
         Schema::create('group_contestant', function (Blueprint $table) {
@@ -33,5 +33,6 @@ return new class extends Migration {
     public function down(): void
     {
         Schema::dropIfExists('groups');
+        Schema::dropIfExists('group_contestant');
     }
 };

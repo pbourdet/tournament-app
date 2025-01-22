@@ -9,7 +9,6 @@ use App\Enums\ToastType;
 use App\Events\PhaseCreated;
 use App\Livewire\Component;
 use App\Livewire\Forms\Tournament\Phase\CreateGroupForm;
-use App\Models\GroupConfiguration;
 use App\Models\Tournament;
 use Illuminate\View\View;
 
@@ -28,7 +27,7 @@ class Qualification extends Component
 
     public function render(): View
     {
-        $this->tournament->load('qualificationPhase.groups.contestants');
+        $this->tournament->load('groupPhase.groups.contestants');
 
         return view('livewire.tournament.phase.qualification');
     }
@@ -37,11 +36,12 @@ class Qualification extends Component
     {
         $this->authorize('manage', $this->tournament);
         $this->groupForm->validate();
-        $this->tournament->qualificationPhase?->delete();
+        $this->tournament->groupPhase?->delete();
 
-        $this->tournament->qualificationPhase()->create([
+        $this->tournament->groupPhase()->create([
             'type' => $this->type,
-            'configuration' => GroupConfiguration::fromArray($this->groupForm->toArray()),
+            'number_of_groups' => $this->groupForm->numberOfGroups,
+            'qualifying_per_group' => $this->groupForm->contestantsQualifying,
         ]);
 
         PhaseCreated::dispatch($this->tournament->refresh());

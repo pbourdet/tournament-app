@@ -35,7 +35,7 @@ class EliminationTest extends TestCase
             ->assertDispatched('toast-show')
             ->assertSuccessful();
 
-        $this->assertDatabaseCount('phases', 1);
+        $this->assertDatabaseCount('elimination_phases', 1);
     }
 
     public function testTournamentStatusIsUpdatedIfFullAfterCreation(): void
@@ -72,12 +72,13 @@ class EliminationTest extends TestCase
             ->call('create')
             ->assertHasErrors(['form.numberOfContestants']);
 
-        $this->assertDatabaseCount('phases', 0);
+        $this->assertDatabaseCount('elimination_phases', 0);
     }
 
     public function testUserCantCreateAnEliminationPhaseIfAlreadyExists(): void
     {
-        $tournament = Tournament::factory()->withEliminationPhase()->create();
+        $tournament = Tournament::factory()->create();
+        $tournament->eliminationPhase()->create(['number_of_contestants' => 8]);
 
         Livewire::actingAs($tournament->organizer)
             ->test(Elimination::class, ['tournament' => $tournament])
@@ -85,7 +86,7 @@ class EliminationTest extends TestCase
             ->call('create')
             ->assertForbidden();
 
-        $this->assertDatabaseCount('phases', 1);
+        $this->assertDatabaseCount('elimination_phases', 1);
     }
 
     public function testUserCantCreateAnEliminationPhaseIfNotOrganizer(): void
@@ -98,6 +99,6 @@ class EliminationTest extends TestCase
             ->call('create')
             ->assertForbidden();
 
-        $this->assertDatabaseCount('phases', 0);
+        $this->assertDatabaseCount('elimination_phases', 0);
     }
 }
