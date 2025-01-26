@@ -3,6 +3,18 @@
 <div>
     <flux:header class="bg-zinc-50">
         <flux:navbar scrollable>
+            @can('manage', $tournament)
+                <flux:dropdown>
+                    <flux:navbar.item icon-trailing="chevron-down">{{ __('Player mode') }}</flux:navbar.item>
+
+                    <flux:navmenu>
+                        <flux:navmenu.item wire:navigate
+                                           href="{{ route('tournaments.organize', ['tournament' => $tournament, 'page' => 'general']) }}">
+                            {{ __('Organizer mode') }}
+                        </flux:navmenu.item>
+                    </flux:navmenu>
+                </flux:dropdown>
+            @endcan
             <flux:navbar.item wire:navigate dusk="link-overview"
                               href="{{ route('tournaments.show', ['tournament' => $tournament, 'page' => 'overview']) }}">
                 {{ __('Overview') }}
