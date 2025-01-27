@@ -17,6 +17,15 @@ trait WithTournamentLock
         $this->locked = $this->isLocked();
     }
 
+    public function checkLock(): void
+    {
+        $this->authorize('manage', $this->tournament);
+
+        if ($this->locked) {
+            abort(409);
+        }
+    }
+
     private function isLocked(): bool
     {
         $lock = Cache::lock($this->tournament->getLockKey(), 20);
@@ -28,14 +37,5 @@ trait WithTournamentLock
         }
 
         return true;
-    }
-
-    public function checkLock(): void
-    {
-        $this->authorize('manage', $this->tournament);
-
-        if ($this->locked) {
-            abort(409);
-        }
     }
 }

@@ -6,7 +6,6 @@ namespace App\Livewire\Tournament;
 
 use App\Jobs\GenerateTeams;
 use App\Livewire\Component;
-use App\Livewire\Forms\CreateTeamForm;
 use App\Models\Team;
 use App\Models\Tournament;
 use App\Models\User;
@@ -18,20 +17,11 @@ class Teams extends Component
 
     public Tournament $tournament;
 
-    public CreateTeamForm $createForm;
-
-    public function mount(Tournament $tournament): void
-    {
-        $this->createForm->tournament = $tournament;
-        $this->tournament = $tournament;
-    }
-
     public function render(): View
     {
-        return view('livewire.tournament.teams', [
-            'tournament' => $this->tournament->load(['teams.members']),
-            'selectablePlayers' => $this->tournament->players()->withoutTeams()->pluck('username', 'id')->toArray(),
-        ]);
+        $this->tournament->load('teams.members');
+
+        return view('livewire.tournament.teams');
     }
 
     public function generate(): void
