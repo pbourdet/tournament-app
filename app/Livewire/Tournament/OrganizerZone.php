@@ -48,7 +48,7 @@ class OrganizerZone extends Component
     private function sanitizePage(?string $page): string
     {
         if (null === $page) return 'general';
-        if (!in_array($page, self::SUPPORTED_PAGES, true)) return 'general';
+        if (!in_array($page, array_keys(self::SUPPORTED_PAGES), true)) return 'general';
 
         return $page;
     }
