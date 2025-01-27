@@ -237,5 +237,6 @@
     "Your password was successfully updated !": "Your password was successfully updated !",
     "Your profile was successfully updated !": "Your profile was successfully updated !",
     "Your tournament :tournament is full ! You can start it once the tournaments phases are set up.": "Your tournament \":tournament\" is full ! You can start it once the tournaments phases are set up.",
+    "Your tournament is not played in teams. You can change this setting in the \"General\" tab.": "Your tournament is not played in teams. You can change this setting in the \"General\" tab.",
     "Your username": "Your username"
 }
