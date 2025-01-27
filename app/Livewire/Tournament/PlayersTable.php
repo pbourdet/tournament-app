@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Livewire\Tournament;
 
-use App\Enums\ToastType;
 use App\Events\TournamentUpdated;
 use App\Livewire\Component;
 use App\Models\Tournament;
@@ -39,7 +38,7 @@ class PlayersTable extends Component
         $this->tournament->teams->first(fn ($team) => $team->members->contains($player))?->delete();
         $this->tournament->players()->detach($player);
 
-        $this->toast(__('Player :name removed from tournament.', ['name' => $player->username]), variant: ToastType::SUCCESS->value);
+        $this->toastSuccess(__('Player :name removed from tournament.', ['name' => $player->username]));
         event(new TournamentUpdated($this->tournament));
     }
 }

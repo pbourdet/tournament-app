@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Livewire\Tournament;
 
-use App\Enums\ToastType;
 use App\Jobs\GenerateTeams;
 use App\Livewire\Component;
 use App\Livewire\Forms\CreateTeamForm;
@@ -53,7 +52,7 @@ class Teams extends Component
         $this->checkLock();
 
         $team->delete();
-        $this->toast(__('Team :name deleted !', ['name' => $team->name]), variant: ToastType::SUCCESS->value);
+        $this->toastSuccess(__('Team :name deleted !', ['name' => $team->name]));
     }
 
     public function create(): void
@@ -75,7 +74,7 @@ class Teams extends Component
         $team->members()->attach($this->createForm->members);
 
         $this->createForm->reset('name', 'members');
-        $this->toast(__('Team created !'), variant: ToastType::SUCCESS->value);
+        $this->toastSuccess(__('Team created !'));
         $this->modal('create-team')->close();
     }
 }

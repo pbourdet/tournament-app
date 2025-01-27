@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Livewire\Auth;
 
-use App\Enums\ToastType;
 use App\Livewire\Component;
 use App\Livewire\Forms\Auth\RegisterForm;
 use App\Models\User;
@@ -39,7 +38,7 @@ class Register extends Component
 
         Auth::login($user);
 
-        $this->toast(__('Your account has been created ! You must now verify your email address.'), variant: ToastType::SUCCESS->value);
+        $this->toastSuccess(__('Your account has been created ! You must now verify your email address.'));
         $this->redirectRoute('dashboard', navigate: true);
     }
 }
