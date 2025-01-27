@@ -1,6 +1,6 @@
-<div>
+<div style="--color-accent: var(--color-orange-500); --color-accent-content: var(--color-orange-600);">
     <flux:header class="bg-zinc-50">
-        <flux:navbar scrollable style="--color-accent: var(--color-orange-500); --color-accent-content: var(--color-orange-600);">
+        <flux:navbar scrollable>
             @can('manage', $tournament)
                 <flux:dropdown>
                     <flux:navbar.item icon-trailing="chevron-down">{{ __('Organizer mode') }}</flux:navbar.item>
