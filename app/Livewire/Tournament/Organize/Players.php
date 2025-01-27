@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Livewire\Tournament\Organize;
 
-use Livewire\Component;
+use App\Livewire\Component;
 
 class Players extends Component
 {

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Livewire\Auth;
 
-use Livewire\Component;
+use App\Livewire\Component;
 
 class Logout extends Component
 {
