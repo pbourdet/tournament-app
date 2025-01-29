@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Livewire\Tournament\Phase;
 
 use App\Enums\PhaseType;
-use App\Enums\ToastType;
 use App\Events\PhaseCreated;
 use App\Livewire\Component;
 use App\Livewire\Forms\Tournament\Phase\CreateGroupForm;
@@ -45,6 +44,6 @@ class Qualification extends Component
         ]);
 
         PhaseCreated::dispatch($this->tournament->refresh());
-        $this->toast(__('Phase created !'), variant: ToastType::SUCCESS->value);
+        $this->toastSuccess(__('Phase created !'));
     }
 }

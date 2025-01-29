@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Livewire\Auth;
 
-use App\Enums\ToastType;
 use App\Livewire\Component;
 use DanHarrin\LivewireRateLimiting\Exceptions\TooManyRequestsException;
 use DanHarrin\LivewireRateLimiting\WithRateLimiting;
@@ -20,7 +19,7 @@ class SendVerificationEmail extends Component
         try {
             $this->rateLimit(5);
         } catch (TooManyRequestsException) {
-            $this->toast(__('Slow down ! You can try again later.'), variant: ToastType::DANGER->value);
+            $this->toastError(__('Slow down ! You can try again later.'));
 
             return;
         }
@@ -28,7 +27,7 @@ class SendVerificationEmail extends Component
         $user = $this->getUser();
 
         if ($user->hasVerifiedEmail()) {
-            $this->toast(__('Your email address is already verified.'), variant: ToastType::DANGER->value);
+            $this->toastError(__('Your email address is already verified.'));
 
             return;
         }

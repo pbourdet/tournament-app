@@ -88,7 +88,7 @@ class Create extends Component
             $tournament->players()->attach(auth()->user());
         }
 
-        $this->toast(__('Tournament :name created !', ['name' => $tournament->name]), variant: ToastType::SUCCESS->value);
+        $this->toastSuccess(__('Tournament :name created !', ['name' => $tournament->name]));
         $this->redirectRoute('tournaments.show', ['tournament' => $tournament], navigate: true);
     }
 }

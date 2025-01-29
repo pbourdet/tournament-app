@@ -35,3 +35,7 @@ ide-helper:
 	$(sail) artisan ide-helper:generate
 	$(sail) artisan ide-helper:models -M
 	$(sail) artisan ide-helper:meta
+
+lang-update:
+	$(sail) artisan lang:update
+	make pint

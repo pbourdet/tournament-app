@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Livewire\Auth;
 
-use App\Enums\ToastType;
 use App\Livewire\Component;
 use App\Livewire\Forms\Profile\PasswordForm;
 use App\Models\User;
@@ -42,12 +41,12 @@ class ResetPassword extends Component
         );
 
         if (Password::PASSWORD_RESET !== $status) {
-            $this->toast(__('Password reset failed. Try again or request a reset new link.'), variant: ToastType::DANGER->value);
+            $this->toastError(__('Password reset failed. Try again or request a reset new link.'));
 
             return;
         }
 
-        $this->toast('Your password has been reset ! You can now log in with your new password.', variant: ToastType::SUCCESS->value);
+        $this->toastSuccess(__('Your password has been reset ! You can now log in with your new password.'));
         $this->redirectRoute('login', navigate: true);
     }
 }

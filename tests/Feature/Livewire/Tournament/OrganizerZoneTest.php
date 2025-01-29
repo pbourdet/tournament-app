@@ -21,6 +21,15 @@ class OrganizerZoneTest extends TestCase
             ->assertStatus(200);
     }
 
+    public function testItRendersWithTheRightPage(): void
+    {
+        $tournament = Tournament::factory()->create();
+
+        Livewire::actingAs($tournament->organizer)
+            ->test(OrganizerZone::class, ['tournament' => $tournament, 'page' => 'players'])
+            ->assertSet('page', 'players');
+    }
+
     public function testWhenNoPageIsSpecifiedItSetsItToGeneral(): void
     {
         $tournament = Tournament::factory()->create();

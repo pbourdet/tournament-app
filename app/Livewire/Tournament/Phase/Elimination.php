@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Livewire\Tournament\Phase;
 
-use App\Enums\ToastType;
 use App\Events\PhaseCreated;
 use App\Events\TournamentUpdated;
 use App\Livewire\Component;
@@ -44,7 +43,7 @@ class Elimination extends Component
         ]);
 
         PhaseCreated::dispatch($this->tournament);
-        $this->toast(__('Elimination phase created successfully !'), variant: ToastType::SUCCESS->value);
+        $this->toastSuccess(__('Elimination phase created successfully !'));
         event(new TournamentUpdated($this->tournament));
     }
 }

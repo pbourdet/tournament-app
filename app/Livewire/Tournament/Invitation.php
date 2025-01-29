@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Livewire\Tournament;
 
+use App\Livewire\Component;
 use App\Models\Tournament;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
-use Livewire\Component;
 
 class Invitation extends Component
 {

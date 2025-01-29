@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Livewire\Tournament;
 
-use App\Enums\ToastType;
 use App\Events\TournamentFull;
 use App\Livewire\Component;
 use App\Models\Tournament;
@@ -39,7 +38,7 @@ class Join extends Component
             TournamentFull::dispatch($tournament);
         }
 
-        $this->toast(__('You joined tournament :name', ['name' => $tournament->name]), variant: ToastType::SUCCESS->value);
+        $this->toastSuccess(__('You joined tournament :name', ['name' => $tournament->name]));
         $this->redirectRoute('tournaments.show', ['tournament' => $tournament], navigate: true);
     }
 

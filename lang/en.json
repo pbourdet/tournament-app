@@ -146,7 +146,7 @@
     "results": "results",
     "Save": "Save",
     "Saved.": "Saved.",
-    "Search...": "Search...",
+    "Search player": "Search player",
     "Select": "Select",
     "Select :count players": "Select :count players",
     "selected": "selected",
@@ -157,6 +157,7 @@
     "Share this code to other players": "Share this code to other players",
     "Showing": "Showing",
     "Slow down ! You can try again later.": "Slow down ! You can try again later.",
+    "Some other actions such as deleting teams will be prevented during this process": "Some other actions such as deleting teams will be prevented during this process",
     "Specify the outcome and the score": "Specify the outcome and the score",
     "Start by choosing a name for your tournament": "Start by choosing a name for your tournament",
     "Start tournament": "Start tournament",
@@ -187,7 +188,7 @@
     "This is a secure area of the application. Please confirm your password before continuing.": "This is a secure area of the application. Please confirm your password before continuing.",
     "This password reset link will expire in :count minutes.": "This password reset link will expire in :count minutes.",
     "This tournament is full.": "This tournament is full.",
-    "This will generate the remaining teams randomly. Some other actions such as deleting teams will be prevented during this process": "This will generate the remaining teams randomly. Some other actions such as deleting teams will be prevented during this process",
+    "This will generate the remaining teams randomly.": "This will generate the remaining teams randomly.",
     "Tie": "Tie",
     "to": "to",
     "Toggle navigation": "Toggle navigation",
@@ -237,5 +238,6 @@
     "Your password was successfully updated !": "Your password was successfully updated !",
     "Your profile was successfully updated !": "Your profile was successfully updated !",
     "Your tournament :tournament is full ! You can start it once the tournaments phases are set up.": "Your tournament \":tournament\" is full ! You can start it once the tournaments phases are set up.",
+    "Your tournament is not played in teams. You can change this setting in the \"General\" tab.": "Your tournament is not played in teams. You can change this setting in the \"General\" tab.",
     "Your username": "Your username"
 }

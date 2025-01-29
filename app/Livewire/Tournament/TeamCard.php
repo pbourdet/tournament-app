@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Livewire\Tournament;
 
-use App\Enums\ToastType;
 use App\Livewire\Component;
 use App\Models\Team;
 use App\Models\Tournament;
@@ -18,6 +17,8 @@ class TeamCard extends Component
     #[Locked]
     public bool $locked = false;
 
+    public bool $organizerMode = false;
+
     public Team $team;
 
     public Tournament $tournament;
@@ -27,7 +28,7 @@ class TeamCard extends Component
         $this->team = $team;
         $this->tournament = $tournament;
         $this->newName = $team->name;
-        $this->$locked = $locked;
+        $this->locked = $locked;
     }
 
     public function update(): void
@@ -38,6 +39,6 @@ class TeamCard extends Component
         ]);
 
         $this->team->update(['name' => $this->newName]);
-        $this->toast(__('Team :name updated !', ['name' => $this->team->name]), variant: ToastType::SUCCESS->value);
+        $this->toastSuccess(__('Team :name updated !', ['name' => $this->team->name]));
     }
 }

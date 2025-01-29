@@ -146,7 +146,7 @@
     "results": "résultats",
     "Save": "Sauvegarder",
     "Saved.": "Sauvegardé.",
-    "Search...": "Rechercher...",
+    "Search player": "Rechercher un joueur",
     "Select": "Sélectionner",
     "Select :count players": "Sélectionner :count joueurs",
     "selected": "sélectionné",
@@ -157,6 +157,7 @@
     "Share this code to other players": "Partagez ce code avec d'autres joueurs",
     "Showing": "Montrant",
     "Slow down ! You can try again later.": "Ralentissez ! Vous pouvez réessayer plus tard.",
+    "Some other actions such as deleting teams will be prevented during this process": "Certaines actions telles que la suppression d'équipes seront impossibles pendant ce processus",
     "Specify the outcome and the score": "Spécifiez le résultat et le score",
     "Start by choosing a name for your tournament": "Commencez par choisir un nom pour votre tournoi",
     "Start tournament": "Démarrer le tournoi",
@@ -187,7 +188,7 @@
     "This is a secure area of the application. Please confirm your password before continuing.": "Ceci est une zone sécurisée de l'application. Veuillez confirmer votre mot de passe avant de continuer.",
     "This password reset link will expire in :count minutes.": "Ce lien de réinitialisation du mot de passe expirera dans :count minutes.",
     "This tournament is full.": "Ce tournoi est complet.",
-    "This will generate the remaining teams randomly. Some other actions such as deleting teams will be prevented during this process": "Cela générera les équipes restantes de manière aléatoire. Certaines actions telles que la suppression d'équipes seront empêchées pendant ce processus",
+    "This will generate the remaining teams randomly.": "Cela générera les équipes restantes aléatoirement.",
     "Tie": "Match nul",
     "to": "à",
     "Toggle navigation": "Afficher / masquer le menu de navigation",
@@ -237,5 +238,6 @@
     "Your password was successfully updated !": "Votre mot de passe a bien été mis à jour !",
     "Your profile was successfully updated !": "Votre profil a bien été mis à jour !",
     "Your tournament :tournament is full ! You can start it once the tournaments phases are set up.": "Votre tournoi \":tournament\" est complet ! Vous pouvez le démarrer une fois les phases du tournoi configurées.",
+    "Your tournament is not played in teams. You can change this setting in the \"General\" tab.": "Votre tournoi ne se joue pas en équipe. Vous pouvez modifier ce paramètre dans l'onglet \"Général\".",
     "Your username": "Votre nom d'utilisateur"
 }

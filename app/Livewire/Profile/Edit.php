@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Livewire\Profile;
 
-use App\Enums\ToastType;
 use App\Livewire\Component;
 use App\Livewire\Forms\Profile\PasswordForm;
 use App\Livewire\Forms\Profile\UserDeletionForm;
@@ -42,7 +41,7 @@ class Edit extends Component
         }
 
         $this->user->save();
-        $this->toast(__('Your profile was successfully updated !'), variant: ToastType::SUCCESS->value);
+        $this->toastSuccess(__('Your profile was successfully updated !'));
     }
 
     public function updatePassword(): void
@@ -51,7 +50,7 @@ class Edit extends Component
             $this->passwordForm->validate();
 
             $this->user->update(['password' => Hash::make($this->passwordForm->password)]);
-            $this->toast(__('Your password was successfully updated !'), variant: ToastType::SUCCESS->value);
+            $this->toastSuccess(__('Your password was successfully updated !'));
         } catch (ValidationException $e) {
             throw $e;
         } finally {
@@ -70,7 +69,7 @@ class Edit extends Component
         session()->invalidate();
         session()->regenerateToken();
 
-        $this->toast(__('Your account has been deleted.'), variant: ToastType::SUCCESS->value);
+        $this->toastSuccess(__('Your account has been deleted.'));
         $this->redirectRoute('login', navigate: true);
     }
 }

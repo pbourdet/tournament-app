@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Livewire\Tournament;
 
 use App\Enums\ResultOutcome;
-use App\Enums\ToastType;
 use App\Events\ResultAdded;
 use App\Events\TournamentUpdated;
 use App\Livewire\Component;
@@ -63,7 +62,7 @@ class MatchCard extends Component
         }
 
         ResultAdded::dispatch($this->match);
-        $this->toast(__('Result added !'), variant: ToastType::SUCCESS->value);
+        $this->toastSuccess(__('Result added !'));
         $this->modals()->close();
         event(new TournamentUpdated($tournament));
     }
