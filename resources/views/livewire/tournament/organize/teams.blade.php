@@ -14,7 +14,7 @@
         <div class="flex justify-between items-center">
             <div class="flex flex-col gap-2 sm:flex-row">
                 <div class="mr-2">
-                    <flux:modal.trigger name="create-team">
+                    <flux:modal.trigger name="create-team" dusk="create-team-modal">
                         <flux:button :disabled="$tournament->hasAllTeams() || $this->locked">
                             {{ __('Create team') }}
                         </flux:button>
@@ -42,7 +42,9 @@
                 <span class="font-bold">{{ $tournament->teams()->count() }}/{{$tournament->maxTeamsCount()}}</span>
             </flux:badge>
         </div>
+
         @include('livewire.tournament.partials.teams-grid')
+
         <flux:modal class="w-5/6 sm:w-2/3 md:w-1/2 lg:w-1/3" name="create-team">
             <div>
                 <div class="flex items-center justify-between mb-4">
@@ -58,20 +60,20 @@
                             <flux:label>{{ __('Team members') }}</flux:label>
                             <flux:select variant="listbox" searchable multiple selected-suffix="{{ __('users selected') }}"
                                          :placeholder="__('Select :count players', ['count' => $tournament->team_size])"
-                                         clear="close"
+                                         clear="close" dusk="select-members"
                                          @change="if ($wire.createForm.members.length === {{ $tournament->team_size }}) $dispatch('click')"
                                          wire:model="createForm.members">
                                 <x-slot name="search">
                                     <flux:select.search placeholder="{{ __('Search player') }}"/>
                                 </x-slot>
-                                @foreach($this->selectablePlayers as $id => $selectablePlayer)
-                                    <flux:option x-bind:disabled="$wire.createForm.members.length >= {{ $tournament->team_size }}" :value="$id">{{ $selectablePlayer }}</flux:option>
+                                @foreach($selectablePlayers as $id => $selectablePlayer)
+                                    <flux:option dusk="select-member-{{ $loop->index }}" x-bind:disabled="$wire.createForm.members.length >= {{ $tournament->team_size }}" :value="$id">{{ $selectablePlayer }}</flux:option>
                                 @endforeach
                             </flux:select>
                         </flux:field>
                         <div class="flex items-center mt-4">
                             <flux:button variant="primary" type="submit" :loading="false"
-                                         wire:loading.attr="disabled"
+                                         wire:loading.attr="disabled" dusk="create-team"
                                          x-bind:disabled="$wire.createForm.members.length !== {{ $tournament->team_size }}">
                                 {{ __('Create team') }}
                             </flux:button>

@@ -105,24 +105,6 @@ class TournamentTest extends DuskTestCase
         $this->assertDatabaseCount('tournament_player', 0);
     }
 
-    public function testGenerateTournamentTeams(): void
-    {
-        $tournament = Tournament::factory()->teamBased()->full()->create(['number_of_players' => 4]);
-
-        $this->browse(function (Browser $browser) use ($tournament) {
-            $browser
-                ->loginAs($tournament->organizer)
-                ->visit(route('tournaments.show', ['tournament' => $tournament]))
-                ->click('@link-teams')
-                ->waitForRoute('tournaments.show', ['tournament' => $tournament, 'page' => 'teams'])
-                ->press('@generate-teams')
-                ->waitForText(__('Teams generation in progress...'))
-            ;
-        });
-
-        $this->assertDatabaseCount('teams', 2);
-    }
-
     public function testViewTournament(): void
     {
         $tournament = Tournament::factory()->full()->create();

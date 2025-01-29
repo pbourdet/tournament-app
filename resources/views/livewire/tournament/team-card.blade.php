@@ -13,12 +13,12 @@
 
         <div class="flex items-center space-x-2 ml-2">
             @can('manage', $tournament)
-                <flux:button square x-show="!editing"
+                <flux:button square x-show="!editing" dusk="edit-team-{{ $team->id }}"
                              @click="editing = true; setTimeout(() => $refs.inputField.focus(), 10)"
                              wire:loading.remove wire:target="update('{{ $team->id }}')">
                     <flux:icon.pencil class="size-5"/>
                 </flux:button>
-                <flux:button square variant="primary"
+                <flux:button square variant="primary" dusk="update-team-{{ $team->id }}"
                              x-cloak x-show="editing" @click="editing = false"
                              wire:click="update('{{ $team->id }}')">
                     <flux:icon.check class="size-5"/>
@@ -29,14 +29,16 @@
                     <flux:icon.arrow-uturn-left class="size-5"/>
                 </flux:button>
 
-                <flux:button square variant="danger"
-                             x-bind:disabled="loading || locked" x-show="!editing"
-                             @click="loading = true"
-                             wire:click="$parent.delete('{{ $team->id }}')"
-                             wire:confirm="Confirm deletion of {{ $team->name }}">
-                    <flux:icon.trash x-show="!loading" class="size-5"/>
-                    <x-loader x-cloak x-show="loading" class="size-5"/>
-                </flux:button>
+                @if($organizerMode)
+                    <flux:button square variant="danger" dusk="delete-team-{{ $team->id }}"
+                                 x-bind:disabled="loading || locked" x-show="!editing"
+                                 @click="loading = true"
+                                 wire:click="$parent.delete('{{ $team->id }}')"
+                                 wire:confirm="Confirm deletion of {{ $team->name }}">
+                        <flux:icon.trash x-show="!loading" class="size-5"/>
+                        <x-loader x-cloak x-show="loading" class="size-5"/>
+                    </flux:button>
+                @endif
             @endcan
         </div>
     </div>

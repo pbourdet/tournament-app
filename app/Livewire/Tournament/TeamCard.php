@@ -17,6 +17,8 @@ class TeamCard extends Component
     #[Locked]
     public bool $locked = false;
 
+    public bool $organizerMode = false;
+
     public Team $team;
 
     public Tournament $tournament;
@@ -26,7 +28,7 @@ class TeamCard extends Component
         $this->team = $team;
         $this->tournament = $tournament;
         $this->newName = $team->name;
-        $this->$locked = $locked;
+        $this->locked = $locked;
     }
 
     public function update(): void
