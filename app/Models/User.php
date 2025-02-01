@@ -54,9 +54,11 @@ class User extends Contestant implements MustVerifyEmailContract, Authenticatabl
      *
      * @return Builder<User>
      */
-    public function scopeWithoutTeams(Builder $query): Builder
+    public function scopeWithoutTeamsInTournament(Builder $query, Tournament $tournament): Builder
     {
-        return $query->whereDoesntHave('teams')->inRandomOrder();
+        return $query
+            ->whereDoesntHave('teams', fn (Builder $teamQuery) => $teamQuery->where('tournament_id', $tournament->id))
+            ->inRandomOrder();
     }
 
     /** @return HasMany<Tournament, $this> */
