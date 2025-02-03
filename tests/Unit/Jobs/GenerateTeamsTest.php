@@ -43,6 +43,24 @@ class GenerateTeamsTest extends TestCase
         $this->assertTrue($lock->get());
     }
 
+    public function testItGenerateTeamsWithPlayersThatHaveTeamsInOtherTournament(): void
+    {
+        $tournament = Tournament::factory()->teamBased()->full()->create(['number_of_players' => 6]);
+        $otherTournament = Tournament::factory()->teamBased()->withPlayers($tournament->players)->create(['number_of_players' => 6]);
+        Team::factory()->withMembers($tournament->players()->take(2)->get())->create([
+            'tournament_id' => $otherTournament->id,
+            'name' => 'created team',
+        ]);
+
+        new GenerateTeams($tournament)->handle();
+
+        $teams = $tournament->teams;
+        $this->assertCount(3, $teams);
+        foreach ($teams as $team) {
+            $this->assertCount(2, $team->members);
+        }
+    }
+
     public function testItDoesNotCreateTeamsIsTournamentIsNotFull(): void
     {
         $tournament = Tournament::factory()->teamBased()->create();

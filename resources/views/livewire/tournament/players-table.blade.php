@@ -31,7 +31,7 @@
                     </flux:cell>
                     @can('manage', $tournament)
                         <flux:cell>
-                            <flux:button size="sm" variant="danger" icon="trash" :disabled="$locked" wire:click="remove('{{ $player->id }}')"/>
+                            <flux:button dusk="remove-player-{{ $loop->index }}" size="sm" variant="danger" icon="trash" :disabled="$locked" wire:click="remove('{{ $player->id }}')"/>
                         </flux:cell>
                     @endcan
                 </flux:row>

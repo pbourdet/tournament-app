@@ -34,7 +34,7 @@ class Teams extends Component
         $this->tournament->load('teams.members');
 
         return view('livewire.tournament.organize.teams', [
-            'selectablePlayers' => $this->tournament->players()->withoutTeams()->pluck('username', 'id')->toArray(),
+            'selectablePlayers' => $this->tournament->players()->withoutTeamsInTournament($this->tournament)->pluck('username', 'id')->toArray(),
         ]);
     }
 
