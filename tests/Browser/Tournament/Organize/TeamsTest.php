@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Browser\Tournament;
+namespace Tests\Browser\Tournament\Organize;
 
 use App\Models\Tournament;
 use Illuminate\Foundation\Testing\DatabaseTruncation;
