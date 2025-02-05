@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Feature\Livewire\Tournaments;
+namespace Tests\Feature\Livewire\Tournament;
 
 use App\Livewire\Tournament\Invitation;
 use App\Models\Tournament;

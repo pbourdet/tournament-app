@@ -170,6 +170,11 @@ class Tournament extends Model
         return sprintf('tournament:%s:lock', $this->id);
     }
 
+    public function getContestantsTranslation(bool $plural = false): string
+    {
+        return ($this->team_based ? 'team' : 'player').($plural ? 's' : '');
+    }
+
     /** @return array<string, string> */
     protected function casts(): array
     {

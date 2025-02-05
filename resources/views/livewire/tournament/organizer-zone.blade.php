@@ -34,8 +34,8 @@
                     <flux:navmenu.item wire:navigate href="#">{{ __('Groups') }}</flux:navmenu.item>
                 </flux:navmenu>
             </flux:dropdown>
-            <flux:navbar.item wire:navigate
-                              href="#">
+            <flux:navbar.item wire:navigate dusk="link-organize-elimination"
+                              wire:navigate href="{{ route('tournaments.organize', ['tournament' => $tournament, 'page' => 'elimination']) }}">
                 {{ __('Elimination') }}
             </flux:navbar.item>
         </flux:navbar>
