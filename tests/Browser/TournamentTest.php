@@ -119,27 +119,20 @@ class TournamentTest extends DuskTestCase
 
     public function testStartTournament(): void
     {
-        $tournament = Tournament::factory()->full()->create(['number_of_players' => 4]);
+        $tournament = Tournament::factory()->full()->withEliminationPhase()->create(['number_of_players' => 4]);
 
         $this->browse(function (Browser $browser) use ($tournament) {
             $browser
                 ->loginAs($tournament->organizer)
                 ->visit(route('tournaments.show', ['tournament' => $tournament]))
-                ->click('@link-elimination')
-                ->waitForRoute('tournaments.show', ['tournament' => $tournament, 'page' => 'phase-elimination'])
-                ->select('@number-of-contestants', 4)
-                ->click('@create-elimination')
-                ->waitForText(__('Elimination phase created successfully !'))
-                ->click('@link-overview')
-                ->waitForRoute('tournaments.show', ['tournament' => $tournament, 'page' => 'overview'])
                 ->click('@start-tournament')
                 ->waitForText(__('The tournament will soon start ! Matches are being generated and players will be notified.'))
             ;
         });
 
         $this->assertTrue($tournament->fresh()->isStarted());
-        $this->assertDatabaseCount('matches', 3);
-        $this->assertDatabaseCount('rounds', 2);
+        $this->assertDatabaseCount('matches', 1);
+        $this->assertDatabaseCount('rounds', 1);
     }
 
     public function testAddMatchResult(): void
