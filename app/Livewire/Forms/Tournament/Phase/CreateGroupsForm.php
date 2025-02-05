@@ -11,7 +11,7 @@ use App\Rules\Phases\TotalContestantsQualifying;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Livewire\Form;
 
-class CreateGroupForm extends Form
+class CreateGroupsForm extends Form
 {
     private Tournament $tournament;
 

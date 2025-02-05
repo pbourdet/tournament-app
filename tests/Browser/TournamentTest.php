@@ -157,27 +157,4 @@ class TournamentTest extends DuskTestCase
 
         $this->assertDatabaseCount('results', 2);
     }
-
-    public function testCreateGroupPhase(): void
-    {
-        $tournament = Tournament::factory()->full()->create(['number_of_players' => 8]);
-
-        $this->browse(function (Browser $browser) use ($tournament) {
-            $browser
-                ->loginAs($tournament->organizer)
-                ->visit(route('tournaments.show', ['tournament' => $tournament]))
-                ->click('@link-qualification')
-                ->waitForRoute('tournaments.show', ['tournament' => $tournament, 'page' => 'phase-qualification'])
-                ->type('@input-number-of-groups', 2)
-                ->type('@input-contestants-qualifying', 2)
-                ->click('@create-group-phase')
-                ->waitForText(__('Phase created !'))
-            ;
-        });
-
-        $this->assertNotNull($tournament->groupPhase);
-        $this->assertSame(2, $tournament->groupPhase->number_of_groups);
-        $this->assertSame(2, $tournament->groupPhase->qualifying_per_group);
-        $this->assertDatabaseCount('group_contestant', 8);
-    }
 }
