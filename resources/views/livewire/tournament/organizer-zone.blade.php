@@ -28,10 +28,13 @@
                 {{ __('Teams') }}
             </flux:navbar.item>
             <flux:dropdown>
-                <flux:navbar.item icon-trailing="chevron-down">{{ __('Qualification') }}</flux:navbar.item>
+                <flux:navbar.item dusk="qualification-dropdown" icon-trailing="chevron-down">{{ __('Qualification') }}</flux:navbar.item>
 
                 <flux:navmenu>
-                    <flux:navmenu.item wire:navigate href="#">{{ __('Groups') }}</flux:navmenu.item>
+                    <flux:navmenu.item wire:navigate dusk="link-organize-groups"
+                                       href="{{ route('tournaments.organize', ['tournament' => $tournament, 'page' => 'groups']) }}">
+                        {{ __('Groups') }}
+                    </flux:navmenu.item>
                 </flux:navmenu>
             </flux:dropdown>
             <flux:navbar.item wire:navigate dusk="link-organize-elimination"

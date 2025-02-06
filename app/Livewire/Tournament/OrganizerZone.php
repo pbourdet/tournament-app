@@ -23,6 +23,7 @@ class OrganizerZone extends Component
         'players' => 'Players',
         'teams' => 'Teams',
         'elimination' => 'Elimination',
+        'groups' => 'Groups',
     ];
 
     public function mount(Tournament $tournament, ?string $page = null): void
