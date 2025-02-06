@@ -9,10 +9,14 @@ use App\Livewire\Component;
 use App\Livewire\Forms\Tournament\Phase\CreateGroupsForm;
 use App\Models\Tournament;
 use Illuminate\View\View;
+use Livewire\Attributes\Url;
 
 class Groups extends Component
 {
     public Tournament $tournament;
+
+    #[Url]
+    public string $tab = 'settings';
 
     public CreateGroupsForm $form;
 

@@ -8,6 +8,7 @@ use App\Enums\TournamentStatus;
 use App\Events\PhaseCreated;
 use App\Jobs\StartTournament;
 use App\Models\EliminationPhase;
+use App\Models\GroupPhase;
 use App\Models\Team;
 use App\Models\Tournament;
 use App\Models\User;
@@ -54,6 +55,13 @@ class TournamentFactory extends Factory
         return $this->afterCreating(function (Tournament $tournament): void {
             EliminationPhase::factory()->forTournament($tournament)->create();
             PhaseCreated::dispatch($tournament);
+        });
+    }
+
+    public function withGroupPhase(): static
+    {
+        return $this->afterCreating(function (Tournament $tournament): void {
+            GroupPhase::factory()->forTournament($tournament)->create();
         });
     }
 
