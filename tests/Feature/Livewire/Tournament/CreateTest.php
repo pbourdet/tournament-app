@@ -101,6 +101,7 @@ class CreateTest extends TestCase
         $this->assertDatabaseHas('tournament_invitations', [
             'tournament_id' => Tournament::firstOrFail()->id,
         ]);
+        $this->assertDatabaseCount('teams', 8);
     }
 
     public function testUserCannotCreateTeamBasedTournamentWithWrongValues(): void

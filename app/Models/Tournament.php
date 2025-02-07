@@ -91,6 +91,20 @@ class Tournament extends Model
         ]);
     }
 
+    public function createTeams(): void
+    {
+        if (!$this->team_based) {
+            return;
+        }
+
+        $teams = [];
+        for ($i = 1; $i <= $this->maxTeamsCount(); ++$i) {
+            $teams[] = ['name' => "Team $i"];
+        }
+
+        $this->teams()->createMany($teams);
+    }
+
     public function isFull(): bool
     {
         return $this->players()->count() === $this->number_of_players;
