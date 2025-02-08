@@ -14,7 +14,7 @@
         <div class="flex justify-between items-center">
             <div class="flex flex-col gap-2 sm:flex-row">
                 <div wire:replace class="flex items-center">
-                    <flux:button x-on:click="generationStarted = true" variant="primary"
+                    <flux:button x-on:click="generationStarted = true"
                                  x-bind:disabled="generationStarted || locked || !canGenerate"
                                  type="button" wire:click="generate" dusk="generate-teams">
                         <span>{{ __('Generate teams') }}</span>

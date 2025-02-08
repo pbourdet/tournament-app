@@ -119,4 +119,138 @@ class TeamsTest extends TestCase
 
         Queue::assertNotPushed(GenerateTeams::class);
     }
+
+    public function testOrganizerCanRemovePlayerFromTeam(): void
+    {
+        $tournament = Tournament::factory()->withFullTeams()->create();
+        $team = $tournament->teams->firstOrFail();
+
+        Livewire::actingAs($tournament->organizer)
+            ->test(Teams::class, ['tournament' => $tournament])
+            ->call('removeMember', $team, $team->members->first()->id)
+            ->assertSuccessful();
+
+        $this->assertFalse($team->refresh()->isFull());
+    }
+
+    public function testNonOrganizerCantRemovePlayerFromTeam(): void
+    {
+        $user = User::factory()->create();
+        $tournament = Tournament::factory()->withFullTeams()->create();
+        $team = $tournament->teams->firstOrFail();
+
+        Livewire::actingAs($user)
+            ->test(Teams::class, ['tournament' => $tournament])
+            ->call('removeMember', $team, $team->members->first()->id)
+            ->assertForbidden()
+            ->assertNotDispatched('toast-show');
+
+        $this->assertTrue($team->refresh()->isFull());
+    }
+
+    public function testOrganizerCantRemovePlayerFromTeamIfGenerationIsOngoing(): void
+    {
+        $tournament = Tournament::factory()->withFullTeams()->create();
+        $team = $tournament->teams->firstOrFail();
+
+        Cache::lock($tournament->getLockKey(), 20)->get();
+
+        Livewire::actingAs($tournament->organizer)
+            ->test(Teams::class, ['tournament' => $tournament])
+            ->call('removeMember', $team, $team->members->first()->id)
+            ->assertConflict()
+            ->assertNotDispatched('toast-show');
+
+        $this->assertTrue($team->refresh()->isFull());
+    }
+
+    public function testOrganizerCanAddPlayerToTeam(): void
+    {
+        $tournament = Tournament::factory()->full()->teamBased()->create();
+        $team = $tournament->teams->firstOrFail();
+        $player = $tournament->players->firstOrFail();
+
+        Livewire::actingAs($tournament->organizer)
+            ->test(Teams::class, ['tournament' => $tournament])
+            ->call('addMember', $team, $player->id)
+            ->assertSuccessful();
+
+        $this->assertTrue($team->refresh()->members->contains($player));
+    }
+
+    public function testNonOrganizerCantAddPlayerToTeam(): void
+    {
+        $user = User::factory()->create();
+        $tournament = Tournament::factory()->full()->teamBased()->create();
+        $team = $tournament->teams->firstOrFail();
+        $player = $tournament->players->firstOrFail();
+
+        Livewire::actingAs($user)
+            ->test(Teams::class, ['tournament' => $tournament])
+            ->call('addMember', $team, $player->id)
+            ->assertForbidden();
+
+        $this->assertFalse($team->refresh()->members->contains($player));
+    }
+
+    public function testOrganizerCannotAddPlayerInFullTeam(): void
+    {
+        $users = User::factory(3)->create();
+        $tournament = Tournament::factory()->full()->teamBased()->withPlayers($users)->create();
+        $team = $tournament->teams->firstOrFail();
+        $team->members()->attach($users->take(2));
+        $player = $users->last();
+
+        Livewire::actingAs($tournament->organizer)
+            ->test(Teams::class, ['tournament' => $tournament])
+            ->call('addMember', $team, $player->id)
+            ->assertForbidden();
+
+        $this->assertFalse($team->refresh()->members->contains($player));
+    }
+
+    public function testOrganizerCannotAddPlayerThatAreNotInTournament(): void
+    {
+        $tournament = Tournament::factory()->full()->teamBased()->create();
+        $team = $tournament->teams->firstOrFail();
+        $player = User::factory()->create();
+
+        Livewire::actingAs($tournament->organizer)
+            ->test(Teams::class, ['tournament' => $tournament])
+            ->call('addMember', $team, $player->id)
+            ->assertForbidden();
+
+        $this->assertFalse($team->refresh()->members->contains($player));
+    }
+
+    public function testOrganizerCannotAddMemberToTeamIfPlayerAlreadyHasATeam(): void
+    {
+        $tournament = Tournament::factory()->full()->teamBased()->create();
+        $team = $tournament->teams->firstOrFail();
+        $player = $tournament->players->firstOrFail();
+        $team->members()->attach($player);
+
+        Livewire::actingAs($tournament->organizer)
+            ->test(Teams::class, ['tournament' => $tournament])
+            ->call('addMember', $team, $player->id)
+            ->assertForbidden();
+
+        $this->assertCount(1, $team->refresh()->members);
+    }
+
+    public function testOrganizerCannotAddPlayerToTeamIfGenerationIsOngoing(): void
+    {
+        $tournament = Tournament::factory()->full()->teamBased()->create();
+        $team = $tournament->teams->firstOrFail();
+        $player = $tournament->players->firstOrFail();
+
+        Cache::lock($tournament->getLockKey(), 20)->get();
+
+        Livewire::actingAs($tournament->organizer)
+            ->test(Teams::class, ['tournament' => $tournament])
+            ->call('addMember', $team, $player->id)
+            ->assertConflict();
+
+        $this->assertFalse($team->refresh()->members->contains($player));
+    }
 }

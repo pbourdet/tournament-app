@@ -86,6 +86,7 @@ class TournamentFactory extends Factory
     {
         return $this->teamBased()->full()->afterCreating(function (Tournament $tournament): void {
             new GenerateTeams($tournament)->handle();
+            $tournament->refresh();
         });
     }
 

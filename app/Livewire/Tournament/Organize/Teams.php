@@ -11,6 +11,7 @@ use App\Models\Team;
 use App\Models\Tournament;
 use App\Models\User;
 use Illuminate\View\View;
+use Livewire\Attributes\Computed;
 
 class Teams extends Component
 {
@@ -18,17 +19,21 @@ class Teams extends Component
 
     public Tournament $tournament;
 
-    public string $playerId = '';
-
     public bool $organizerMode = true;
 
     public function render(): View
     {
         $this->tournament->load(['teams.members', 'teams.tournament']);
 
-        return view('livewire.tournament.organize.teams', [
-            'selectablePlayers' => $this->tournament->players()->withoutTeamsInTournament($this->tournament)->pluck('username', 'id')->toArray(),
-        ]);
+        return view('livewire.tournament.organize.teams');
+    }
+
+    /** @return array<string, string> */
+    #[Computed]
+    public function selectablePlayers(): array
+    {
+        /* @phpstan-ignore-next-line */
+        return $this->tournament->players()->withoutTeamsInTournament($this->tournament)->pluck('username', 'id')->toArray();
     }
 
     public function generate(): void
@@ -48,6 +53,14 @@ class Teams extends Component
     public function addMember(Team $team, string $playerId): void
     {
         $this->checkLock();
+
+        if ($team->members->count() >= $team->tournament->team_size) {
+            abort(403);
+        }
+
+        if (!$this->tournament->players()->withoutTeamsInTournament($this->tournament)->where('id', $playerId)->exists()) {
+            abort(403);
+        }
 
         $team->members()->attach($playerId);
         $this->toastSuccess(__('Player added to team !'));

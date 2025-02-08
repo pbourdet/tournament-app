@@ -185,7 +185,7 @@
     "The matches will be displayed once the elimination phase has started.": "The matches will be displayed once the elimination phase has started.",
     "The number of contestants qualifying per group must be between 1 and the smallest number of contestants in a group.": "The number of contestants qualifying per group must be between 1 and the smallest number of contestants in a group.",
     "The number of groups must be between 2 and half the number of contestants.": "The number of groups must be between 2 and half the number of contestants.",
-    "The number of team members must match the team size setting of the tournament.": "The number of team members must match the team size setting of the tournament.",
+    "The team is already full": "The team is already full",
     "The response is not a streamed response.": "The response is not a streamed response.",
     "The response is not a view.": "The response is not a view.",
     "The tournament :tournament has started. Good luck, have fun !": "The tournament :tournament has started. Good luck, have fun !",

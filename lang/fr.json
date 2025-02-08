@@ -185,7 +185,7 @@
     "The matches will be displayed once the elimination phase has started.": "Les matchs seront affichés une fois que la phase d'élimination aura commencé.",
     "The number of contestants qualifying per group must be between 1 and the smallest number of contestants in a group.": "Le nombre de participants qualifiés par groupe doit être compris entre 1 et le plus petit nombre de participants dans un groupe.",
     "The number of groups must be between 2 and half the number of contestants.": "Le nombre de groupes doit être compris entre 2 et la moitié du nombre de participants.",
-    "The number of team members must match the team size setting of the tournament.": "Le nombre de membres de l'équipe doit correspondre à la taille de l'équipe définie pour le tournoi.",
+    "The team is already full": "L'équipe est déjà complète",
     "The response is not a streamed response.": "La réponse n'est pas une réponse diffusée.",
     "The response is not a view.": "La réponse n'est pas une vue.",
     "The tournament :tournament has started. Good luck, have fun !": "Le tournoi :tournament a démarré. Bonne chance, amusez-vous !",
