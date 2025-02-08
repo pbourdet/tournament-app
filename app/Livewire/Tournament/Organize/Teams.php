@@ -91,4 +91,12 @@ class Teams extends Component
         $team->members()->attach($playerId);
         $this->toastSuccess(__('Player added to team !'));
     }
+
+    public function removeMember(Team $team, User $user): void
+    {
+        $this->checkLock();
+
+        $team->members()->detach($user);
+        $this->toastSuccess(__('Player removed from team !'));
+    }
 }
