@@ -22,11 +22,6 @@ class GenerateTeamsTest extends TestCase
             ->full()
             ->create(['number_of_players' => 6]);
 
-        Team::factory()->withMembers($tournament->players()->take(2)->get())->create([
-            'tournament_id' => $tournament->id,
-            'name' => 'created team',
-        ]);
-
         $lock = Cache::lock($tournament->getLockKey(), 20);
         $lock->get();
 
@@ -34,10 +29,8 @@ class GenerateTeamsTest extends TestCase
 
         $this->assertDatabaseCount('teams', 3);
 
-        $teams = $tournament->teams;
-        foreach ($teams as $team) {
-            $this->assertCount(2, $team->members);
-        }
+        $teams = $tournament->refresh()->teams;
+        $this->assertTrue($teams->every(fn (Team $team) => $team->isFull()));
         $this->assertSame(0, $tournament->players()->whereDoesntHave('teams')->count());
 
         $this->assertTrue($lock->get());
@@ -46,22 +39,16 @@ class GenerateTeamsTest extends TestCase
     public function testItGenerateTeamsWithPlayersThatHaveTeamsInOtherTournament(): void
     {
         $tournament = Tournament::factory()->teamBased()->full()->create(['number_of_players' => 6]);
-        $otherTournament = Tournament::factory()->teamBased()->withPlayers($tournament->players)->create(['number_of_players' => 6]);
-        Team::factory()->withMembers($tournament->players()->take(2)->get())->create([
-            'tournament_id' => $otherTournament->id,
-            'name' => 'created team',
-        ]);
+        Tournament::factory()->teamBased()->withPlayers($tournament->players)->create(['number_of_players' => 6]);
 
         new GenerateTeams($tournament)->handle();
 
-        $teams = $tournament->teams;
+        $teams = $tournament->refresh()->teams;
         $this->assertCount(3, $teams);
-        foreach ($teams as $team) {
-            $this->assertCount(2, $team->members);
-        }
+        $this->assertTrue($teams->every(fn (Team $team) => $team->isFull()));
     }
 
-    public function testItDoesNotCreateTeamsIsTournamentIsNotFull(): void
+    public function testItDoesNotGenerateTeamsIsTournamentIsNotFull(): void
     {
         $tournament = Tournament::factory()->teamBased()->create();
         $lock = Cache::lock($tournament->getLockKey(), 20);
@@ -69,11 +56,11 @@ class GenerateTeamsTest extends TestCase
 
         new GenerateTeams($tournament)->handle();
 
-        $this->assertDatabaseCount('teams', 0);
+        $this->assertTrue($tournament->teams->every(fn (Team $team) => 0 === $team->members->count()));
         $this->assertTrue($lock->get());
     }
 
-    public function testItDoesNotCreateTeamsIsTournamentIsNotTeamBased(): void
+    public function testItDoesNotGenerateTeamsIsTournamentIsNotTeamBased(): void
     {
         $tournament = Tournament::factory()->full()->create();
         $lock = Cache::lock($tournament->getLockKey(), 20);

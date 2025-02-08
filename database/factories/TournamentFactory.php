@@ -6,10 +6,10 @@ namespace Database\Factories;
 
 use App\Enums\TournamentStatus;
 use App\Events\PhaseCreated;
+use App\Jobs\GenerateTeams;
 use App\Jobs\StartTournament;
 use App\Models\EliminationPhase;
 use App\Models\GroupPhase;
-use App\Models\Team;
 use App\Models\Tournament;
 use App\Models\User;
 use App\Services\Generators\EliminationMatchesGenerator;
@@ -82,14 +82,11 @@ class TournamentFactory extends Factory
         });
     }
 
-    public function withAllTeams(): static
+    public function withFullTeams(): static
     {
         return $this->teamBased()->full()->afterCreating(function (Tournament $tournament): void {
-            while (!$tournament->hasAllTeams()) {
-                $users = User::factory()->count($tournament->team_size)->createMany();
-                $team = Team::factory()->withMembers($users)->create(['tournament_id' => $tournament->id]);
-                $tournament->teams()->save($team);
-            }
+            new GenerateTeams($tournament)->handle();
+            $tournament->refresh();
         });
     }
 
@@ -102,9 +99,11 @@ class TournamentFactory extends Factory
 
     public function teamBased(int $teamSize = 2): static
     {
-        return $this->afterMaking(function (Tournament $tournament) use ($teamSize): void {
+        return $this->afterCreating(function (Tournament $tournament) use ($teamSize): void {
             $tournament->team_based = true;
             $tournament->team_size = $teamSize;
+            $tournament->createTeams();
+            $tournament->save();
         });
     }
 

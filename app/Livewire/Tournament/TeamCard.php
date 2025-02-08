@@ -23,12 +23,12 @@ class TeamCard extends Component
 
     public Tournament $tournament;
 
-    public function mount(Team $team, Tournament $tournament, bool $locked): void
+    /** @var array<string, string> */
+    public array $selectablePlayers = [];
+
+    public function mount(): void
     {
-        $this->team = $team;
-        $this->tournament = $tournament;
-        $this->newName = $team->name;
-        $this->locked = $locked;
+        $this->newName = $this->team->name;
     }
 
     public function update(): void

@@ -1,5 +1,5 @@
 <div x-data="{ editing: false, loading: false, locked: @js($locked) }"
-     class="max-w-sm rounded-lg shadow-md border border-gray-200 bg-white mb-4">
+     class="max-w-sm rounded-lg shadow-md border border-gray-200 mb-4">
     <div class="px-4 py-3 border-b border-gray-200 bg-gray-50 flex items-center justify-between">
         <div class="flex flex-col truncate">
             <flux:heading class="truncate" x-show="!editing" size="lg" x-text="$wire.newName">{{ $team->name }}</flux:heading>
@@ -28,29 +28,47 @@
                 <flux:button square x-cloak x-show="editing" @click="editing = false;">
                     <flux:icon.arrow-uturn-left class="size-5"/>
                 </flux:button>
-
-                @if($organizerMode)
-                    <flux:button square variant="danger" dusk="delete-team-{{ $team->id }}"
-                                 x-bind:disabled="loading || locked" x-show="!editing"
-                                 @click="loading = true"
-                                 wire:click="$parent.delete('{{ $team->id }}')"
-                                 wire:confirm="Confirm deletion of {{ $team->name }}">
-                        <flux:icon.trash x-show="!loading" class="size-5"/>
-                        <x-loader x-cloak x-show="loading" class="size-5"/>
-                    </flux:button>
-                @endif
             @endcan
         </div>
     </div>
     <div class="px-4 py-3">
-        <ul class="space-y-1">
-            @foreach($team->members as $member)
-                <li class="text-gray-700 text-sm flex items-center">
-                    <img src="{{ Storage::url($member->getProfilePicture()) }}"
-                         alt="{{ $member->username }}" class="w-6 h-6 rounded-full mr-2">
-                    {{ $member->username }}
-                </li>
-            @endforeach
+        <ul>
+            @if($team->members->isEmpty())
+                <li class="text-gray-400">No members</li>
+            @else
+                @foreach($team->members as $member)
+                    <li x-data="{loading: false}" class="text-gray-700 text-sm flex items-center">
+                        <img src="{{ Storage::url($member->getProfilePicture()) }}"
+                             alt="{{ $member->username }}" class="w-6 h-6 rounded-full mr-2">
+                        {{ $member->username }}
+                        <flux:spacer/>
+                        @if($organizerMode)
+                            <flux:icon.loading class="m-2" x-cloak x-show="loading"/>
+                            <flux:button x-show="!loading" @click="loading = true" :disabled="$locked" class="!text-red-500"
+                                         icon="x-circle" variant="subtle" dusk="remove-member-{{ $loop->index }}"
+                                         wire:click="$parent.removeMember('{{ $team->id }}', '{{ $member->id }}')"/>
+                        @endif
+                    </li>
+                @endforeach
+            @endif
         </ul>
+        @if($organizerMode && $team->members->count() < $tournament->team_size)
+            <div @if($team->members->isEmpty()) class="mt-5" @else class="mt-1" @endif x-data="{ loading: false }">
+                <flux:icon.loading x-cloak class="m-auto" x-show="loading"/>
+                <flux:select variant="listbox" searchable size="sm"
+                             :placeholder="__('Add a player')"
+                             dusk="select-members"
+                             x-show="!loading" :disabled="$locked">
+                    <x-slot name="search">
+                        <flux:select.search placeholder="{{ __('Search player') }}"/>
+                    </x-slot>
+                    @foreach($selectablePlayers as $id => $selectablePlayer)
+                        <flux:option @click="loading = true" wire:click="$parent.addMember('{{ $team->id }}', '{{ $id }}')" dusk="select-member-{{ $loop->index }}" :value="$id">
+                            {{ $selectablePlayer }}
+                        </flux:option>
+                    @endforeach
+                </flux:select>
+            </div>
+        @endif
     </div>
 </div>

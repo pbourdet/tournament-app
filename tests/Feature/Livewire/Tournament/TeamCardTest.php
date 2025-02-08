@@ -16,7 +16,7 @@ class TeamCardTest extends TestCase
 
     public function testRendersSuccessfully(): void
     {
-        $tournament = Tournament::factory()->withAllTeams()->create();
+        $tournament = Tournament::factory()->withFullTeams()->create();
 
         Livewire::test(TeamCard::class, ['team' => $tournament->teams->first(), 'tournament' => $tournament, 'locked' => false])
             ->assertStatus(200);
@@ -24,7 +24,7 @@ class TeamCardTest extends TestCase
 
     public function testOrganizerCanUpdateTeamName(): void
     {
-        $tournament = Tournament::factory()->withAllTeams()->create();
+        $tournament = Tournament::factory()->withFullTeams()->create();
         $team = $tournament->teams->first();
 
         Livewire::actingAs($tournament->organizer)
@@ -38,7 +38,7 @@ class TeamCardTest extends TestCase
 
     public function testNonOrganizerCannotUpdateTeamName(): void
     {
-        $tournament = Tournament::factory()->withAllTeams()->create();
+        $tournament = Tournament::factory()->withFullTeams()->create();
         $team = $tournament->teams->first();
 
         Livewire::actingAs($tournament->players->first())

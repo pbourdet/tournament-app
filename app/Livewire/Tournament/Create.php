@@ -83,6 +83,7 @@ class Create extends Component
         ]);
 
         $tournament->createInvitation();
+        $tournament->createTeams();
 
         if ($this->form->joinTournament) {
             $tournament->players()->attach(auth()->user());

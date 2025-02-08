@@ -23,7 +23,7 @@ class TeamsTest extends TestCase
 
     public function testRendersSuccessfully(): void
     {
-        $tournament = Tournament::factory()->withAllTeams()->create();
+        $tournament = Tournament::factory()->withFullTeams()->create();
 
         Livewire::test(Teams::class, ['tournament' => $tournament])
             ->assertStatus(200);
