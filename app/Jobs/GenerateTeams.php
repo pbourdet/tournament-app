@@ -22,9 +22,11 @@ class GenerateTeams implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
-    public function __construct(
-        public readonly Tournament $tournament,
-    ) {
+    public readonly Tournament $tournament;
+
+    public function __construct(Tournament $tournament)
+    {
+        $this->tournament = $tournament->load(['teams.members', 'teams.tournament']);
     }
 
     /** @return array<int, object> */

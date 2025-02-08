@@ -24,7 +24,7 @@
 
                         <flux:tooltip.content>
                             <p>{{ __('This will generate the remaining teams randomly.') }}</p>
-                            <p>{{ __('Some other actions such as deleting teams will be prevented during this process') }}</p>
+                            <p>{{ __('Some other actions such as modifying teams will be prevented during this process') }}</p>
                         </flux:tooltip.content>
                     </flux:tooltip>
                 </div>

@@ -28,10 +28,10 @@ class TeamsTest extends DuskTestCase
             ;
         });
 
-        $this->assertDatabaseCount('teams', 2);
+        $this->assertDatabaseCount('team_user', 4);
     }
 
-    public function testCreateTeam(): void
+    public function testAddPlayerToTeam(): void
     {
         $tournament = Tournament::factory()->teamBased()->full()->create(['number_of_players' => 4]);
 
@@ -41,46 +41,36 @@ class TeamsTest extends DuskTestCase
                 ->visit(route('tournaments.organize', ['tournament' => $tournament]))
                 ->click('@link-organize-teams')
                 ->waitForRoute('tournaments.organize', ['tournament' => $tournament, 'page' => 'teams'])
-                ->press('@create-team-modal')
-                ->type('createForm.name', 'Team 1')
                 ->press('@select-members')
-                ->press('@select-member-0')
                 ->press('@select-member-1')
-                ->press('@create-team')
-                ->waitForText(__('Team :name created !', ['name' => 'Team 1']))
+                ->waitForText(__('Player added to team !'))
             ;
         });
 
-        $this->assertDatabaseHas('teams', [
-            'name' => 'Team 1',
-        ]);
+        $this->assertDatabaseCount('team_user', 1);
     }
 
-    public function testDeleteTeam(): void
+    public function testRemovePlayerFromTeam(): void
     {
-        $tournament = Tournament::factory()->teamBased()->withFullTeams()->create(['number_of_players' => 4]);
-        $team = $tournament->teams()->firstOrFail();
+        $tournament = Tournament::factory()->withFullTeams()->create(['number_of_players' => 4]);
 
-        $this->browse(function (Browser $browser) use ($tournament, $team) {
+        $this->browse(function (Browser $browser) use ($tournament) {
             $browser
                 ->loginAs($tournament->organizer)
                 ->visit(route('tournaments.organize', ['tournament' => $tournament]))
                 ->click('@link-organize-teams')
                 ->waitForRoute('tournaments.organize', ['tournament' => $tournament, 'page' => 'teams'])
-                ->press("@delete-team-{$team->id}")
-                ->acceptDialog()
-                ->waitForText(__('Team :name deleted !', ['name' => $team->name]))
+                ->press('@remove-member-0')
+                ->waitForText(__('Player removed from team !'))
             ;
         });
 
-        $this->assertDatabaseMissing('teams', [
-            'id' => $team->id,
-        ]);
+        $this->assertDatabaseCount('team_user', 3);
     }
 
     public function testEditTeamName(): void
     {
-        $tournament = Tournament::factory()->teamBased()->withFullTeams()->create(['number_of_players' => 4]);
+        $tournament = Tournament::factory()->withFullTeams()->create(['number_of_players' => 4]);
         $team = $tournament->teams()->firstOrFail();
 
         $this->browse(function (Browser $browser) use ($tournament, $team) {

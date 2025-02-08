@@ -99,7 +99,7 @@ class Tournament extends Model
 
         $teams = [];
         for ($i = 1; $i <= $this->maxTeamsCount(); ++$i) {
-            $teams[] = ['name' => "Team $i"];
+            $teams[] = ['name' => __('Team :number', ['number' => $i])];
         }
 
         $this->teams()->createMany($teams);
