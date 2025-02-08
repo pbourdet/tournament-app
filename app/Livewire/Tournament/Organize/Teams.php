@@ -19,6 +19,8 @@ class Teams extends Component
 
     public Tournament $tournament;
 
+    public string $playerId = '';
+
     public bool $organizerMode = true;
 
     public CreateTeamForm $createForm;
@@ -80,5 +82,13 @@ class Teams extends Component
         $this->createForm->reset('name', 'members');
         $this->toastSuccess(__('Team :name created !', ['name' => $team->name]));
         $this->modal('create-team')->close();
+    }
+
+    public function addMember(Team $team, string $playerId): void
+    {
+        $this->checkLock();
+
+        $team->members()->attach($playerId);
+        $this->toastSuccess(__('Player added to team !'));
     }
 }

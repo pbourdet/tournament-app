@@ -1,5 +1,5 @@
 <div x-data="{ editing: false, loading: false, locked: @js($locked) }"
-     class="max-w-sm rounded-lg shadow-md border border-gray-200 bg-white mb-4">
+     class="max-w-sm rounded-lg shadow-md border border-gray-200 mb-4">
     <div class="px-4 py-3 border-b border-gray-200 bg-gray-50 flex items-center justify-between">
         <div class="flex flex-col truncate">
             <flux:heading class="truncate" x-show="!editing" size="lg" x-text="$wire.newName">{{ $team->name }}</flux:heading>
@@ -42,15 +42,39 @@
             @endcan
         </div>
     </div>
-    <div class="px-4 py-3">
+    <div class="px-4 py-3 h-full">
         <ul class="space-y-1">
-            @foreach($team->members as $member)
-                <li class="text-gray-700 text-sm flex items-center">
-                    <img src="{{ Storage::url($member->getProfilePicture()) }}"
-                         alt="{{ $member->username }}" class="w-6 h-6 rounded-full mr-2">
-                    {{ $member->username }}
-                </li>
-            @endforeach
+            @if($team->members->isEmpty())
+                <li class="text-gray-400">No members</li>
+            @else
+                @foreach($team->members as $member)
+                    <li class="text-gray-700 text-sm flex items-center">
+                        <img src="{{ Storage::url($member->getProfilePicture()) }}"
+                             alt="{{ $member->username }}" class="w-6 h-6 rounded-full mr-2">
+                        {{ $member->username }}
+                    </li>
+                @endforeach
+            @endif
+            @if($organizerMode)
+                @if($team->members->count() < $tournament->team_size)
+                        <div x-data="{ loading: false }">
+                            <flux:icon.loading x-cloak class="m-auto" x-show="loading"/>
+                            <flux:select variant="listbox" searchable size="sm"
+                                         :placeholder="__('Add a player')"
+                                         dusk="select-members"
+                                         x-show="!loading" :disabled="$locked">
+                                <x-slot name="search">
+                                    <flux:select.search placeholder="{{ __('Search player') }}"/>
+                                </x-slot>
+                                @foreach($selectablePlayers as $id => $selectablePlayer)
+                                    <flux:option @click="loading = true" wire:click="$parent.addMember('{{ $team->id }}', '{{ $id }}')" dusk="select-member-{{ $loop->index }}" :value="$id">
+                                        {{ $selectablePlayer }}
+                                    </flux:option>
+                                @endforeach
+                            </flux:select>
+                        </div>
+                    @endif
+            @endif
         </ul>
     </div>
 </div>

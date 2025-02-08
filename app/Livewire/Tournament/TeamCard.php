@@ -8,6 +8,7 @@ use App\Livewire\Component;
 use App\Models\Team;
 use App\Models\Tournament;
 use Illuminate\Validation\Rule;
+use Illuminate\View\View;
 use Livewire\Attributes\Locked;
 
 class TeamCard extends Component
@@ -29,6 +30,13 @@ class TeamCard extends Component
         $this->tournament = $tournament;
         $this->newName = $team->name;
         $this->locked = $locked;
+    }
+
+    public function render(): View
+    {
+        return view('livewire.tournament.team-card', [
+            'selectablePlayers' => $this->tournament->players()->withoutTeamsInTournament($this->tournament)->pluck('username', 'id')->toArray(),
+        ]);
     }
 
     public function update(): void
