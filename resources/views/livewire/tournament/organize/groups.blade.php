@@ -17,8 +17,6 @@
                     {{ __('Contestants are divided into groups and compete in a round-robin format, earning points based on performance. The top teams from each group advance to elimination phase. Examples include the FIFA World Cup, UEFA Champions League, and ICC Cricket World Cup.') }}
                 </flux:subheading>
                 <flux:card class="shadow-sm space-y-6" x-data="groupPhase({{ $tournament->contestantsCount() }})">
-                    <flux:heading size="lg">{{ __('Settings') }}</flux:heading>
-
                     <div class="space-y-4">
                         <div class="flex max-sm:flex-col">
                             <flux:input class="!w-20 max-sm:mb-4" label="{{ __('Number of groups') }}" type="number"
@@ -36,8 +34,8 @@
                         </div>
                         <div class="grid max-sm:grid-cols-2 grid-cols-4 gap-1 mt-3">
                             <template x-for="(group, index) in groups" :key="index">
-                                <div class="px-3 py-1 border rounded-lg bg-gray-50">
-                                    <h3 class="font-bold text-lg text-gray-800">{{ __('Group') }} <span x-text="index + 1"></span></h3>
+                                <div class="px-3 py-1 border-zinc-200 dark:border-zinc-900 rounded-lg bg-zinc-50 dark:bg-zinc-700">
+                                    <h3 class="font-bold text-lg">{{ __('Group') }} <span x-text="index + 1"></span></h3>
                                     <div>
                                         <template x-for="(contestant, contestantIndex) in group" :key="contestantIndex">
                                             <div>

@@ -1,7 +1,7 @@
 <x-slot name="title">{{ __($title) }} - {{ __('Organizer mode') }} - {{ $tournament->name }}</x-slot>
 
 <div>
-    <flux:header class="bg-zinc-50">
+    <flux:header class="bg-zinc-50 dark:bg-zinc-900">
         <flux:navbar scrollable style="--color-accent: var(--color-orange-500); --color-accent-content: var(--color-orange-600);">
             @can('manage', $tournament)
                 <flux:dropdown>

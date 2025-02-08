@@ -6,6 +6,10 @@
     <flux:brand wire:navigate href="{{ route('dashboard') }}" logo="{{ Vite::asset('resources/images/app-logo.png')  }}" name="{{ config('app.name', 'Laravel') }}"
                 class="px-2 hidden dark:flex"/>
 
+    <flux:radio.group x-data variant="segmented" x-model="$flux.appearance">
+        <flux:radio value="light" icon="sun"/>
+        <flux:radio value="dark" icon="moon"/>
+    </flux:radio.group>
     <flux:modal.trigger name="new-tournament">
         <flux:button variant="primary" class="w-full" icon="plus-circle" dusk="new-tournament">
             {{ __('New tournament') }}

@@ -1,6 +1,6 @@
 <div class="shadow-md rounded-lg mt-5">
     <flux:table>
-        <flux:columns class="bg-gray-100">
+        <flux:columns class="bg-zinc-100 dark:bg-zinc-700">
             <flux:column/>
             <flux:column>{{ __('Player') }}</flux:column>
             <flux:column/>
