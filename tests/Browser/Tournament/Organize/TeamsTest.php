@@ -58,7 +58,7 @@ class TeamsTest extends DuskTestCase
 
     public function testDeleteTeam(): void
     {
-        $tournament = Tournament::factory()->teamBased()->withAllTeams()->full()->create(['number_of_players' => 4]);
+        $tournament = Tournament::factory()->teamBased()->withFullTeams()->create(['number_of_players' => 4]);
         $team = $tournament->teams()->firstOrFail();
 
         $this->browse(function (Browser $browser) use ($tournament, $team) {
@@ -80,7 +80,7 @@ class TeamsTest extends DuskTestCase
 
     public function testEditTeamName(): void
     {
-        $tournament = Tournament::factory()->teamBased()->withAllTeams()->full()->create(['number_of_players' => 4]);
+        $tournament = Tournament::factory()->teamBased()->withFullTeams()->create(['number_of_players' => 4]);
         $team = $tournament->teams()->firstOrFail();
 
         $this->browse(function (Browser $browser) use ($tournament, $team) {

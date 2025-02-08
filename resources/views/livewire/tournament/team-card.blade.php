@@ -28,17 +28,6 @@
                 <flux:button square x-cloak x-show="editing" @click="editing = false;">
                     <flux:icon.arrow-uturn-left class="size-5"/>
                 </flux:button>
-
-                @if($organizerMode)
-                    <flux:button square variant="danger" dusk="delete-team-{{ $team->id }}"
-                                 x-bind:disabled="loading || locked" x-show="!editing"
-                                 @click="loading = true"
-                                 wire:click="$parent.delete('{{ $team->id }}')"
-                                 wire:confirm="Confirm deletion of {{ $team->name }}">
-                        <flux:icon.trash x-show="!loading" class="size-5"/>
-                        <x-loader x-cloak x-show="loading" class="size-5"/>
-                    </flux:button>
-                @endif
             @endcan
         </div>
     </div>
@@ -55,30 +44,29 @@
                         <flux:spacer/>
                         @if($organizerMode)
                             <flux:icon.loading class="m-2" x-cloak x-show="loading"/>
-                            <flux:button x-show="!loading" @click="loading = true" :disabled="$locked" class="!text-red-500" icon="minus-circle" variant="subtle" wire:click="$parent.removeMember('{{ $team->id }}', '{{ $member->id }}')"/>
+                            <flux:button x-show="!loading" @click="loading = true" :disabled="$locked" class="!text-red-500"
+                                         icon="minus-circle" variant="subtle" wire:click="$parent.removeMember('{{ $team->id }}', '{{ $member->id }}')"/>
                         @endif
                     </li>
                 @endforeach
             @endif
-            @if($organizerMode)
-                @if($team->members->count() < $tournament->team_size)
-                        <div x-data="{ loading: false }">
-                            <flux:icon.loading x-cloak class="m-auto" x-show="loading"/>
-                            <flux:select variant="listbox" searchable size="sm"
-                                         :placeholder="__('Add a player')"
-                                         dusk="select-members"
-                                         x-show="!loading" :disabled="$locked">
-                                <x-slot name="search">
-                                    <flux:select.search placeholder="{{ __('Search player') }}"/>
-                                </x-slot>
-                                @foreach($selectablePlayers as $id => $selectablePlayer)
-                                    <flux:option @click="loading = true" wire:click="$parent.addMember('{{ $team->id }}', '{{ $id }}')" dusk="select-member-{{ $loop->index }}" :value="$id">
-                                        {{ $selectablePlayer }}
-                                    </flux:option>
-                                @endforeach
-                            </flux:select>
-                        </div>
-                    @endif
+            @if($organizerMode && $team->members->count() < $tournament->team_size)
+                <div x-data="{ loading: false }">
+                    <flux:icon.loading x-cloak class="m-auto" x-show="loading"/>
+                    <flux:select variant="listbox" searchable size="sm"
+                                 :placeholder="__('Add a player')"
+                                 dusk="select-members"
+                                 x-show="!loading" :disabled="$locked">
+                        <x-slot name="search">
+                            <flux:select.search placeholder="{{ __('Search player') }}"/>
+                        </x-slot>
+                        @foreach($selectablePlayers as $id => $selectablePlayer)
+                            <flux:option @click="loading = true" wire:click="$parent.addMember('{{ $team->id }}', '{{ $id }}')" dusk="select-member-{{ $loop->index }}" :value="$id">
+                                {{ $selectablePlayer }}
+                            </flux:option>
+                        @endforeach
+                    </flux:select>
+                </div>
             @endif
         </ul>
     </div>
