@@ -138,16 +138,12 @@ class Tournament extends Model
 
     public function canGenerateTeams(): bool
     {
-        return $this->isFull() && $this->team_based && !$this->hasAllTeams();
+        return $this->isFull() && $this->team_based && !$this->hasAllTeamsFull();
     }
 
-    public function missingTeamsCount(): int
+    public function hasAllTeamsFull(): bool
     {
-        if (!$this->team_based) {
-            return 0;
-        }
-
-        return $this->maxTeamsCount() - $this->teams()->count();
+        return $this->hasAllTeams() && $this->teams->every(fn (Team $team) => $team->isFull());
     }
 
     public function maxTeamsCount(): int

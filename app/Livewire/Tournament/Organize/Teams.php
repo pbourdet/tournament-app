@@ -33,7 +33,7 @@ class Teams extends Component
 
     public function render(): View
     {
-        $this->tournament->load('teams.members');
+        $this->tournament->load(['teams.members', 'teams.tournament']);
 
         return view('livewire.tournament.organize.teams', [
             'selectablePlayers' => $this->tournament->players()->withoutTeamsInTournament($this->tournament)->pluck('username', 'id')->toArray(),
@@ -43,6 +43,7 @@ class Teams extends Component
     public function generate(): void
     {
         $this->checkLock();
+        $this->tournament->load(['teams.members', 'teams.tournament']);
 
         if (!$this->tournament->canGenerateTeams()) {
             abort(403);

@@ -33,6 +33,11 @@ class Team extends Contestant
         return $this->belongsTo(Tournament::class);
     }
 
+    public function isFull(): bool
+    {
+        return $this->members->count() === $this->tournament->team_size;
+    }
+
     public function getName(): string
     {
         return $this->name;

@@ -42,22 +42,14 @@ class GenerateTeams implements ShouldQueue
                 return;
             }
 
-            $teamSize = (int) $this->tournament->team_size;
-            $missingTeamsCount = $this->tournament->missingTeamsCount();
+            $playersWithoutTeam = $this->tournament->players()
+                ->withoutTeamsInTournament($this->tournament)
+                ->inRandomOrder()
+                ->get();
 
-            for ($i = 0; $i < $missingTeamsCount; ++$i) {
-                $playersChunk = $this->tournament->players()
-                     ->withoutTeamsInTournament($this->tournament)
-                     ->take($teamSize)
-                     ->get();
-
-                if ($playersChunk->isNotEmpty()) {
-                    $team = $this->tournament->teams()->create([
-                        'name' => sprintf('%s %s', __('Team'), $playersChunk->first()->username),
-                    ]);
-
-                    $team->members()->attach($playersChunk);
-                }
+            foreach ($this->tournament->teams as $team) {
+                $currentCount = $team->members->count();
+                $team->members()->attach($playersWithoutTeam->splice(0, $this->tournament->team_size - $currentCount));
             }
 
             event(new TournamentUpdated($this->tournament));
