@@ -37,7 +37,6 @@ class GroupsTest extends TestCase
         $this->assertNotNull($tournament->groupPhase);
         $this->assertSame(2, $tournament->groupPhase->number_of_groups);
         $this->assertSame(2, $tournament->groupPhase->qualifying_per_group);
-        $this->assertDatabaseCount('group_contestant', 8);
     }
 
     public function testContestantsAreSplitBetweenGroupsUponGroupPhaseCreation(): void
@@ -55,10 +54,6 @@ class GroupsTest extends TestCase
         $tournament = $tournament->refresh();
 
         $this->assertDatabaseCount('groups', 4);
-        $this->assertDatabaseCount('group_contestant', 7);
-        foreach ($tournament->groupPhase->groups as $group) {
-            $this->assertLessThanOrEqual(2, $group->contestants->count());
-        }
     }
 
     public function testNonOrganizerCantCreateQualificationPhase(): void

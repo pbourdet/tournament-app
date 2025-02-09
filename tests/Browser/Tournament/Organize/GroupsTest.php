@@ -34,6 +34,5 @@ class GroupsTest extends DuskTestCase
         $this->assertNotNull($tournament->groupPhase);
         $this->assertSame(2, $tournament->groupPhase->number_of_groups);
         $this->assertSame(2, $tournament->groupPhase->qualifying_per_group);
-        $this->assertDatabaseCount('group_contestant', 8);
     }
 }
