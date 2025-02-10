@@ -37,14 +37,14 @@
                 <li class="text-gray-400">No members</li>
             @else
                 @foreach($team->members as $member)
-                    <li x-data="{loading: false}" class="text-sm flex items-center">
+                    <li x-data="{loading: false}" class="text-sm mb-2 flex items-center">
                         <img src="{{ Storage::url($member->getProfilePicture()) }}"
                              alt="{{ $member->username }}" class="w-6 h-6 rounded-full mr-2">
                         {{ $member->username }}
                         <flux:spacer/>
                         @if($organizerMode)
-                            <flux:icon.loading class="m-2" x-cloak x-show="loading"/>
-                            <flux:button x-show="!loading" @click="loading = true" :disabled="$locked" class="!text-red-500"
+                            <flux:icon.loading x-cloak x-show="loading"/>
+                            <flux:button inset x-show="!loading" @click="loading = true" :disabled="$locked" class="!text-red-500"
                                          icon="x-circle" variant="subtle" dusk="remove-member-{{ $loop->index }}"
                                          wire:click="$parent.removeMember('{{ $team->id }}', '{{ $member->id }}')"/>
                         @endif
