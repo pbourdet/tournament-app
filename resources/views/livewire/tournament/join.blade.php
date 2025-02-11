@@ -15,7 +15,7 @@
         </div>
         @if($showResponse)
             <div class="mt-2 w-100" wire:loading.class="opacity-50">
-                <div class="p-3 bg-gray-50 rounded-lg shadow-md">
+                <div class="p-3 bg-zinc-50 dark:bg-zinc-700 rounded-lg shadow-md">
                     @if(null === $tournament)
                         @include('livewire.tournament.partials.join-error', ['errorMessage' => __('No tournament with this invitation code.')])
                     @else

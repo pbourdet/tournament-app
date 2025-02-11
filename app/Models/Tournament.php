@@ -182,7 +182,7 @@ class Tournament extends Model
 
     public function getContestantsTranslation(bool $plural = false): string
     {
-        return ($this->team_based ? 'team' : 'player').($plural ? 's' : '');
+        return __(($this->team_based ? 'team' : 'player').($plural ? 's' : ''));
     }
 
     /** @return array<string, string> */

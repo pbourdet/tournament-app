@@ -12,6 +12,9 @@ class Qualification extends Component
 {
     public Tournament $tournament;
 
+    /** @var array<string, string> */
+    public array $selectableContestants = [];
+
     public function render(): View
     {
         $this->tournament->load('groupPhase.groups.contestants');

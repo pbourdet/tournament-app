@@ -23,7 +23,7 @@
                              wire:click="update('{{ $team->id }}')">
                     <flux:icon.check class="size-5"/>
                 </flux:button>
-                <x-loader wire:loading wire:target="update('{{ $team->id }}')" class="size-4"/>
+                <x-loader wire:loading wire:target="update('{{ $team->id }}')" class="m-2 size-6"/>
 
                 <flux:button square x-cloak x-show="editing" @click="editing = false;">
                     <flux:icon.arrow-uturn-left class="size-5"/>

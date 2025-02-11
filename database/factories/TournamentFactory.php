@@ -62,6 +62,7 @@ class TournamentFactory extends Factory
     {
         return $this->afterCreating(function (Tournament $tournament): void {
             GroupPhase::factory()->forTournament($tournament)->create();
+            PhaseCreated::dispatch($tournament);
         });
     }
 
