@@ -1,4 +1,4 @@
-<div class="max-w-sm rounded-lg shadow-md border border-zinc-200 dark:border-zinc-900 mb-4">
+<div class="rounded-lg shadow-md border border-zinc-200 dark:border-zinc-900 mb-4">
     <div class="px-4 py-3 border-b border-zinc-200 dark:border-zinc-900 bg-zinc-50 dark:bg-zinc-700 flex items-center justify-between">
         <flux:heading size="lg" class="bg-zinc-50 dark:bg-zinc-700">
             <span>{{ $group->name  }}</span>
@@ -14,7 +14,7 @@
             <div class="mx-2">
                 <flux:table class="w-full">
                     <flux:columns>
-                        <flux:column class="w-1/2">{{ __('Contestants') }}</flux:column>
+                        <flux:column class="w-1/2">{{ ucfirst($tournament->getContestantsTranslation()) }}</flux:column>
                         <flux:column>{{ __('Win') }}</flux:column>
                         <flux:column>{{ __('Loss') }}</flux:column>
                         <flux:column>{{ __('Tie') }}</flux:column>

@@ -100,7 +100,13 @@
                 </script>
             </div>
         </flux:tab.panel>
-        <flux:tab.panel name="groups">
+        <flux:tab.panel class="space-y-6" name="groups">
+            <div>
+                <flux:button dusk="generate-groups"  wire:click="generateGroups" icon="arrow-path"
+                             :disabled="!$tournament->groupPhase?->canGenerateGroups()">
+                    {{ __('Random groups') }}
+                </flux:button>
+            </div>
             @include('livewire.tournament.partials.groups-grid')
         </flux:tab.panel>
     </flux:tab.group>

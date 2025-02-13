@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Livewire\Tournament\Organize;
 
 use App\Events\PhaseCreated;
+use App\Jobs\GenerateGroups;
 use App\Livewire\Component;
 use App\Livewire\Forms\Tournament\Phase\CreateGroupsForm;
 use App\Models\Contestant;
@@ -47,11 +48,9 @@ class Groups extends Component
     #[Computed]
     public function selectableContestants(): Collection
     {
-        $contestantsWithGroup = $this->tournament->groupPhase?->groups->flatMap(fn (Group $group) => $group->getContestants()->map->id);
+        if (null === $this->tournament->groupPhase) return Collection::empty();
 
-        if (null === $contestantsWithGroup) return Collection::empty();
-
-        return $this->tournament->contestants()->reject(fn (Contestant $contestant) => $contestantsWithGroup->contains($contestant->id));
+        return $this->tournament->groupPhase->contestantsWithoutGroup();
     }
 
     public function create(): void
@@ -67,6 +66,7 @@ class Groups extends Component
 
         PhaseCreated::dispatch($this->tournament->refresh());
         $this->toastSuccess(__('Phase created !'));
+        $this->tab = 'groups';
     }
 
     public function addContestant(Group $group, string $contestantId): void
@@ -90,5 +90,18 @@ class Groups extends Component
 
         $group->contestants()->where('contestant_id', $contestant->id)->delete();
         $this->toastSuccess(__(':contestant removed from group !', ['contestant' => ucfirst($this->tournament->getContestantsTranslation())]));
+    }
+
+    public function generateGroups(): void
+    {
+        $this->authorize('manage', $this->tournament);
+        $groupPhase = $this->tournament->groupPhase;
+
+        if (null === $groupPhase || !$groupPhase->canGenerateGroups()) {
+            abort(403);
+        }
+
+        GenerateGroups::dispatch($groupPhase);
+        $this->toast(__('Groups generation in progress...'));
     }
 }

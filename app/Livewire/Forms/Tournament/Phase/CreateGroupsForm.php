@@ -17,11 +17,16 @@ class CreateGroupsForm extends Form
 
     public int $numberOfGroups = 2;
 
-    public int $contestantsQualifying = 2;
+    public int $contestantsQualifying = 1;
 
     public function setTournament(Tournament $tournament): void
     {
         $this->tournament = $tournament;
+
+        if (null !== $tournament->groupPhase) {
+            $this->numberOfGroups = $tournament->groupPhase->number_of_groups;
+            $this->contestantsQualifying = $tournament->groupPhase->qualifying_per_group;
+        }
     }
 
     /** @return array<string, array<string|ValidationRule>> */

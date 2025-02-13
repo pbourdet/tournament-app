@@ -4,7 +4,7 @@
     </flux:subheading>
 @else
     <div>
-        <div class="grid max-sm:grid-cols-1 grid-cols-2 gap-1">
+        <div class="grid max-sm:grid-cols-1 max-2xl:grid-cols-2 grid-cols-3 gap-1">
             @foreach($tournament->groupPhase->groups as $group)
                 <livewire:tournament.group-card :$organizerMode
                     :key="$group->id . '-' . '-' . count($this->selectableContestants)"

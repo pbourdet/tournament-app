@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Livewire\Tournament\Organize;
 
+use App\Jobs\GenerateGroups;
 use App\Livewire\Tournament\Organize\Groups;
 use App\Models\Team;
 use App\Models\Tournament;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\ItemNotFoundException;
 use Livewire\Livewire;
 use Tests\TestCase;
@@ -183,5 +185,62 @@ class GroupsTest extends TestCase
 
         $group = $group->refresh();
         $this->assertTrue($group->getContestants()->contains($contestant));
+    }
+
+    public function testOrganizerCanGenerateGroups(): void
+    {
+        Queue::fake();
+
+        $tournament = Tournament::factory()->full()->withGroupPhase()->create();
+
+        Livewire::actingAs($tournament->organizer)
+            ->test(Groups::class, ['tournament' => $tournament])
+            ->call('generateGroups')
+            ->assertSuccessful();
+
+        Queue::assertPushed(GenerateGroups::class);
+    }
+
+    public function testNonOrganizerCantGenerateGroups(): void
+    {
+        Queue::fake();
+
+        $tournament = Tournament::factory()->full()->withGroupPhase()->create();
+
+        Livewire::actingAs($tournament->players->first())
+            ->test(Groups::class, ['tournament' => $tournament])
+            ->call('generateGroups')
+            ->assertForbidden();
+
+        Queue::assertNotPushed(GenerateGroups::class);
+    }
+
+    public function testOrganizerCantGenerateGroupWithoutGroupPhase(): void
+    {
+        Queue::fake();
+
+        $tournament = Tournament::factory()->full()->create();
+
+        Livewire::actingAs($tournament->organizer)
+            ->test(Groups::class, ['tournament' => $tournament])
+            ->call('generateGroups')
+            ->assertForbidden();
+
+        Queue::assertNotPushed(GenerateGroups::class);
+    }
+
+    public function testOrganizerCantGenerateGroupWithFullGroups(): void
+    {
+        Queue::fake();
+
+        $tournament = Tournament::factory()->full()->withGroupPhase()->create();
+        $tournament->groupPhase->groups->each(fn ($group) => $group->addContestants($tournament->contestants()->take($group->size)));
+
+        Livewire::actingAs($tournament->organizer)
+            ->test(Groups::class, ['tournament' => $tournament])
+            ->call('generateGroups')
+            ->assertForbidden();
+
+        Queue::assertNotPushed(GenerateGroups::class);
     }
 }

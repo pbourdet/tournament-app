@@ -68,4 +68,21 @@ class GroupsTest extends DuskTestCase
             ;
         });
     }
+
+    public function testOrganizerCanGenerateGroups(): void
+    {
+        $tournament = Tournament::factory()->full()->withGroupPhase()->create(['number_of_players' => 8]);
+
+        $this->browse(function (Browser $browser) use ($tournament) {
+            $browser
+                ->loginAs($tournament->organizer)
+                ->visit(route('tournaments.organize', ['tournament' => $tournament, 'page' => 'groups']))
+                ->click('@tab-groups')
+                ->click('@generate-groups')
+                ->waitForText(__('Groups generation in progress...'))
+            ;
+        });
+
+        $this->assertDatabaseCount('group_contestant', 8);
+    }
 }
