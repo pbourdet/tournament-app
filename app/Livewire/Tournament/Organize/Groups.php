@@ -15,6 +15,7 @@ use App\Models\User;
 use Illuminate\Support\Collection;
 use Illuminate\View\View;
 use Livewire\Attributes\Computed;
+use Livewire\Attributes\Locked;
 use Livewire\Attributes\Url;
 
 class Groups extends Component
@@ -24,10 +25,14 @@ class Groups extends Component
     #[Url]
     public string $tab = 'settings';
 
+    #[Locked]
+    public bool $organizerMode = true;
+
     public CreateGroupsForm $form;
 
     public function boot(): void
     {
+        $this->tournament->load('groupPhase.groups.contestants');
         $this->form->setTournament($this->tournament);
     }
 
@@ -67,7 +72,6 @@ class Groups extends Component
     public function addContestant(Group $group, string $contestantId): void
     {
         $this->authorize('manage', $this->tournament);
-        $this->tournament->load('groupPhase.groups.contestants');
 
         $contestant = $this->tournament->contestants()->firstOrFail(fn (Contestant $contestant) => $contestant->id === $contestantId);
 
@@ -76,5 +80,15 @@ class Groups extends Component
 
         $group->addContestants([$contestant]);
         $this->toastSuccess(__(':contestant added to group !', ['contestant' => ucfirst($this->tournament->getContestantsTranslation())]));
+    }
+
+    public function removeContestant(Group $group, string $contestantId): void
+    {
+        $this->authorize('manage', $this->tournament);
+
+        $contestant = $this->tournament->contestants()->firstOrFail(fn (Contestant $contestant) => $contestant->id === $contestantId);
+
+        $group->contestants()->where('contestant_id', $contestant->id)->delete();
+        $this->toastSuccess(__(':contestant removed from group !', ['contestant' => ucfirst($this->tournament->getContestantsTranslation())]));
     }
 }

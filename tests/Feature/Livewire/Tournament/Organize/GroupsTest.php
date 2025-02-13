@@ -152,4 +152,36 @@ class GroupsTest extends TestCase
         $group = $group->refresh();
         $this->assertFalse($group->getContestants()->contains($contestant));
     }
+
+    public function testOrganizerCanRemoveContestantFromGroup(): void
+    {
+        $tournament = Tournament::factory()->full()->withGroupPhase()->create();
+        $group = $tournament->groupPhase->groups->first();
+        $group->addContestants($tournament->contestants()->take($group->size));
+        $contestant = $group->getContestants()->first();
+
+        Livewire::actingAs($tournament->organizer)
+            ->test(Groups::class, ['tournament' => $tournament])
+            ->call('removeContestant', $group, $contestant->id)
+            ->assertSuccessful();
+
+        $group = $group->refresh();
+        $this->assertFalse($group->getContestants()->contains($contestant));
+    }
+
+    public function testNonOrganizerCantRemoveContestantFromGroup(): void
+    {
+        $tournament = Tournament::factory()->full()->withGroupPhase()->create();
+        $group = $tournament->groupPhase->groups->first();
+        $group->addContestants($tournament->contestants()->take($group->size));
+        $contestant = $group->getContestants()->first();
+
+        Livewire::actingAs($tournament->players->first())
+            ->test(Groups::class, ['tournament' => $tournament])
+            ->call('removeContestant', $group, $contestant->id)
+            ->assertForbidden();
+
+        $group = $group->refresh();
+        $this->assertTrue($group->getContestants()->contains($contestant));
+    }
 }

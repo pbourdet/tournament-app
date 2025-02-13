@@ -6,7 +6,7 @@
     <div>
         <div class="grid max-sm:grid-cols-1 grid-cols-2 gap-1">
             @foreach($tournament->groupPhase->groups as $group)
-                <livewire:tournament.group-card
+                <livewire:tournament.group-card :$organizerMode
                     :key="$group->id . '-' . '-' . count($this->selectableContestants)"
                     :selectableContestants="$this->selectableContestants" :$tournament :$group/>
             @endforeach

@@ -51,4 +51,21 @@ class GroupsTest extends DuskTestCase
             ;
         });
     }
+
+    public function testRemoveContestantFromGroup(): void
+    {
+        $tournament = Tournament::factory()->full()->withGroupPhase()->create();
+        $group = $tournament->groupPhase->groups->first();
+        $group->addContestants([$tournament->contestants()->first()]);
+
+        $this->browse(function (Browser $browser) use ($tournament) {
+            $browser
+                ->loginAs($tournament->organizer)
+                ->visit(route('tournaments.organize', ['tournament' => $tournament, 'page' => 'groups']))
+                ->click('@tab-groups')
+                ->click(sprintf('@remove-contestant-%d', 0))
+                ->waitForText(__(':contestant removed from group !', ['contestant' => ucfirst($tournament->getContestantsTranslation())]))
+            ;
+        });
+    }
 }
