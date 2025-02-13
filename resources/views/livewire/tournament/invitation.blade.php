@@ -10,7 +10,7 @@
         </div>
     @elseif($tournament->invitation->isExpired())
         <div class="text-xs text-red-500">
-            {{ __('Invitation code has expired') }}
+            {{ __('Invitation code has expired.') }}
         </div>
         <div>
             <flux:button wire:click="refresh" size="sm" icon-trailing="arrow-path">

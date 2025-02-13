@@ -1,8 +1,8 @@
-<div class="w-full 2xl:w-2/3 space-y-6">
+<div class="w-full space-y-6">
     <flux:tab.group>
         <flux:tabs wire:model="tab">
-            <flux:tab icon="cog-6-tooth" name="settings">{{ __('Settings') }}</flux:tab>
-            <flux:tab icon="rectangle-group" name="groups">{{ __('Groups') }}</flux:tab>
+            <flux:tab dusk="tab-settings" icon="cog-6-tooth" name="settings">{{ __('Settings') }}</flux:tab>
+            <flux:tab dusk="tab-groups" icon="rectangle-group" name="groups">{{ __('Groups') }}</flux:tab>
         </flux:tabs>
 
         <flux:tab.panel class="space-y-6" name="settings">
@@ -100,7 +100,13 @@
                 </script>
             </div>
         </flux:tab.panel>
-        <flux:tab.panel name="groups">
+        <flux:tab.panel class="space-y-6" name="groups">
+            <div>
+                <flux:button dusk="generate-groups"  wire:click="generateGroups" icon="arrow-path"
+                             :disabled="!$tournament->groupPhase?->canGenerateGroups()">
+                    {{ __('Random groups') }}
+                </flux:button>
+            </div>
             @include('livewire.tournament.partials.groups-grid')
         </flux:tab.panel>
     </flux:tab.group>

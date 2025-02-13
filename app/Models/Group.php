@@ -47,4 +47,9 @@ class Group extends Model
             ]);
         }
     }
+
+    public function isFull(): bool
+    {
+        return $this->contestants->count() === $this->size;
+    }
 }

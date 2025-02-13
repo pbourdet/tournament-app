@@ -15,7 +15,7 @@ class GroupsTest extends DuskTestCase
 
     public function testCreateGroupPhase(): void
     {
-        $tournament = Tournament::factory()->full()->create(['number_of_players' => 8]);
+        $tournament = Tournament::factory()->full()->create();
 
         $this->browse(function (Browser $browser) use ($tournament) {
             $browser
@@ -34,6 +34,55 @@ class GroupsTest extends DuskTestCase
         $this->assertNotNull($tournament->groupPhase);
         $this->assertSame(2, $tournament->groupPhase->number_of_groups);
         $this->assertSame(2, $tournament->groupPhase->qualifying_per_group);
+    }
+
+    public function testAddContestantToGroup(): void
+    {
+        $tournament = Tournament::factory()->full()->withGroupPhase()->create();
+
+        $this->browse(function (Browser $browser) use ($tournament) {
+            $browser
+                ->loginAs($tournament->organizer)
+                ->visit(route('tournaments.organize', ['tournament' => $tournament, 'page' => 'groups']))
+                ->click('@tab-groups')
+                ->click('@select-contestants')
+                ->click(sprintf('@select-contestant-%d', 0))
+                ->waitForText(__(':contestant added to group !', ['contestant' => ucfirst($tournament->getContestantsTranslation())]))
+            ;
+        });
+    }
+
+    public function testRemoveContestantFromGroup(): void
+    {
+        $tournament = Tournament::factory()->full()->withGroupPhase()->create();
+        $group = $tournament->groupPhase->groups->first();
+        $group->addContestants([$tournament->contestants()->first()]);
+
+        $this->browse(function (Browser $browser) use ($tournament) {
+            $browser
+                ->loginAs($tournament->organizer)
+                ->visit(route('tournaments.organize', ['tournament' => $tournament, 'page' => 'groups']))
+                ->click('@tab-groups')
+                ->click(sprintf('@remove-contestant-%d', 0))
+                ->waitForText(__(':contestant removed from group !', ['contestant' => ucfirst($tournament->getContestantsTranslation())]))
+            ;
+        });
+    }
+
+    public function testOrganizerCanGenerateGroups(): void
+    {
+        $tournament = Tournament::factory()->full()->withGroupPhase()->create(['number_of_players' => 8]);
+
+        $this->browse(function (Browser $browser) use ($tournament) {
+            $browser
+                ->loginAs($tournament->organizer)
+                ->visit(route('tournaments.organize', ['tournament' => $tournament, 'page' => 'groups']))
+                ->click('@tab-groups')
+                ->click('@generate-groups')
+                ->waitForText(__('Groups generation in progress...'))
+            ;
+        });
+
         $this->assertDatabaseCount('group_contestant', 8);
     }
 }
