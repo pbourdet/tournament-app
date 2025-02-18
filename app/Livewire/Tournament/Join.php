@@ -8,8 +8,6 @@ use App\Events\TournamentFull;
 use App\Livewire\Component;
 use App\Models\Tournament;
 use App\Models\TournamentInvitation;
-use App\Models\User;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Livewire\Attributes\Locked;
 
@@ -25,8 +23,7 @@ class Join extends Component
 
     public function join(Tournament $tournament): void
     {
-        /** @var User $user */
-        $user = Auth::user();
+        $user = $this->getUser();
 
         if (!Gate::allows('join', $tournament)) {
             abort(403);

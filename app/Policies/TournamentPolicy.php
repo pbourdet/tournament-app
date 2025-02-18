@@ -17,7 +17,8 @@ class TournamentPolicy
     public function join(User $user, Tournament $tournament): bool
     {
         return !$tournament->isFull()
-            && !$tournament->players->contains($user);
+            && !$tournament->players->contains($user)
+            && ($tournament->invitation?->isValid() ?? false);
     }
 
     public function create(User $user): bool

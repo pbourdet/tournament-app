@@ -32,6 +32,8 @@ class JoinTest extends TestCase
 
         $fullTournament = Tournament::factory()->full()->create(['number_of_players' => 2]);
         $joinedTournament = Tournament::factory()->withPlayers([$user])->create();
+        $tournamentInvitationExpired = Tournament::factory()->create();
+        $tournamentInvitationExpired->invitation->update(['expires_at' => now()->subDay()]);
 
         Livewire::actingAs($user)
             ->test(Join::class)
@@ -41,6 +43,9 @@ class JoinTest extends TestCase
             ->set('tournamentCode', $fullTournament->invitation->code)
             ->call('find')
             ->assertSee(__('This tournament is full.'))
+            ->set('tournamentCode', $tournamentInvitationExpired->invitation->code)
+            ->call('find')
+            ->assertSee(__('No tournament with this invitation code.'))
             ->set('tournamentCode', $joinedTournament->invitation->code)
             ->call('find')
             ->assertSee(__('You are already taking part in this tournament.'));
@@ -55,7 +60,6 @@ class JoinTest extends TestCase
 
         Livewire::actingAs($user)
             ->test(Join::class)
-            ->set('tournamentCode', $tournament->invitation->code)
             ->call('join', $tournament);
 
         $this->assertDatabaseHas('tournament_player', [
@@ -72,7 +76,6 @@ class JoinTest extends TestCase
 
         Livewire::actingAs($user)
             ->test(Join::class)
-            ->set('tournamentCode', $tournament->invitation->code)
             ->call('join', $tournament);
 
         Event::assertNotDispatched(TournamentFull::class);
@@ -89,7 +92,6 @@ class JoinTest extends TestCase
 
         Livewire::actingAs($user)
             ->test(Join::class)
-            ->set('tournamentCode', $tournament->invitation->code)
             ->call('join', $tournament);
 
         $tournament->refresh();
@@ -107,7 +109,6 @@ class JoinTest extends TestCase
 
         Livewire::actingAs(User::factory()->create())
             ->test(Join::class)
-            ->set('tournamentCode', $tournament->invitation->code)
             ->call('join', $tournament);
 
         $tournament->refresh();
@@ -122,9 +123,8 @@ class JoinTest extends TestCase
 
         Livewire::actingAs($user)
             ->test(Join::class)
-            ->set('tournamentCode', $tournament->invitation->code)
-            ->call('find')
-            ->assertSee(__('This tournament is full.'));
+            ->call('join', $tournament)
+            ->assertForbidden();
 
         $this->assertDatabaseMissing('tournament_player', [
             'tournament_id' => $tournament->id,
@@ -142,9 +142,8 @@ class JoinTest extends TestCase
 
         Livewire::actingAs($user)
             ->test(Join::class)
-            ->set('tournamentCode', $tournament->invitation->code)
-            ->call('find')
-            ->assertSee(__('You are already taking part in this tournament.'));
+            ->call('join', $tournament)
+            ->assertForbidden();
 
         $this->assertDatabaseCount('tournament_player', 1);
         Notification::assertNothingSent();
@@ -159,9 +158,28 @@ class JoinTest extends TestCase
 
         Livewire::actingAs($user)
             ->test(Join::class)
-            ->set('tournamentCode', $tournament->invitation->code)
-            ->call('find')
-            ->assertSee(__('No tournament with this invitation code.'));
+            ->call('join', $tournament)
+            ->assertForbidden();
+
+        $this->assertDatabaseMissing('tournament_player', [
+            'tournament_id' => $tournament->id,
+            'user_id' => $user->id,
+        ]);
+
+        Notification::assertNothingSent();
+    }
+
+    public function testUserCannotJoinWithoutInvitation(): void
+    {
+        Notification::fake();
+        $user = User::factory()->create();
+        $tournament = Tournament::factory()->withoutInvitation()->create();
+        $tournament->refresh();
+
+        Livewire::actingAs($user)
+            ->test(Join::class)
+            ->call('join', $tournament)
+            ->assertForbidden();
 
         $this->assertDatabaseMissing('tournament_player', [
             'tournament_id' => $tournament->id,

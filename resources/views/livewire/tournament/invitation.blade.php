@@ -8,7 +8,7 @@
                 {{ __('New code') }}
             </flux:button>
         </div>
-    @elseif($tournament->invitation->isExpired())
+    @elseif(!$tournament->invitation->isValid())
         <div class="text-xs text-red-500">
             {{ __('Invitation code has expired.') }}
         </div>
