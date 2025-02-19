@@ -18,7 +18,7 @@ class TournamentPolicy
     {
         return !$tournament->isFull()
             && !$tournament->players->contains($user)
-            && ($tournament->invitation?->isValid() ?? false);
+            && ($tournament->invitation?->isNotExpired() ?? false);
     }
 
     public function create(User $user): bool
