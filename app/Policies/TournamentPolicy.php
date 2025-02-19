@@ -30,4 +30,9 @@ class TournamentPolicy
     {
         return $tournament->players->contains($user) || $tournament->organizer()->is($user);
     }
+
+    public function generateTeams(User $user, Tournament $tournament): bool
+    {
+        return $user->can('manage', $tournament) && $tournament->canGenerateTeams();
+    }
 }

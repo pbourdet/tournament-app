@@ -70,7 +70,7 @@ class TeamsTest extends DuskTestCase
 
     public function testEditTeamName(): void
     {
-        $tournament = Tournament::factory()->withFullTeams()->create(['number_of_players' => 4]);
+        $tournament = Tournament::factory()->withFullTeams()->create();
         $team = $tournament->teams()->firstOrFail();
 
         $this->browse(function (Browser $browser) use ($tournament, $team) {
@@ -79,6 +79,30 @@ class TeamsTest extends DuskTestCase
                 ->visit(route('tournaments.organize', ['tournament' => $tournament]))
                 ->click('@link-organize-teams')
                 ->waitForRoute('tournaments.organize', ['tournament' => $tournament, 'page' => 'teams'])
+                ->press("@edit-team-{$team->id}")
+                ->type('newName', 'Team 1')
+                ->press("@update-team-{$team->id}")
+                ->waitForText(__('Team :name updated !', ['name' => 'Team 1']))
+            ;
+        });
+
+        $this->assertDatabaseHas('teams', [
+            'id' => $team->id,
+            'name' => 'Team 1',
+        ]);
+    }
+
+    public function testTeamMemberCanEditTeamName(): void
+    {
+        $tournament = Tournament::factory()->withFullTeams()->create();
+        $team = $tournament->teams()->firstOrFail();
+
+        $this->browse(function (Browser $browser) use ($tournament, $team) {
+            $browser
+                ->loginAs($team->members->first())
+                ->visit(route('tournaments.show', ['tournament' => $tournament]))
+                ->click('@link-teams')
+                ->waitForRoute('tournaments.show', ['tournament' => $tournament, 'page' => 'teams'])
                 ->press("@edit-team-{$team->id}")
                 ->type('newName', 'Team 1')
                 ->press("@update-team-{$team->id}")

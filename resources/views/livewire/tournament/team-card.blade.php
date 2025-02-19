@@ -11,14 +11,14 @@
             @enderror
         </div>
 
-        <div class="flex items-center space-x-2 ml-2">
-            @can('manage', $tournament)
+        <div class="flex items-center">
+            @can('updateName', $team)
                 <flux:button square x-show="!editing" dusk="edit-team-{{ $team->id }}"
                              @click="editing = true; setTimeout(() => $refs.inputField.focus(), 10)"
                              wire:loading.remove wire:target="update('{{ $team->id }}')">
                     <flux:icon.pencil class="size-5"/>
                 </flux:button>
-                <flux:button square variant="primary" dusk="update-team-{{ $team->id }}"
+                <flux:button class="mr-2" square variant="primary" dusk="update-team-{{ $team->id }}"
                              x-cloak x-show="editing" @click="editing = false"
                              wire:click="update('{{ $team->id }}')">
                     <flux:icon.check class="size-5"/>

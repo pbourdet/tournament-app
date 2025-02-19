@@ -28,12 +28,14 @@ class TeamCard extends Component
 
     public function mount(): void
     {
+        $this->team->load('tournament');
         $this->newName = $this->team->name;
     }
 
     public function update(): void
     {
-        $this->authorize('manage', $this->tournament);
+        $this->authorize('updateName', $this->team);
+
         $this->validate([
             'newName' => ['required', 'min:2', 'max:50', Rule::unique('teams', 'name')->where('tournament_id', $this->tournament->id)->ignore($this->team->id)],
         ]);
