@@ -13,7 +13,7 @@
                         <flux:select class="w-20!" dusk="number-of-contestants" wire:model="form.numberOfContestants">
                             @foreach([2, 4, 8, 16, 32, 64, 128] as $number)
                                 @if($number <= $tournament->contestantsCount())
-                                    <flux:option value="{{ $number }}">{{ $number }}</flux:option>
+                                    <flux:select.option value="{{ $number }}">{{ $number }}</flux:select.option>
                                 @endif
                             @endforeach
                         </flux:select>

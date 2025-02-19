@@ -13,43 +13,43 @@
         @else
             <div class="mx-2">
                 <flux:table class="w-full">
-                    <flux:columns>
-                        <flux:column class="w-1/2">{{ ucfirst($tournament->getContestantsTranslation()) }}</flux:column>
-                        <flux:column>{{ __('Win') }}</flux:column>
-                        <flux:column>{{ __('Loss') }}</flux:column>
-                        <flux:column>{{ __('Tie') }}</flux:column>
+                    <flux:table.columns>
+                        <flux:table.column class="w-1/2">{{ ucfirst($tournament->getContestantsTranslation()) }}</flux:table.column>
+                        <flux:table.column>{{ __('Win') }}</flux:table.column>
+                        <flux:table.column>{{ __('Loss') }}</flux:table.column>
+                        <flux:table.column>{{ __('Tie') }}</flux:table.column>
                         @if($organizerMode)
-                            <flux:column/>
+                            <flux:table.column/>
                         @endif
-                    </flux:columns>
+                    </flux:table.columns>
 
-                    <flux:rows>
+                    <flux:table.rows>
                         @foreach($group->getContestants() as $contestant)
-                            <flux:row>
-                                <flux:cell class="truncate">
+                            <flux:table.row>
+                                <flux:table.cell class="truncate">
                                     {{ $contestant->getName() }}
-                                </flux:cell>
-                                <flux:cell>
+                                </flux:table.cell>
+                                <flux:table.cell>
                                     {{ 0 }}
-                                </flux:cell>
-                                <flux:cell>
+                                </flux:table.cell>
+                                <flux:table.cell>
                                     {{ 0 }}
-                                </flux:cell>
-                                <flux:cell>
+                                </flux:table.cell>
+                                <flux:table.cell>
                                     {{ 0 }}
-                                </flux:cell>
+                                </flux:table.cell>
                                 @if($organizerMode)
-                                    <flux:cell class="pt-[18px]" x-data="{loading: false}">
+                                    <flux:table.cell class="pt-[18px]" x-data="{loading: false}">
                                         <flux:icon.loading x-cloak x-show="loading"/>
                                         <flux:button size="sm" inset x-show="!loading" @click="loading = true" class="text-red-500!"
                                                      icon="x-circle" variant="subtle" dusk="remove-contestant-{{ $loop->index }}"
                                                      wire:click="$parent.removeContestant('{{ $group->id }}', '{{ $contestant->id }}')"/>
-                                    </flux:cell>
+                                    </flux:table.cell>
                                 @endif
 
-                            </flux:row>
+                            </flux:table.row>
                         @endforeach
-                    </flux:rows>
+                    </flux:table.rows>
                 </flux:table>
             </div>
         @endif
@@ -64,11 +64,11 @@
                         <flux:select.search placeholder="{{ __('Search :contestant', ['contestant' => $this->tournament->getContestantsTranslation()]) }}"/>
                     </x-slot>
                     @foreach($selectableContestants as $contestant)
-                        <flux:option @click="loading = true"
+                        <flux:select.option @click="loading = true"
                                      wire:click="$parent.addContestant('{{ $group->id }}', '{{ $contestant->id }}')"
                                      dusk="select-contestant-{{ $loop->index }}" :value="$contestant->id">
                             {{ $contestant->getName() }}
-                        </flux:option>
+                        </flux:select.option>
                     @endforeach
                 </flux:select>
             </div>

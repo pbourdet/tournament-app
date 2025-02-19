@@ -63,9 +63,9 @@
                         <flux:select.search placeholder="{{ __('Search player') }}"/>
                     </x-slot>
                     @foreach($selectablePlayers as $id => $selectablePlayer)
-                        <flux:option @click="loading = true" wire:click="$parent.addMember('{{ $team->id }}', '{{ $id }}')" dusk="select-member-{{ $loop->index }}" :value="$id">
+                        <flux:select.option @click="loading = true" wire:click="$parent.addMember('{{ $team->id }}', '{{ $id }}')" dusk="select-member-{{ $loop->index }}" :value="$id">
                             {{ $selectablePlayer }}
-                        </flux:option>
+                        </flux:select.option>
                     @endforeach
                 </flux:select>
             </div>
