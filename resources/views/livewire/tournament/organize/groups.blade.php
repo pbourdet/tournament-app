@@ -54,7 +54,10 @@
                             </template>
                         </div>
                     </div>
-                    <flux:button variant="primary" dusk="create-group-phase" wire:click="create">{{ __('Save') }}</flux:button>
+                    <flux:button :disabled="Auth::user()->cannot('create', \App\Models\GroupPhase::class, $tournament)"
+                                 variant="primary" dusk="create-group-phase" wire:click="create">
+                        {{ __('Save') }}
+                    </flux:button>
                 </flux:card>
 
                 <script>
@@ -101,12 +104,14 @@
             </div>
         </flux:tab.panel>
         <flux:tab.panel class="space-y-6" name="groups">
-            <div>
-                <flux:button dusk="generate-groups"  wire:click="generateGroups" icon="arrow-path"
-                             :disabled="!$tournament->groupPhase?->canGenerateGroups()">
-                    {{ __('Random groups') }}
-                </flux:button>
-            </div>
+            @if(null !== $tournament->groupPhase)
+                <div>
+                    <flux:button dusk="generate-groups"  wire:click="generateGroups" icon="arrow-path"
+                                 :disabled="Auth::user()->cannot('generateGroups', [$tournament->groupPhase, $tournament])">
+                        {{ __('Random groups') }}
+                    </flux:button>
+                </div>
+            @endif
             @include('livewire.tournament.partials.groups-grid')
         </flux:tab.panel>
     </flux:tab.group>

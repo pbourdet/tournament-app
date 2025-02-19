@@ -43,7 +43,21 @@ class GroupsTest extends TestCase
         $this->assertSame(2, $tournament->groupPhase->qualifying_per_group);
     }
 
-    public function testNonOrganizerCantCreateQualificationPhase(): void
+    public function testOrganizerCannotCreateGroupPhaseIfTournamentIsStarted(): void
+    {
+        $tournament = Tournament::factory()->started()->create();
+
+        Livewire::actingAs($tournament->organizer)
+            ->test(Groups::class, ['tournament' => $tournament])
+            ->set('form.numberOfGroups', 2)
+            ->set('form.contestantsQualifying', 2)
+            ->call('create')
+            ->assertForbidden();
+
+        $this->assertDatabaseCount('group_phases', 0);
+    }
+
+    public function testNonOrganizerCantCreateGroupPhase(): void
     {
         $tournament = Tournament::factory()->full()->create(['number_of_players' => 8]);
 
@@ -199,6 +213,21 @@ class GroupsTest extends TestCase
             ->assertSuccessful();
 
         Queue::assertPushed(GenerateGroups::class);
+    }
+
+    public function testOrganizerCantGenerateGroupsIfTournamentStarted(): void
+    {
+        Queue::fake();
+
+        $tournament = Tournament::factory()->withGroupPhase()->create();
+        $tournament->start();
+
+        Livewire::actingAs($tournament->organizer)
+            ->test(Groups::class, ['tournament' => $tournament])
+            ->call('generateGroups')
+            ->assertForbidden();
+
+        Queue::assertNotPushed(GenerateGroups::class);
     }
 
     public function testNonOrganizerCantGenerateGroups(): void

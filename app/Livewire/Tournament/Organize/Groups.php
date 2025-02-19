@@ -10,6 +10,7 @@ use App\Livewire\Component;
 use App\Livewire\Forms\Tournament\Phase\CreateGroupsForm;
 use App\Models\Contestant;
 use App\Models\Group;
+use App\Models\GroupPhase;
 use App\Models\Team;
 use App\Models\Tournament;
 use App\Models\User;
@@ -55,7 +56,7 @@ class Groups extends Component
 
     public function create(): void
     {
-        $this->authorize('manage', $this->tournament);
+        $this->authorize('create', [GroupPhase::class, $this->tournament]);
         $this->form->validate();
         $this->tournament->groupPhase?->delete();
 
@@ -94,12 +95,10 @@ class Groups extends Component
 
     public function generateGroups(): void
     {
-        $this->authorize('manage', $this->tournament);
+        /** @var GroupPhase $groupPhase */
         $groupPhase = $this->tournament->groupPhase;
 
-        if (null === $groupPhase || !$groupPhase->canGenerateGroups()) {
-            abort(403);
-        }
+        $this->authorize('generateGroups', [$groupPhase, $this->tournament]);
 
         GenerateGroups::dispatch($groupPhase);
         $this->toast(__('Groups generation in progress...'));
