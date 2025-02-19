@@ -83,14 +83,25 @@ class EliminationTest extends TestCase
         $this->assertDatabaseCount('elimination_phases', 0);
     }
 
-    public function testUserCantCreateAnEliminationPhaseIfAlreadyExists(): void
+    public function testOrganizerCantCreateEliminationIfTournamentStarted(): void
     {
-        $tournament = Tournament::factory()->create();
-        $tournament->eliminationPhase()->create(['number_of_contestants' => 8]);
+        $tournament = Tournament::factory()->withGroupPhase()->create();
+        $tournament->start();
 
         Livewire::actingAs($tournament->organizer)
             ->test(Elimination::class, ['tournament' => $tournament])
             ->set('form.numberOfContestants', 8)
+            ->call('create')
+            ->assertForbidden();
+    }
+
+    public function testUserCantCreateAnEliminationPhaseIfAlreadyExists(): void
+    {
+        $tournament = Tournament::factory()->withEliminationPhase()->create();
+
+        Livewire::actingAs($tournament->organizer)
+            ->test(Elimination::class, ['tournament' => $tournament])
+            ->set('form.numberOfContestants', 2)
             ->call('create')
             ->assertForbidden();
 

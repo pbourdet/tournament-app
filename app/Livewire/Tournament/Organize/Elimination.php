@@ -8,8 +8,8 @@ use App\Events\PhaseCreated;
 use App\Events\TournamentUpdated;
 use App\Livewire\Component;
 use App\Livewire\Forms\Tournament\Phase\CreateEliminationForm;
+use App\Models\EliminationPhase;
 use App\Models\Tournament;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\View\View;
 use Livewire\Attributes\Url;
 
@@ -36,9 +36,7 @@ class Elimination extends Component
 
     public function create(): void
     {
-        if (!Gate::allows('manage', $this->tournament) || $this->tournament->eliminationPhase()->exists()) {
-            abort(403);
-        }
+        $this->authorize('create', [EliminationPhase::class, $this->tournament]);
 
         $this->form->validate();
 
