@@ -41,7 +41,7 @@
                                 @if($organizerMode)
                                     <flux:cell class="pt-[18px]" x-data="{loading: false}">
                                         <flux:icon.loading x-cloak x-show="loading"/>
-                                        <flux:button size="sm" inset x-show="!loading" @click="loading = true" class="!text-red-500"
+                                        <flux:button size="sm" inset x-show="!loading" @click="loading = true" class="text-red-500!"
                                                      icon="x-circle" variant="subtle" dusk="remove-contestant-{{ $loop->index }}"
                                                      wire:click="$parent.removeContestant('{{ $group->id }}', '{{ $contestant->id }}')"/>
                                     </flux:cell>

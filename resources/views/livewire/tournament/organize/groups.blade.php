@@ -16,14 +16,14 @@
                     <flux:icon.information-circle class="mr-2"/>
                     {{ __('Contestants are divided into groups and compete in a round-robin format, earning points based on performance. The top teams from each group advance to elimination phase. Examples include the FIFA World Cup, UEFA Champions League, and ICC Cricket World Cup.') }}
                 </flux:subheading>
-                <flux:card class="shadow-sm space-y-6" x-data="groupPhase({{ $tournament->contestantsCount() }})">
+                <flux:card class="shadow-xs space-y-6" x-data="groupPhase({{ $tournament->contestantsCount() }})">
                     <div class="space-y-4">
                         <div class="flex max-sm:flex-col">
-                            <flux:input class="!w-20 max-sm:mb-4" label="{{ __('Number of groups') }}" type="number"
+                            <flux:input class="w-20! max-sm:mb-4" label="{{ __('Number of groups') }}" type="number"
                                         wire:model="form.numberOfGroups" min="2" :max="$tournament->contestantsCount() / 2"
                                         @input="calculateGroups()" dusk="input-number-of-groups"/>
                             <flux:separator vertical class="mx-3"/>
-                            <flux:input class="!w-20" label="{{ __('Contestants qualifying per group') }}" type="number"
+                            <flux:input class="w-20!" label="{{ __('Contestants qualifying per group') }}" type="number"
                                         wire:model="form.contestantsQualifying"
                                         @input="computeContestantsQualifying()"
                                         min="1" x-bind:max="Math.min(...groups)" dusk="input-contestants-qualifying"/>

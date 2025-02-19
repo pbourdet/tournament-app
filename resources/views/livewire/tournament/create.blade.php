@@ -6,10 +6,10 @@
 
 <x-section class="md:w-2/3 xl:w-1/2">
     <div class="min-h-72 flex flex-col justify-between item p-4" x-data>
-        <div class="flex-grow">
+        <div class="grow">
             @if($currentStep === 1)
                 <div>
-                    <x-input-label class="!text-xl" for="name"
+                    <x-input-label class="text-xl!" for="name"
                                    :value="__('Start by choosing a name for your tournament').'...'"/>
                     <x-text-input id="name" name="name" type="text" class="mt-3 w-full"
                                   wire:model="form.name"
@@ -28,7 +28,7 @@
             @endif
 
             @if($currentStep === 2)
-                <x-input-label class="!text-xl" for="number_of_players"
+                <x-input-label class="text-xl!" for="number_of_players"
                                :value="__('How many players will participate in your tournament ?')"/>
                 <x-text-input id="number_of_players" required name="number_of_players" max="256" min="2" focus
                               type="number" class="mt-3 w-1/6"
@@ -38,7 +38,7 @@
 
             @if($currentStep === 3)
                 <div>
-                    <x-input-label class="!text-xl" :value="__('Will your tournament be played in teams ?')"/>
+                    <x-input-label class="text-xl!" :value="__('Will your tournament be played in teams ?')"/>
                     <div class="mt-5 flex items-center">
                         <span class="mr-2">{{ __('No') }}</span>
                         <x-toggle :livewire="true" :model="'form.teamBased'" :name="'team_based'"/>
@@ -55,7 +55,7 @@
             @endif
 
             @if($currentStep === 4)
-                <x-input-label class="!text-xl"
+                <x-input-label class="text-xl!"
                                :value="__('Finally, do you also want to participate in your tournament ?')"/>
                 <div class="mt-5 flex items-center">
                     <span class="mr-2">{{ __('No') }}</span>

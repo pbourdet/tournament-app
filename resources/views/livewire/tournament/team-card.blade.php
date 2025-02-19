@@ -44,7 +44,7 @@
                         <flux:spacer/>
                         @if($organizerMode)
                             <flux:icon.loading x-cloak x-show="loading"/>
-                            <flux:button inset x-show="!loading" @click="loading = true" :disabled="$locked" class="!text-red-500"
+                            <flux:button inset x-show="!loading" @click="loading = true" :disabled="$locked" class="text-red-500!"
                                          icon="x-circle" variant="subtle" dusk="remove-member-{{ $loop->index }}"
                                          wire:click="$parent.removeMember('{{ $team->id }}', '{{ $member->id }}')"/>
                         @endif

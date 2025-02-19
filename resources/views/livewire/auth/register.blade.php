@@ -16,9 +16,9 @@
                              src="{{ $form->profilePicture?->temporaryUrl() ?? Storage::url('user-picture-placeholder.jpeg') }}"
                              alt="{{ __('Profile picture') }}" class="size-12 rounded-full object-cover">
                         <flux:button size="sm" icon="x-circle" x-cloak variant="subtle"
-                                     class="!absolute bottom-7 left-10 !rounded-full"
+                                     class="absolute! bottom-7 left-10 rounded-full!"
                                      x-show="$wire.form.profilePicture !== null" @click="removePreview()"/>
-                        <x-loader wire:loading wire:target="form.profilePicture" class="!absolute bottom-2 right-16 size-8"/>
+                        <x-loader wire:loading wire:target="form.profilePicture" class="absolute! bottom-2 right-16 size-8"/>
                     </div>
                     <flux:input accept="image/*" type="file" wire:model="form.profilePicture" />
                 </div>

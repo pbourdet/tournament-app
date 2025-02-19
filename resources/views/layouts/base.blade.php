@@ -30,7 +30,7 @@
         @auth
             @include('layouts.navigation')
         @endauth
-        <flux:main class="!p-0 !max-w-full">
+        <flux:main class="p-0! max-w-full!">
             @yield('content')
         </flux:main>
 
