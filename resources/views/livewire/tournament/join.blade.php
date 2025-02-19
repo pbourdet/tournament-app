@@ -7,7 +7,7 @@
         <div class="mt-6 flex justify-center items-center">
             <div class="flex items-center">
                 <flux:input placeholder="{{ mb_strtoupper(Str::random(6)) }}..." maxlength="6" name="invitation-code"
-                            class:input="uppercase text-center !text-2xl !w-40"
+                            class:input="uppercase text-center text-2xl! w-40!"
                             wire:model="tournamentCode"
                             @input.debounce="if ($event.target.value.length === 6) $wire.find()"/>
                 <x-loader wire:loading wire:target="find" class="absolute size-8 right-9 md:right-18"/>

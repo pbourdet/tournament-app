@@ -44,7 +44,7 @@
                         <flux:spacer/>
                         @if($organizerMode)
                             <flux:icon.loading x-cloak x-show="loading"/>
-                            <flux:button inset x-show="!loading" @click="loading = true" :disabled="$locked" class="!text-red-500"
+                            <flux:button inset x-show="!loading" @click="loading = true" :disabled="$locked" class="text-red-500!"
                                          icon="x-circle" variant="subtle" dusk="remove-member-{{ $loop->index }}"
                                          wire:click="$parent.removeMember('{{ $team->id }}', '{{ $member->id }}')"/>
                         @endif
@@ -63,9 +63,9 @@
                         <flux:select.search placeholder="{{ __('Search player') }}"/>
                     </x-slot>
                     @foreach($selectablePlayers as $id => $selectablePlayer)
-                        <flux:option @click="loading = true" wire:click="$parent.addMember('{{ $team->id }}', '{{ $id }}')" dusk="select-member-{{ $loop->index }}" :value="$id">
+                        <flux:select.option @click="loading = true" wire:click="$parent.addMember('{{ $team->id }}', '{{ $id }}')" dusk="select-member-{{ $loop->index }}" :value="$id">
                             {{ $selectablePlayer }}
-                        </flux:option>
+                        </flux:select.option>
                     @endforeach
                 </flux:select>
             </div>

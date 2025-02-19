@@ -52,7 +52,7 @@
                         <flux:input variant="filled" readonly wire:model="contestants.{{ $key }}.name"/>
                         <flux:select dusk="result-outcome-{{ $loop->index }}" variant="listbox" wire:model="contestants.{{ $key }}.outcome">
                             @foreach(\App\Enums\ResultOutcome::cases() as $outcome)
-                                <flux:option dusk="outcome-{{ $loop->parent->index }}-{{ $outcome->value }}" value="{{ $outcome->value }}">{{ __($outcome->value) }}</flux:option>
+                                <flux:select.option dusk="outcome-{{ $loop->parent->index }}-{{ $outcome->value }}" value="{{ $outcome->value }}">{{ __($outcome->value) }}</flux:select.option>
                             @endforeach
                         </flux:select>
                         <flux:input dusk="result-score-{{ $loop->index }}" type="number" wire:model="contestants.{{ $key }}.score"/>

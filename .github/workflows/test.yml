@@ -35,6 +35,9 @@ jobs:
       - name: Setup flux authentication
         run: composer config http-basic.composer.fluxui.dev ${{ secrets.FLUX_EMAIL }} ${{ secrets.FLUX_KEY }}
 
+      - name: Install Composer dependencies
+        uses: ramsey/composer-install@v3
+
       - name: Install npm packages
         uses: bahmutov/npm-install@v1
 
@@ -42,9 +45,6 @@ jobs:
         run: npm run build
         env:
           VITE_INCLUDE_JQUERY: false
-
-      - name: Install Composer dependencies
-        uses: ramsey/composer-install@v3
 
       - name: Setup application key and database
         run: |
