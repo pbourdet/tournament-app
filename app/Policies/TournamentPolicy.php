@@ -35,4 +35,11 @@ class TournamentPolicy
     {
         return $user->can('manage', $tournament) && $tournament->canGenerateTeams();
     }
+
+    public function removePlayer(User $user, Tournament $tournament, User $player): bool
+    {
+        return $user->can('manage', $tournament)
+            && $tournament->players->contains($player)
+            && $tournament->isNotStarted();
+    }
 }

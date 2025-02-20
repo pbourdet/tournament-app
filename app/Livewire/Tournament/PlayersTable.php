@@ -28,7 +28,7 @@ class PlayersTable extends Component
 
     public function remove(User $player): void
     {
-        $this->authorize('manage', $this->tournament);
+        $this->authorize('removePlayer', [$this->tournament, $player]);
 
         if ($this->locked) {
             abort(409);
