@@ -12,7 +12,6 @@ use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Contracts\Auth\MustVerifyEmail as MustVerifyEmailContract;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -48,16 +47,6 @@ class User extends Contestant implements MustVerifyEmailContract, Authenticatabl
         'password',
         'remember_token',
     ];
-
-    /**
-     * @param Builder<User> $query
-     *
-     * @return Builder<User>
-     */
-    public function scopeWithoutTeamsInTournament(Builder $query, Tournament $tournament): Builder
-    {
-        return $query->whereDoesntHave('teams', fn (Builder $teamQuery) => $teamQuery->where('tournament_id', $tournament->id));
-    }
 
     /** @return HasMany<Tournament, $this> */
     public function managedTournaments(): HasMany

@@ -44,10 +44,7 @@ class GenerateTeams implements ShouldQueue
                 return;
             }
 
-            $playersWithoutTeam = $this->tournament->players()
-                ->withoutTeamsInTournament($this->tournament)
-                ->inRandomOrder()
-                ->get();
+            $playersWithoutTeam = $this->tournament->playersWithoutTeams->shuffle();
 
             foreach ($this->tournament->teams as $team) {
                 $currentCount = $team->members->count();

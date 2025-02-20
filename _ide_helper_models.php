@@ -20,6 +20,7 @@ namespace App\Models{
  * @property int $number_of_contestants
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\TFactory|null $use_factory
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Round> $rounds
  * @property-read int|null $rounds_count
  * @property-read \App\Models\Tournament $tournament
@@ -103,11 +104,13 @@ namespace App\Models{
  * @property int $qualifying_per_group
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\TFactory|null $use_factory
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Group> $groups
  * @property-read int|null $groups_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Round> $rounds
  * @property-read int|null $rounds_count
  * @property-read \App\Models\Tournament $tournament
+ * @method static \Database\Factories\GroupPhaseFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|GroupPhase newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|GroupPhase newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|GroupPhase query()
@@ -246,6 +249,7 @@ namespace App\Models{
  * @property string $tournament_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\TFactory|null $use_factory
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Matchup> $matches
  * @property-read int|null $matches_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $members
@@ -283,11 +287,14 @@ namespace App\Models{
  * @property int|null $team_size
  * @property \App\Enums\TournamentStatus $status
  * @property-read \App\Models\EliminationPhase|null $eliminationPhase
+ * @property-read \App\Models\TFactory|null $use_factory
  * @property-read \App\Models\GroupPhase|null $groupPhase
  * @property-read \App\Models\TournamentInvitation|null $invitation
  * @property-read \App\Models\User $organizer
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $players
  * @property-read int|null $players_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $playersWithoutTeams
+ * @property-read int|null $players_without_teams_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Team> $teams
  * @property-read int|null $teams_count
  * @method static \Database\Factories\TournamentFactory factory($count = null, $state = [])
@@ -350,6 +357,7 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property string|null $profile_picture
+ * @property-read \App\Models\TFactory|null $use_factory
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Tournament> $managedTournaments
  * @property-read int|null $managed_tournaments_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Matchup> $matches
@@ -375,7 +383,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereRememberToken($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereUsername($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|User withoutTeams()
  * @mixin \Eloquent
  */
 	#[\AllowDynamicProperties]

@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Enums\TournamentStatus;
 use Database\Factories\TournamentFactory;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -48,6 +49,12 @@ class Tournament extends Model
         return $this
             ->belongsToMany(User::class, 'tournament_player')
             ->withTimestamps();
+    }
+
+    /** @return BelongsToMany<User, $this> */
+    public function playersWithoutTeams(): BelongsToMany
+    {
+        return $this->players()->whereDoesntHave('teams', fn (Builder $teamQuery) => $teamQuery->where('tournament_id', $this->id));
     }
 
     /** @return HasOne<TournamentInvitation, $this> */

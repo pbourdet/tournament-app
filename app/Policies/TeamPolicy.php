@@ -29,7 +29,7 @@ class TeamPolicy
     {
         $tournament = $team->tournament;
 
-        return $tournament->players()->withoutTeamsInTournament($tournament)->where('id', $playerId)->exists()
+        return null !== $tournament->playersWithoutTeams->firstWhere('id', $playerId)
             && $team->members->count() < $tournament->team_size;
     }
 

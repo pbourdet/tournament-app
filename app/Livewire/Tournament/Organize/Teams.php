@@ -31,7 +31,7 @@ class Teams extends Component
     public function selectablePlayers(): array
     {
         /* @phpstan-ignore-next-line */
-        return $this->tournament->players()->withoutTeamsInTournament($this->tournament)->pluck('username', 'id')->toArray();
+        return $this->tournament->playersWithoutTeams->pluck('username', 'id')->toArray();
     }
 
     public function generate(): void
