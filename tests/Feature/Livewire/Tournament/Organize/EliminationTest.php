@@ -18,7 +18,10 @@ class EliminationTest extends TestCase
 
     public function testRendersWithoutAnEliminationPhase(): void
     {
-        Livewire::test(Elimination::class, ['tournament' => Tournament::factory()->create()])
+        $tournament = Tournament::factory()->create();
+
+        Livewire::actingAs($tournament->organizer)
+            ->test(Elimination::class, ['tournament' => $tournament])
             ->assertSee(__('How many :contestants will compete in this phase ?', ['contestants' => 'players']))
             ->assertStatus(200);
     }

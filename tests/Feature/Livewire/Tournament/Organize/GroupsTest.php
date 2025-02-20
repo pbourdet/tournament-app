@@ -21,7 +21,10 @@ class GroupsTest extends TestCase
 
     public function testRendersSuccessfully(): void
     {
-        Livewire::test(Groups::class, ['tournament' => Tournament::factory()->create()])
+        $tournament = Tournament::factory()->create();
+
+        Livewire::actingAs($tournament->organizer)
+            ->test(Groups::class, ['tournament' => $tournament])
             ->assertStatus(200);
     }
 

@@ -16,7 +16,7 @@
                         <flux:avatar class="ml-3" size="sm" src="{{ Storage::url($player->getProfilePicture()) }}"/>
                     </flux:table.cell>
                     <flux:table.cell>
-                        @if($player->is(Auth::user()))
+                        @if($player->is($this->user))
                             <span class="text-sm font-medium text-accent-content">{{ __('You') }}</span>
                         @else
                             <span class="text-sm font-medium">{{ $player->username }}</span>

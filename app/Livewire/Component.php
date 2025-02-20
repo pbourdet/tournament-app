@@ -7,13 +7,15 @@ namespace App\Livewire;
 use App\Enums\ToastType;
 use App\Models\User;
 use Flux\Concerns\InteractsWithComponents;
+use Livewire\Attributes\Computed;
 use Livewire\Component as BaseComponent;
 
 class Component extends BaseComponent
 {
     use InteractsWithComponents;
 
-    protected function getUser(): User
+    #[Computed]
+    public function user(): User
     {
         return User::findOrFail(auth()->id());
     }

@@ -12,7 +12,7 @@ class VerifyEmail extends Component
 {
     public function mount(): void
     {
-        if ($this->getUser()->hasVerifiedEmail()) {
+        if ($this->user()->hasVerifiedEmail()) {
             $this->redirectIntended(route('dashboard'), navigate: true);
         }
     }

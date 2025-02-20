@@ -23,7 +23,7 @@ class Join extends Component
 
     public function join(Tournament $tournament): void
     {
-        $user = $this->getUser();
+        $user = $this->user();
 
         if (!Gate::allows('join', $tournament)) {
             abort(403);

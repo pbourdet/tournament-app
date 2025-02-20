@@ -54,7 +54,7 @@
                             </template>
                         </div>
                     </div>
-                    <flux:button :disabled="Auth::user()->cannot('create', \App\Models\GroupPhase::class, $tournament)"
+                    <flux:button :disabled="$this->user->cannot('create', [\App\Models\GroupPhase::class, $tournament])"
                                  variant="primary" dusk="create-group-phase" wire:click="create">
                         {{ __('Save') }}
                     </flux:button>
@@ -107,7 +107,7 @@
             @if(null !== $tournament->groupPhase)
                 <div>
                     <flux:button dusk="generate-groups"  wire:click="generateGroups" icon="arrow-path"
-                                 :disabled="Auth::user()->cannot('generateGroups', [$tournament->groupPhase, $tournament])">
+                                 :disabled="$this->user->cannot('generateGroups', [$tournament->groupPhase, $tournament])">
                         {{ __('Random groups') }}
                     </flux:button>
                 </div>

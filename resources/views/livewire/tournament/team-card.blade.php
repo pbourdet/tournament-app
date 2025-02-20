@@ -1,6 +1,6 @@
 <div x-data="{ editing: false, loading: false, locked: @js($locked) }"
-     class="max-w-sm rounded-lg shadow-md border border-zinc-200 dark:border-zinc-900 mb-4">
-    <div class="px-4 py-3 border-b border-zinc-200 dark:border-zinc-900 bg-zinc-50 dark:bg-zinc-700 flex items-center justify-between">
+     class="rounded-lg shadow-md border border-zinc-200 dark:border-zinc-900 mb-4">
+    <div class="px-4 py-3 rounded-lg border-b border-zinc-200 dark:border-zinc-900 bg-zinc-50 dark:bg-zinc-700 flex items-center justify-between">
         <div class="flex flex-col truncate">
             <flux:heading class="truncate" x-show="!editing" size="lg" x-text="$wire.newName">{{ $team->name }}</flux:heading>
             <flux:input wire:model="newName" wire:keydown.enter="update('{{ $team->id }}')"

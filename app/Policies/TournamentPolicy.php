@@ -11,7 +11,7 @@ class TournamentPolicy
 {
     public function manage(User $user, Tournament $tournament): bool
     {
-        return $tournament->organizer()->is($user);
+        return $tournament->organizer->is($user);
     }
 
     public function join(User $user, Tournament $tournament): bool
