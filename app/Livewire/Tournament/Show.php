@@ -19,12 +19,12 @@ class Show extends Component
     ];
 
     public Tournament $tournament;
-
     public ?string $page;
     public string $title;
 
     public function mount(Tournament $tournament, ?string $page = null): void
     {
+        $this->organizerMode = false;
         $this->authorize('view', $tournament);
         $this->tournament = $tournament;
 

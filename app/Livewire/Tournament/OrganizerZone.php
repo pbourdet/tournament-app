@@ -41,6 +41,7 @@ class OrganizerZone extends Component
         }
 
         $this->tournament = $tournament;
+        $this->organizerMode = true;
 
         $page = $this->sanitizePage($page);
         $this->page = $page;

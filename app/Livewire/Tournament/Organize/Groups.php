@@ -17,7 +17,6 @@ use App\Models\User;
 use Illuminate\Support\Collection;
 use Illuminate\View\View;
 use Livewire\Attributes\Computed;
-use Livewire\Attributes\Locked;
 use Livewire\Attributes\Url;
 
 class Groups extends Component
@@ -26,9 +25,6 @@ class Groups extends Component
 
     #[Url]
     public string $tab = 'settings';
-
-    #[Locked]
-    public bool $organizerMode = true;
 
     public CreateGroupsForm $form;
 

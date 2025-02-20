@@ -45,7 +45,7 @@
     </flux:header>
 
     <flux:main>
-        <livewire:is :component="sprintf('tournament.organize.%s', $page)" :$tournament />
+        <livewire:is :component="sprintf('tournament.organize.%s', $page)" :$organizerMode :$tournament />
     </flux:main>
 
     @script

@@ -8,11 +8,15 @@ use App\Enums\ToastType;
 use App\Models\User;
 use Flux\Concerns\InteractsWithComponents;
 use Livewire\Attributes\Computed;
+use Livewire\Attributes\Locked;
 use Livewire\Component as BaseComponent;
 
 class Component extends BaseComponent
 {
     use InteractsWithComponents;
+
+    #[Locked]
+    public bool $organizerMode = false;
 
     #[Computed]
     public function user(): User

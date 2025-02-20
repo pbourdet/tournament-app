@@ -14,8 +14,6 @@ class Teams extends Component
 
     public Tournament $tournament;
 
-    public bool $organizerMode = false;
-
     public function render(): View
     {
         $this->tournament->load('teams.members');

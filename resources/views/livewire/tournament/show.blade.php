@@ -37,7 +37,7 @@
     </flux:header>
 
     <flux:main>
-        <livewire:is :component="$page" :$tournament/>
+        <livewire:is :component="$page" :$organizerMode :$tournament/>
     </flux:main>
 
     @script

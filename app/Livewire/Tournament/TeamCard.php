@@ -17,8 +17,6 @@ class TeamCard extends Component
     #[Locked]
     public bool $locked = false;
 
-    public bool $organizerMode = false;
-
     public Team $team;
 
     public Tournament $tournament;

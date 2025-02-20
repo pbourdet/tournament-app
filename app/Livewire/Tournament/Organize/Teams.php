@@ -12,16 +12,12 @@ use App\Models\Tournament;
 use App\Models\User;
 use Illuminate\View\View;
 use Livewire\Attributes\Computed;
-use Livewire\Attributes\Locked;
 
 class Teams extends Component
 {
     use WithTournamentLock;
 
     public Tournament $tournament;
-
-    #[Locked]
-    public bool $organizerMode = true;
 
     public function render(): View
     {
