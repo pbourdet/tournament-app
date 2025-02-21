@@ -17,10 +17,7 @@ class Overview extends Component
     public function start(): void
     {
         $this->checkLock();
-
-        if (!$this->tournament->isReadyToStart()) {
-            abort(403);
-        }
+        $this->authorize('start', $this->tournament);
 
         StartTournament::dispatch($this->tournament);
         $this->locked = true;

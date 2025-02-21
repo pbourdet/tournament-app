@@ -42,4 +42,9 @@ class TournamentPolicy
             && $tournament->players->contains($player)
             && $tournament->isNotStarted();
     }
+
+    public function start(User $user, Tournament $tournament): bool
+    {
+        return $user->can('manage', $tournament) && $tournament->isReadyToStart();
+    }
 }
