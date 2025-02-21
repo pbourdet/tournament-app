@@ -8,7 +8,6 @@ use App\Enums\TournamentStatus;
 use App\Jobs\StartTournament;
 use App\Livewire\Tournament\Overview;
 use App\Models\Tournament;
-use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Queue;
