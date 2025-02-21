@@ -122,7 +122,7 @@ class Tournament extends Model
         return !$this->isFull();
     }
 
-    /** @return Collection<int, User>|Collection<int, Team> */
+    /** @return Collection<int, covariant Contestant> */
     public function contestants(): Collection
     {
         return $this->team_based ? $this->teams : $this->players;
@@ -131,6 +131,16 @@ class Tournament extends Model
     public function contestantsCount(): int
     {
         return $this->team_based ? $this->maxTeamsCount() : $this->number_of_players;
+    }
+
+    /** @return Collection<int, covariant Contestant> */
+    public function contestantsWithoutGroup(): Collection
+    {
+        if (null === $this->groupPhase) return Collection::empty();
+
+        $contestantsWithGroup = $this->groupPhase->groups->flatMap(fn (Group $group) => $group->getContestants()->map->id);
+
+        return $this->contestants()->whereNotIn('id', $contestantsWithGroup);
     }
 
     public function hasAllContestants(): bool

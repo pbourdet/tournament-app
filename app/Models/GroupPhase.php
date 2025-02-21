@@ -40,7 +40,7 @@ class GroupPhase extends Phase
         return $this->groups->some(fn (Group $group) => !$group->isFull());
     }
 
-    /** @return Collection<int, Team>|Collection<int, User> */
+    /** @return Collection<int, covariant Contestant> */
     public function contestantsWithoutGroup(): Collection
     {
         $contestantsWithGroup = $this->groups->flatMap(fn (Group $group) => $group->getContestants()->map->id);
