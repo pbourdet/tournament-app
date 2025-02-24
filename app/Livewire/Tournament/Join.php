@@ -8,9 +8,6 @@ use App\Events\TournamentFull;
 use App\Livewire\Component;
 use App\Models\Tournament;
 use App\Models\TournamentInvitation;
-use App\Models\User;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Gate;
 use Livewire\Attributes\Locked;
 
 class Join extends Component
@@ -25,14 +22,9 @@ class Join extends Component
 
     public function join(Tournament $tournament): void
     {
-        /** @var User $user */
-        $user = Auth::user();
+        $this->authorize('join', $tournament);
 
-        if (!Gate::allows('join', $tournament)) {
-            abort(403);
-        }
-
-        $tournament->players()->attach($user);
+        $tournament->players()->attach($this->user());
 
         if ($tournament->isFull()) {
             TournamentFull::dispatch($tournament);
@@ -44,7 +36,7 @@ class Join extends Component
 
     public function find(): void
     {
-        $tournamentInvitation = TournamentInvitation::notExpired()->where('code', mb_strtoupper($this->tournamentCode))->first();
+        $tournamentInvitation = TournamentInvitation::notExpired()->firstWhere('code', mb_strtoupper($this->tournamentCode));
 
         $this->tournament = $tournamentInvitation?->tournament;
         $this->showResponse = true;

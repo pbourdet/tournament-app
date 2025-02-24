@@ -34,7 +34,7 @@
                         </div>
 
                         <div class="flex justify-center mt-4">
-                            @if($tournament->players->contains(Auth::user()))
+                            @if($tournament->players->contains($this->user))
                                 @include('livewire.tournament.partials.join-error', ['errorMessage' => __('You are already taking part in this tournament.')])
                             @elseif($tournament->isFull())
                                 @include('livewire.tournament.partials.join-error', ['errorMessage' => __('This tournament is full.')])

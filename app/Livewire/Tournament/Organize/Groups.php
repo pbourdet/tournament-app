@@ -10,13 +10,11 @@ use App\Livewire\Component;
 use App\Livewire\Forms\Tournament\Phase\CreateGroupsForm;
 use App\Models\Contestant;
 use App\Models\Group;
-use App\Models\Team;
+use App\Models\GroupPhase;
 use App\Models\Tournament;
-use App\Models\User;
 use Illuminate\Support\Collection;
 use Illuminate\View\View;
 use Livewire\Attributes\Computed;
-use Livewire\Attributes\Locked;
 use Livewire\Attributes\Url;
 
 class Groups extends Component
@@ -25,9 +23,6 @@ class Groups extends Component
 
     #[Url]
     public string $tab = 'settings';
-
-    #[Locked]
-    public bool $organizerMode = true;
 
     public CreateGroupsForm $form;
 
@@ -44,18 +39,16 @@ class Groups extends Component
         return view('livewire.tournament.organize.groups');
     }
 
-    /** @return Collection<int, Team>|Collection<int, User> */
+    /** @return Collection<int, covariant Contestant> */
     #[Computed]
     public function selectableContestants(): Collection
     {
-        if (null === $this->tournament->groupPhase) return Collection::empty();
-
-        return $this->tournament->groupPhase->contestantsWithoutGroup();
+        return $this->tournament->contestantsWithoutGroup();
     }
 
     public function create(): void
     {
-        $this->authorize('manage', $this->tournament);
+        $this->authorize('create', [GroupPhase::class, $this->tournament]);
         $this->form->validate();
         $this->tournament->groupPhase?->delete();
 
@@ -71,12 +64,8 @@ class Groups extends Component
 
     public function addContestant(Group $group, string $contestantId): void
     {
-        $this->authorize('manage', $this->tournament);
-
         $contestant = $this->tournament->contestants()->firstOrFail(fn (Contestant $contestant) => $contestant->id === $contestantId);
-
-        if ($this->selectableContestants()->doesntContain($contestant)) abort(403);
-        if ($group->contestants->count() >= $group->size) abort(403);
+        $this->authorize('addContestant', [$group, $contestant, $this->tournament]);
 
         $group->addContestants([$contestant]);
         $this->toastSuccess(__(':contestant added to group !', ['contestant' => ucfirst($this->tournament->getContestantsTranslation())]));
@@ -84,9 +73,8 @@ class Groups extends Component
 
     public function removeContestant(Group $group, string $contestantId): void
     {
-        $this->authorize('manage', $this->tournament);
-
         $contestant = $this->tournament->contestants()->firstOrFail(fn (Contestant $contestant) => $contestant->id === $contestantId);
+        $this->authorize('removeContestant', [$group, $contestant, $this->tournament]);
 
         $group->contestants()->where('contestant_id', $contestant->id)->delete();
         $this->toastSuccess(__(':contestant removed from group !', ['contestant' => ucfirst($this->tournament->getContestantsTranslation())]));
@@ -94,12 +82,10 @@ class Groups extends Component
 
     public function generateGroups(): void
     {
-        $this->authorize('manage', $this->tournament);
+        /** @var GroupPhase $groupPhase */
         $groupPhase = $this->tournament->groupPhase;
 
-        if (null === $groupPhase || !$groupPhase->canGenerateGroups()) {
-            abort(403);
-        }
+        $this->authorize('generateGroups', [$groupPhase, $this->tournament]);
 
         GenerateGroups::dispatch($groupPhase);
         $this->toast(__('Groups generation in progress...'));

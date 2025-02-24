@@ -8,7 +8,6 @@ use App\Enums\TournamentStatus;
 use App\Jobs\StartTournament;
 use App\Livewire\Tournament\Overview;
 use App\Models\Tournament;
-use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Queue;
@@ -45,12 +44,11 @@ class OverviewTest extends TestCase
     public function testNonOrganizerCantStartTournament(): void
     {
         Queue::fake();
-        $user = User::factory()->create();
-        $tournament = Tournament::factory()->full()->withPlayers([$user])->create();
+        $tournament = Tournament::factory()->full()->create();
         $tournament->eliminationPhase()->create(['number_of_contestants' => 2]);
         $tournament->update(['status' => TournamentStatus::READY_TO_START]);
 
-        Livewire::actingAs($user)
+        Livewire::actingAs($tournament->players->first())
             ->test(Overview::class, ['tournament' => $tournament])
             ->call('start')
             ->assertForbidden()

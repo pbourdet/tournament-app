@@ -34,7 +34,7 @@
                         </div>
                         <div class="grid max-sm:grid-cols-2 grid-cols-4 gap-1 mt-3">
                             <template x-for="(group, index) in groups" :key="index">
-                                <div class="px-3 py-1 border-zinc-200 dark:border-zinc-900 rounded-lg bg-zinc-50 dark:bg-zinc-700">
+                                <div class="px-3 py-1 rounded-lg bg-zinc-50 dark:bg-zinc-800">
                                     <h3 class="font-bold text-lg">{{ __('Group') }} <span x-text="index + 1"></span></h3>
                                     <div>
                                         <template x-for="(contestant, contestantIndex) in group" :key="contestantIndex">
@@ -54,7 +54,10 @@
                             </template>
                         </div>
                     </div>
-                    <flux:button variant="primary" dusk="create-group-phase" wire:click="create">{{ __('Save') }}</flux:button>
+                    <flux:button :disabled="$this->user->cannot('create', [\App\Models\GroupPhase::class, $tournament])"
+                                 variant="primary" dusk="create-group-phase" wire:click="create">
+                        {{ __('Save') }}
+                    </flux:button>
                 </flux:card>
 
                 <script>
@@ -101,12 +104,14 @@
             </div>
         </flux:tab.panel>
         <flux:tab.panel class="space-y-6" name="groups">
-            <div>
-                <flux:button dusk="generate-groups"  wire:click="generateGroups" icon="arrow-path"
-                             :disabled="!$tournament->groupPhase?->canGenerateGroups()">
-                    {{ __('Random groups') }}
-                </flux:button>
-            </div>
+            @if(null !== $tournament->groupPhase)
+                <div>
+                    <flux:button dusk="generate-groups"  wire:click="generateGroups" icon="arrow-path"
+                                 :disabled="$this->user->cannot('generateGroups', [$tournament->groupPhase, $tournament])">
+                        {{ __('Random groups') }}
+                    </flux:button>
+                </div>
+            @endif
             @include('livewire.tournament.partials.groups-grid')
         </flux:tab.panel>
     </flux:tab.group>

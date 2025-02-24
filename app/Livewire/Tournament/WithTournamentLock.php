@@ -19,8 +19,6 @@ trait WithTournamentLock
 
     public function checkLock(): void
     {
-        $this->authorize('manage', $this->tournament);
-
         if ($this->locked) {
             abort(409);
         }

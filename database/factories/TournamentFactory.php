@@ -80,6 +80,7 @@ class TournamentFactory extends Factory
             EliminationPhase::factory()->forTournament($tournament)->create();
             PhaseCreated::dispatch($tournament);
             StartTournament::dispatchSync($tournament);
+            $tournament->refresh();
         });
     }
 

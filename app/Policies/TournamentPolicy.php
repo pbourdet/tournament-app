@@ -11,13 +11,14 @@ class TournamentPolicy
 {
     public function manage(User $user, Tournament $tournament): bool
     {
-        return $tournament->organizer()->is($user);
+        return $tournament->organizer->is($user);
     }
 
     public function join(User $user, Tournament $tournament): bool
     {
         return !$tournament->isFull()
-            && !$tournament->players->contains($user);
+            && !$tournament->players->contains($user)
+            && ($tournament->invitation?->isNotExpired() ?? false);
     }
 
     public function create(User $user): bool
@@ -28,5 +29,22 @@ class TournamentPolicy
     public function view(User $user, Tournament $tournament): bool
     {
         return $tournament->players->contains($user) || $tournament->organizer()->is($user);
+    }
+
+    public function generateTeams(User $user, Tournament $tournament): bool
+    {
+        return $user->can('manage', $tournament) && $tournament->canGenerateTeams();
+    }
+
+    public function removePlayer(User $user, Tournament $tournament, User $player): bool
+    {
+        return $user->can('manage', $tournament)
+            && $tournament->players->contains($player)
+            && $tournament->isNotStarted();
+    }
+
+    public function start(User $user, Tournament $tournament): bool
+    {
+        return $user->can('manage', $tournament) && $tournament->isReadyToStart();
     }
 }

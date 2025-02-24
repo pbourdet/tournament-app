@@ -24,7 +24,7 @@ class SendVerificationEmail extends Component
             return;
         }
 
-        $user = $this->getUser();
+        $user = $this->user();
 
         if ($user->hasVerifiedEmail()) {
             $this->toastError(__('Your email address is already verified.'));

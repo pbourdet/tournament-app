@@ -5,7 +5,7 @@
             <span class="ml-2 text-xs">({{ $group->contestants->count() }}/{{ $group->size }})</span>
         </flux:heading>
     </div>
-    <div>
+    <div class="dark:bg-zinc-900">
         @if($group->contestants->isEmpty())
             <flux:subheading class="p-4 text-center">
                 {{ __('No :contestants in this group.', ['contestants' => $tournament->getContestantsTranslation(true)]) }}

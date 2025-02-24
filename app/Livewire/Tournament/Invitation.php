@@ -6,8 +6,6 @@ namespace App\Livewire\Tournament;
 
 use App\Livewire\Component;
 use App\Models\Tournament;
-use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Str;
 
 class Invitation extends Component
 {
@@ -15,19 +13,16 @@ class Invitation extends Component
 
     public function refresh(): void
     {
-        Gate::authorize('manage', $this->tournament);
+        $this->authorize('manage', $this->tournament);
 
         $this->tournament->invitation?->delete();
-        $this->tournament->invitation()->create([
-            'code' => mb_strtoupper(Str::random(6)),
-            'expires_at' => now()->addDays(7),
-        ]);
+        $this->tournament->createInvitation();
         $this->tournament->refresh();
     }
 
     public function delete(): void
     {
-        Gate::authorize('manage', $this->tournament);
+        $this->authorize('manage', $this->tournament);
 
         $this->tournament->invitation?->delete();
         $this->tournament->refresh();

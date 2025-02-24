@@ -35,9 +35,9 @@ class TournamentInvitation extends Model
         return $this->belongsTo(Tournament::class);
     }
 
-    public function isExpired(): bool
+    public function isNotExpired(): bool
     {
-        return $this->expires_at->isPast();
+        return $this->expires_at->isFuture();
     }
 
     /** @return array<string, string> */

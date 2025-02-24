@@ -36,12 +36,29 @@ class TeamCardTest extends TestCase
         $this->assertDatabaseHas('teams', ['id' => $team->id, 'name' => 'New Team Name']);
     }
 
-    public function testNonOrganizerCannotUpdateTeamName(): void
+    public function testMemberOfTeamCanUpdateName(): void
     {
         $tournament = Tournament::factory()->withFullTeams()->create();
         $team = $tournament->teams->first();
+        $player = $team->members->first();
 
-        Livewire::actingAs($tournament->players->first())
+        Livewire::actingAs($player)
+            ->test(TeamCard::class, ['team' => $team, 'tournament' => $tournament, 'locked' => false])
+            ->set('newName', 'New Team Name')
+            ->call('update')
+            ->assertSuccessful()
+            ->assertDispatched('toast-show');
+
+        $this->assertDatabaseHas('teams', ['id' => $team->id, 'name' => 'New Team Name']);
+    }
+
+    public function testNonMemberOfTeamCannotUpdateTeamName(): void
+    {
+        $tournament = Tournament::factory()->withFullTeams()->create();
+        $team = $tournament->teams->first();
+        $player = $tournament->teams()->where('id', '!=', $team->id)->first()->members->first();
+
+        Livewire::actingAs($player)
             ->test(TeamCard::class, ['team' => $team, 'tournament' => $tournament, 'locked' => false])
             ->set('newName', 'New Team Name')
             ->call('update')

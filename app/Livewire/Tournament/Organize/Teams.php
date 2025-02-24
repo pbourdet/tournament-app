@@ -19,8 +19,6 @@ class Teams extends Component
 
     public Tournament $tournament;
 
-    public bool $organizerMode = true;
-
     public function render(): View
     {
         $this->tournament->load(['teams.members', 'teams.tournament']);
@@ -33,17 +31,15 @@ class Teams extends Component
     public function selectablePlayers(): array
     {
         /* @phpstan-ignore-next-line */
-        return $this->tournament->players()->withoutTeamsInTournament($this->tournament)->pluck('username', 'id')->toArray();
+        return $this->tournament->playersWithoutTeams->pluck('username', 'id')->toArray();
     }
 
     public function generate(): void
     {
         $this->checkLock();
-        $this->tournament->load(['teams.members', 'teams.tournament']);
 
-        if (!$this->tournament->canGenerateTeams()) {
-            abort(403);
-        }
+        $this->tournament->load(['teams.members', 'teams.tournament']);
+        $this->authorize('generateTeams', $this->tournament);
 
         GenerateTeams::dispatch($this->tournament);
         $this->locked = true;
@@ -53,14 +49,7 @@ class Teams extends Component
     public function addMember(Team $team, string $playerId): void
     {
         $this->checkLock();
-
-        if ($team->members->count() >= $team->tournament->team_size) {
-            abort(403);
-        }
-
-        if (!$this->tournament->players()->withoutTeamsInTournament($this->tournament)->where('id', $playerId)->exists()) {
-            abort(403);
-        }
+        $this->authorize('addMember', [$team, $playerId]);
 
         $team->members()->attach($playerId);
         $this->toastSuccess(__('Player added to team !'));
@@ -69,6 +58,7 @@ class Teams extends Component
     public function removeMember(Team $team, User $user): void
     {
         $this->checkLock();
+        $this->authorize('removeMember', [$team, $user]);
 
         $team->members()->detach($user);
         $this->toastSuccess(__('Player removed from team !'));

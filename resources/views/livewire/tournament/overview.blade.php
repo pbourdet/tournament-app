@@ -27,5 +27,5 @@
         </div>
     @endif
 
-    <livewire:tournament.players-table :$tournament :$locked/>
+    <livewire:tournament.players-table :$organizerMode :$tournament :$locked/>
 </div>

@@ -7,7 +7,6 @@ namespace App\Livewire\Tournament\Phase;
 use App\Livewire\Component;
 use App\Models\Tournament;
 use Illuminate\View\View;
-use Livewire\Attributes\Locked;
 
 class Qualification extends Component
 {
@@ -15,9 +14,6 @@ class Qualification extends Component
 
     /** @var array<string, string> */
     public array $selectableContestants = [];
-
-    #[Locked]
-    public bool $organizerMode = false;
 
     public function render(): View
     {

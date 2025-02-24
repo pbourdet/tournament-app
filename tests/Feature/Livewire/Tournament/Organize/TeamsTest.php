@@ -6,6 +6,7 @@ namespace Tests\Feature\Livewire\Tournament\Organize;
 
 use App\Jobs\GenerateTeams;
 use App\Livewire\Tournament\Organize\Teams;
+use App\Models\Team;
 use App\Models\Tournament;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -148,6 +149,21 @@ class TeamsTest extends TestCase
         $this->assertTrue($team->refresh()->isFull());
     }
 
+    public function testOrganizerCantRemovePlayerForOtherTournament(): void
+    {
+        $tournament = Tournament::factory()->withFullTeams()->create();
+        $otherTournament = Tournament::factory()->withFullTeams()->create();
+        $team = $otherTournament->teams->firstOrFail();
+        $player = $team->members->first();
+
+        Livewire::actingAs($tournament->organizer)
+            ->test(Teams::class, ['tournament' => $tournament])
+            ->call('removeMember', $team, $player->id)
+            ->assertForbidden();
+
+        $this->assertTrue($team->refresh()->isFull());
+    }
+
     public function testOrganizerCantRemovePlayerFromTeamIfGenerationIsOngoing(): void
     {
         $tournament = Tournament::factory()->withFullTeams()->create();
@@ -221,6 +237,21 @@ class TeamsTest extends TestCase
             ->assertForbidden();
 
         $this->assertFalse($team->refresh()->members->contains($player));
+    }
+
+    public function testUserCannotAddUserToTeamNotInTournament(): void
+    {
+        $tournament = Tournament::factory()->full()->teamBased()->create();
+        $otherTournament = Tournament::factory()->full()->teamBased()->create();
+        $team = $otherTournament->teams->firstOrFail();
+        $player = $tournament->players->firstOrFail();
+
+        Livewire::actingAs($tournament->organizer)
+            ->test(Teams::class, ['tournament' => $tournament])
+            ->call('addMember', $team, $player->id)
+            ->assertForbidden();
+
+        $this->assertTrue($tournament->teams->every(fn (Team $team) => $team->members->isEmpty()));
     }
 
     public function testOrganizerCannotAddMemberToTeamIfPlayerAlreadyHasATeam(): void

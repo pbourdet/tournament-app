@@ -4,9 +4,9 @@
             <flux:table.column/>
             <flux:table.column>{{ __('Player') }}</flux:table.column>
             <flux:table.column/>
-            @can('manage', $tournament)
+            @if($organizerMode)
                 <flux:table.column>{{ __('Actions') }}</flux:table.column>
-            @endcan
+            @endif
         </flux:table.columns>
 
         <flux:table.rows>
@@ -16,7 +16,7 @@
                         <flux:avatar class="ml-3" size="sm" src="{{ Storage::url($player->getProfilePicture()) }}"/>
                     </flux:table.cell>
                     <flux:table.cell>
-                        @if($player->is(Auth::user()))
+                        @if($player->is($this->user))
                             <span class="text-sm font-medium text-accent-content">{{ __('You') }}</span>
                         @else
                             <span class="text-sm font-medium">{{ $player->username }}</span>
@@ -29,11 +29,11 @@
                         </span>
                         @endif
                     </flux:table.cell>
-                    @can('manage', $tournament)
+                    @if($organizerMode)
                         <flux:table.cell>
                             <flux:button dusk="remove-player-{{ $loop->index }}" size="sm" variant="danger" icon="trash" :disabled="$locked" wire:click="remove('{{ $player->id }}')"/>
                         </flux:table.cell>
-                    @endcan
+                    @endif
                 </flux:table.row>
             @endforeach
         </flux:table.rows>

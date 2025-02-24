@@ -19,7 +19,7 @@
                         </flux:select>
                     </flux:field>
 
-                    <flux:button variant="primary" dusk="create-elimination" type="submit">
+                    <flux:button :disabled="$this->user->cannot('create', [\App\Models\EliminationPhase::class, $tournament])" variant="primary" dusk="create-elimination" type="submit">
                         {{ __('Confirm') }}
                     </flux:button>
                 </form>
