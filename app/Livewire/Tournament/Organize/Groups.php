@@ -67,7 +67,7 @@ class Groups extends Component
         $contestant = $this->tournament->contestants()->firstOrFail(fn (Contestant $contestant) => $contestant->id === $contestantId);
         $this->authorize('addContestant', [$group, $contestant, $this->tournament]);
 
-        $group->addContestants([$contestant]);
+        $group->addContestant($contestant);
         $this->toastSuccess(__(':contestant added to group !', ['contestant' => ucfirst($this->tournament->getContestantsTranslation())]));
     }
 
