@@ -55,7 +55,7 @@ class GroupsTest extends DuskTestCase
     public function testRemoveContestantFromGroup(): void
     {
         $tournament = Tournament::factory()->full()->withGroupPhase()->create();
-        $group = $tournament->groupPhase->groups->first();
+        $group = $tournament->groupPhase->groups->first()->load('contestants');
         $group->addContestants([$tournament->contestants()->first()]);
 
         $this->browse(function (Browser $browser) use ($tournament) {

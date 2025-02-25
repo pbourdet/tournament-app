@@ -81,6 +81,21 @@ class Tournament extends Model
         return $this->hasOne(GroupPhase::class);
     }
 
+    /** @param Collection<int, string|User>|array<int, string|User> $users */
+    public function addPlayers(array|Collection $users): void
+    {
+        if ($this->isFull() || $this->players->count() + count($users) > $this->number_of_players) {
+            throw new \DomainException('Tournament is full');
+        }
+
+        $this->players()->attach($users);
+    }
+
+    public function addPlayer(string|User $player): void
+    {
+        $this->addPlayers([$player]);
+    }
+
     /** @return Collection<int, covariant Phase> */
     public function getPhases(): Collection
     {
@@ -114,7 +129,7 @@ class Tournament extends Model
 
     public function isFull(): bool
     {
-        return $this->players()->count() === $this->number_of_players;
+        return $this->players()->count() >= $this->number_of_players;
     }
 
     public function isNotFull(): bool

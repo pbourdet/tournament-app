@@ -212,9 +212,10 @@ class TeamsTest extends TestCase
     public function testOrganizerCannotAddPlayerInFullTeam(): void
     {
         $users = User::factory(3)->create();
-        $tournament = Tournament::factory()->full()->teamBased()->withPlayers($users)->create();
+        $tournament = Tournament::factory()->teamBased()->withPlayers($users)->create(['number_of_players' => 3]);
         $team = $tournament->teams->firstOrFail();
-        $team->members()->attach($users->take(2));
+        $team->addMembers($users->take(2));
+        $team->refresh();
         $player = $users->last();
 
         Livewire::actingAs($tournament->organizer)
@@ -259,7 +260,7 @@ class TeamsTest extends TestCase
         $tournament = Tournament::factory()->full()->teamBased()->create();
         $team = $tournament->teams->firstOrFail();
         $player = $tournament->players->firstOrFail();
-        $team->members()->attach($player);
+        $team->addMember($player);
 
         Livewire::actingAs($tournament->organizer)
             ->test(Teams::class, ['tournament' => $tournament])

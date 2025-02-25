@@ -24,7 +24,7 @@ class Join extends Component
     {
         $this->authorize('join', $tournament);
 
-        $tournament->players()->attach($this->user());
+        $tournament->addPlayer($this->user());
 
         if ($tournament->isFull()) {
             TournamentFull::dispatch($tournament);

@@ -37,19 +37,32 @@ class Group extends Model
         return $this->contestants->map(fn (GroupContestant $pivot) => $pivot->contestant);
     }
 
-    /** @param iterable<int, Contestant> $contestants */
-    public function addContestants(iterable $contestants): void
+    /** @param Collection<int, covariant Contestant>|array<int, covariant Contestant> $contestants */
+    public function addContestants(array|Collection $contestants): void
     {
+        if ($this->isFull() || $this->contestants->count() + count($contestants) > $this->size) {
+            throw new \DomainException('Group is full');
+        }
+
+        $contestantsArray = [];
+
         foreach ($contestants as $contestant) {
-            $this->contestants()->create([
+            $contestantsArray[] = [
                 'contestant_id' => $contestant->id,
                 'contestant_type' => $contestant->getMorphClass(),
-            ]);
+            ];
         }
+
+        $this->contestants()->createMany($contestantsArray);
+    }
+
+    public function addContestant(Contestant $contestant): void
+    {
+        $this->addContestants([$contestant]);
     }
 
     public function isFull(): bool
     {
-        return $this->contestants->count() === $this->size;
+        return $this->contestants->count() >= $this->size;
     }
 }

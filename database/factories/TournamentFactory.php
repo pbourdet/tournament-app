@@ -35,7 +35,8 @@ class TournamentFactory extends Factory
     {
         return $this->afterCreating(function (Tournament $tournament): void {
             while (!$tournament->isFull()) {
-                $tournament->players()->attach(User::factory()->create());
+                $tournament->addPlayer(User::factory()->create());
+                $tournament->refresh();
             }
 
             $tournament->update(['status' => TournamentStatus::SETUP_IN_PROGRESS]);
@@ -46,7 +47,8 @@ class TournamentFactory extends Factory
     public function withPlayers(array|Collection $users): static
     {
         return $this->afterCreating(function (Tournament $tournament) use ($users): void {
-            $tournament->players()->attach(collect($users)->pluck('id'));
+            $tournament->addPlayers(collect($users)->pluck('id'));
+            $tournament->refresh();
         });
     }
 

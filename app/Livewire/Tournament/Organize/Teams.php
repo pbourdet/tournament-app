@@ -51,7 +51,7 @@ class Teams extends Component
         $this->checkLock();
         $this->authorize('addMember', [$team, $playerId]);
 
-        $team->members()->attach($playerId);
+        $team->addMember($playerId);
         $this->toastSuccess(__('Player added to team !'));
     }
 

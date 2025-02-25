@@ -23,7 +23,7 @@ class TournamentSeeder extends Seeder
                     ->take(rand(1, $tournament->number_of_players))
                     ->get();
 
-                $tournament->players()->attach($players);
+                $tournament->addPlayers($players);
             });
         });
 
@@ -36,7 +36,7 @@ class TournamentSeeder extends Seeder
         ]);
 
         $players = User::inRandomOrder()->take(5)->get();
-        $teamTournament->players()->attach($players);
+        $teamTournament->addPlayers($players);
         $teams = $players->chunk(2);
         foreach ($teams as $team) {
             if (1 === $team->count()) {

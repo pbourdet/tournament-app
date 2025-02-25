@@ -24,7 +24,7 @@ class TeamFactory extends Factory
     public function withMembers(array|Collection $users): static
     {
         return $this->afterCreating(function (Team $team) use ($users): void {
-            $team->members()->attach(collect($users)->pluck('id'));
+            $team->addMembers(collect($users)->pluck('id'));
         });
     }
 }

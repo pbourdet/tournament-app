@@ -131,7 +131,7 @@ class GroupsTest extends TestCase
         $tournament = Tournament::factory()->full()->withGroupPhase()->create();
         $group = $tournament->groupPhase->groups->first();
         $contestant = $tournament->contestants()->first();
-        $group->addContestants([$contestant]);
+        $group->addContestant($contestant);
 
         Livewire::actingAs($tournament->organizer)
             ->test(Groups::class, ['tournament' => $tournament])
@@ -195,6 +195,7 @@ class GroupsTest extends TestCase
         $tournament = Tournament::factory()->full()->withGroupPhase()->create();
         $group = $tournament->groupPhase->groups->first();
         $group->addContestants($tournament->contestants()->take($group->size));
+        $group->refresh();
 
         Livewire::actingAs($tournament->organizer)
             ->test(Groups::class, ['tournament' => $tournament])
@@ -225,6 +226,7 @@ class GroupsTest extends TestCase
         $tournament = Tournament::factory()->full()->withGroupPhase()->create();
         $group = $tournament->groupPhase->groups->first();
         $group->addContestants($tournament->contestants()->take($group->size));
+        $group->refresh();
         $contestant = $group->getContestants()->first();
 
         Livewire::actingAs($tournament->organizer)
@@ -241,6 +243,7 @@ class GroupsTest extends TestCase
         $tournament = Tournament::factory()->full()->withGroupPhase()->create();
         $group = $tournament->groupPhase->groups->first();
         $group->addContestants($tournament->contestants()->take($group->size));
+        $group->refresh();
         $contestant = $group->getContestants()->first();
 
         Livewire::actingAs($tournament->players->first())
@@ -258,6 +261,7 @@ class GroupsTest extends TestCase
         $tournament->start();
         $group = $tournament->groupPhase->groups->first();
         $group->addContestants($tournament->contestants()->take($group->size));
+        $group->refresh();
         $contestant = $group->getContestants()->first();
 
         Livewire::actingAs($tournament->organizer)
@@ -288,6 +292,7 @@ class GroupsTest extends TestCase
         $otherTournament = Tournament::factory()->full()->withGroupPhase()->create();
         $group = $otherTournament->groupPhase->groups->first();
         $group->addContestants($otherTournament->contestants()->take($group->size));
+        $group->refresh();
         $contestant = $group->getContestants()->first();
 
         $this->expectException(ItemNotFoundException::class);
