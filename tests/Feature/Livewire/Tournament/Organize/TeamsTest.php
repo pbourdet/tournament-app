@@ -212,7 +212,7 @@ class TeamsTest extends TestCase
     public function testOrganizerCannotAddPlayerInFullTeam(): void
     {
         $users = User::factory(3)->create();
-        $tournament = Tournament::factory()->full()->teamBased()->withPlayers($users)->create();
+        $tournament = Tournament::factory()->teamBased()->withPlayers($users)->create(['number_of_players' => 3]);
         $team = $tournament->teams->firstOrFail();
         $team->addMembers($users->take(2));
         $team->refresh();

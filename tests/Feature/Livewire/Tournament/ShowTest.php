@@ -29,8 +29,7 @@ class ShowTest extends TestCase
     public function testUserCanViewTournamentAsPlayer(): void
     {
         $user = User::factory()->create();
-        $tournament = Tournament::factory()->create();
-        $tournament->players()->attach($user);
+        $tournament = Tournament::factory()->withPlayers([$user])->create();
 
         Livewire::actingAs($user)
             ->test(Show::class, ['tournament' => $tournament])

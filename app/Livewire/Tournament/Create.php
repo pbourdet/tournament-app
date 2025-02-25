@@ -86,7 +86,7 @@ class Create extends Component
         $tournament->createTeams();
 
         if ($this->form->joinTournament) {
-            $tournament->players()->attach(auth()->user());
+            $tournament->addPlayer($this->user());
         }
 
         $this->toastSuccess(__('Tournament :name created !', ['name' => $tournament->name]));
