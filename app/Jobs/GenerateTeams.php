@@ -48,7 +48,7 @@ class GenerateTeams implements ShouldQueue
 
             foreach ($this->tournament->teams as $team) {
                 $currentCount = $team->members->count();
-                $team->members()->attach($playersWithoutTeam->splice(0, $this->tournament->team_size - $currentCount));
+                $team->addMembers($playersWithoutTeam->splice(0, $this->tournament->team_size - $currentCount)->all());
             }
 
             event(new TournamentUpdated($this->tournament));

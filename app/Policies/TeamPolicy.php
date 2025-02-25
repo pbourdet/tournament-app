@@ -30,7 +30,7 @@ class TeamPolicy
         $tournament = $team->tournament;
 
         return null !== $tournament->playersWithoutTeams->firstWhere('id', $playerId)
-            && $team->members->count() < $tournament->team_size;
+            && !$team->isFull();
     }
 
     public function removeMember(User $user, Team $team, User $player): bool
