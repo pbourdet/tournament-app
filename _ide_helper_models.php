@@ -20,7 +20,6 @@ namespace App\Models{
  * @property int $number_of_contestants
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\TFactory|null $use_factory
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Round> $rounds
  * @property-read int|null $rounds_count
  * @property-read \App\Models\Tournament $tournament
@@ -104,7 +103,6 @@ namespace App\Models{
  * @property int $qualifying_per_group
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\TFactory|null $use_factory
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Group> $groups
  * @property-read int|null $groups_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Round> $rounds
@@ -219,7 +217,7 @@ namespace App\Models{
  * @property string $id
  * @property string $phase_type
  * @property string $phase_id
- * @property \App\Enums\RoundStage $stage
+ * @property string $stage
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Matchup> $matches
@@ -249,7 +247,6 @@ namespace App\Models{
  * @property string $tournament_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\TFactory|null $use_factory
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Matchup> $matches
  * @property-read int|null $matches_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $members
@@ -287,7 +284,6 @@ namespace App\Models{
  * @property int|null $team_size
  * @property \App\Enums\TournamentStatus $status
  * @property-read \App\Models\EliminationPhase|null $eliminationPhase
- * @property-read \App\Models\TFactory|null $use_factory
  * @property-read \App\Models\GroupPhase|null $groupPhase
  * @property-read \App\Models\TournamentInvitation|null $invitation
  * @property-read \App\Models\User $organizer
@@ -357,7 +353,6 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property string|null $profile_picture
- * @property-read \App\Models\TFactory|null $use_factory
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Tournament> $managedTournaments
  * @property-read int|null $managed_tournaments_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Matchup> $matches

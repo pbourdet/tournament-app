@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\EliminationRoundStage;
 use Database\Factories\EliminationPhaseFactory;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -24,7 +25,7 @@ class EliminationPhase extends Phase
     public function getNextMatchOf(Matchup $match): ?Matchup
     {
         return $this->rounds->load('matches')
-            ->first(fn ($round) => $round->stage === $match->round->stage->getNextStage())
+            ->first(fn ($round) => EliminationRoundStage::from($round->stage) === EliminationRoundStage::from($match->round->stage)->getNextStage())
             ?->matches->first(fn ($nextMatch) => $nextMatch->index === intval($match->index / 2))
         ;
     }

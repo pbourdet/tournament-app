@@ -104,6 +104,7 @@ class TeamsTest extends DuskTestCase
                 ->click('@link-teams')
                 ->waitForRoute('tournaments.show', ['tournament' => $tournament, 'page' => 'teams'])
                 ->press("@edit-team-{$team->id}")
+                ->pause(100)
                 ->type('newName', 'Team 1')
                 ->press("@update-team-{$team->id}")
                 ->waitForText(__('Team :name updated !', ['name' => 'Team 1']))
