@@ -6,6 +6,8 @@ namespace App\Providers;
 
 use App\Services\Generators\EliminationMatchesGenerator;
 use App\Services\Generators\EliminationRoundsGenerator;
+use App\Services\Generators\GroupsMatchesGenerator;
+use App\Services\Generators\GroupsRoundsGenerator;
 use Illuminate\Support\ServiceProvider;
 
 class GeneratorServiceProvider extends ServiceProvider
@@ -24,6 +26,7 @@ class GeneratorServiceProvider extends ServiceProvider
     {
         $implementations = [
             EliminationMatchesGenerator::class,
+            GroupsMatchesGenerator::class,
         ];
 
         $this->app->tag($implementations, 'matches_generators');
@@ -33,6 +36,7 @@ class GeneratorServiceProvider extends ServiceProvider
     {
         $implementations = [
             EliminationRoundsGenerator::class,
+            GroupsRoundsGenerator::class,
         ];
 
         $this->app->tag($implementations, 'rounds_generators');

@@ -34,7 +34,7 @@ class QualificationTest extends TestCase
     public function testRendersWithGroups(): void
     {
         $tournament = Tournament::factory()->create();
-        GroupPhase::factory()->forTournament($tournament)->withGroups()->create();
+        GroupPhase::factory()->forTournament($tournament)->create();
 
         Livewire::test(Qualification::class, ['tournament' => $tournament])
             ->assertSee(__('Group 1'))
