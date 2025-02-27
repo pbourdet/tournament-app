@@ -38,6 +38,11 @@ class Result extends Model
         return ResultOutcome::LOSS === $this->outcome;
     }
 
+    public function isTie(): bool
+    {
+        return ResultOutcome::TIE === $this->outcome;
+    }
+
     /** @return array<string, string> */
     protected function casts(): array
     {

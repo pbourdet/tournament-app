@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Database\Factories;
 
 use App\Jobs\GenerateGroups;
+use App\Jobs\StartTournament;
 use App\Models\GroupPhase;
 use App\Services\Generators\GroupsRoundsGenerator;
 
@@ -26,6 +27,14 @@ class GroupPhaseFactory extends PhaseFactory
     {
         return $this->afterCreating(function (GroupPhase $phase): void {
             new GroupsRoundsGenerator()->generate($phase);
+        });
+    }
+
+    public function withMatches(): static
+    {
+        return $this->afterCreating(function (GroupPhase $phase): void {
+            GenerateGroups::dispatchSync($phase);
+            StartTournament::dispatchSync($phase->tournament);
         });
     }
 

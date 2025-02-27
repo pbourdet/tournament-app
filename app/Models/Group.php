@@ -61,6 +61,21 @@ class Group extends Model
         $this->addContestants([$contestant]);
     }
 
+    /** @return Collection<int, Matchup> */
+    public function getMatches(): Collection
+    {
+        $round = $this->phase->rounds->first();
+
+        if (null === $round) return Collection::empty();
+
+        return $round->matches->load('contestants')->filter(function (Matchup $match) {
+            $matchContestants = $match->getContestants();
+            $groupContestants = $this->getContestants();
+
+            return $matchContestants->every(fn (Contestant $contestant) => $groupContestants->contains($contestant));
+        })->load('results');
+    }
+
     public function isFull(): bool
     {
         return $this->contestants->count() >= $this->size;

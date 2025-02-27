@@ -34,7 +34,12 @@ class Groups extends Component
 
     public function render(): View
     {
-        $this->tournament->load('groupPhase.groups.contestants');
+        $this->tournament->load([
+            'groupPhase.groups.contestants',
+            'groupPhase.groups.phase',
+            'groupPhase.rounds.matches.results',
+            'groupPhase.rounds.matches.contestants',
+        ]);
 
         return view('livewire.tournament.organize.groups');
     }
