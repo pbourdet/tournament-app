@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Services;
 
-use App\Enums\RoundStage;
+use App\Enums\EliminationRoundStage;
 use App\Models\EliminationPhase;
 use App\Models\Matchup;
 use App\Models\Tournament;
@@ -26,12 +26,12 @@ class EliminationMatchesGeneratorTest extends TestCase
         $this->assertDatabaseCount('matches', 15);
         $this->assertDatabaseCount('match_contestant', 16);
 
-        $firstRound = $phase->rounds()->where('stage', RoundStage::R16)->firstOrFail();
+        $firstRound = $phase->rounds()->where('stage', EliminationRoundStage::R16->value)->firstOrFail();
         $firstRound->matches()->each(function ($match) {
             $this->assertCount(2, $match->contestants);
         });
 
-        $otherRounds = $phase->rounds()->where('stage', '!=', RoundStage::R16)->get();
+        $otherRounds = $phase->rounds()->where('stage', '!=', EliminationRoundStage::R16->value)->get();
         $otherRounds->each(function ($round) {
             $round->matches()->each(function ($match) {
                 $this->assertCount(0, $match->contestants);

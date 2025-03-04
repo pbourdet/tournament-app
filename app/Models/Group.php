@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\ResultOutcome;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -37,6 +38,15 @@ class Group extends Model
         return $this->contestants->map(fn (GroupContestant $pivot) => $pivot->contestant);
     }
 
+    /** @return Collection<int, Contestant> */
+    public function getSortedContestants(): Collection
+    {
+        return $this->getContestants()->sortByDesc(fn (Contestant $contestant) => [
+            $contestant->getMatchesForGroup($this, ResultOutcome::WIN),
+            $contestant->getMatchesForGroup($this, ResultOutcome::TIE),
+        ]);
+    }
+
     /** @param Collection<int, covariant Contestant>|array<int, covariant Contestant> $contestants */
     public function addContestants(array|Collection $contestants): void
     {
@@ -59,6 +69,21 @@ class Group extends Model
     public function addContestant(Contestant $contestant): void
     {
         $this->addContestants([$contestant]);
+    }
+
+    /** @return Collection<int, Matchup> */
+    public function getMatches(): Collection
+    {
+        $round = $this->phase->rounds->first();
+
+        if (null === $round) return Collection::empty();
+
+        return $round->matches->load('contestants')->filter(function (Matchup $match) {
+            $matchContestants = $match->getContestants();
+            $groupContestants = $this->getContestants();
+
+            return $matchContestants->every(fn (Contestant $contestant) => $groupContestants->contains($contestant));
+        })->load('results');
     }
 
     public function isFull(): bool

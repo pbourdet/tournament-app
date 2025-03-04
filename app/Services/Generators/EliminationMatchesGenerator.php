@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\Generators;
 
+use App\Enums\EliminationRoundStage;
 use App\Models\EliminationPhase;
 use App\Models\Phase;
 use App\Models\Round;
@@ -22,11 +23,11 @@ class EliminationMatchesGenerator implements Generator
     {
         $contestants = $phase->tournament->contestants()->shuffle();
         $rounds = $phase->rounds
-            ->sortByDesc(fn (Round $round) => $round->stage->getMatchCount())
+            ->sortByDesc(fn (Round $round) => EliminationRoundStage::from($round->stage)->getMatchCount())
             ->values();
 
         foreach ($rounds as $key => $round) {
-            $matchesCount = $round->stage->getMatchCount();
+            $matchesCount = EliminationRoundStage::from($round->stage)->getMatchCount();
 
             for ($i = 0; $i < $matchesCount; ++$i) {
                 $match = $round->matches()->create([

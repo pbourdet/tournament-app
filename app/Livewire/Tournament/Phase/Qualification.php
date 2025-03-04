@@ -17,7 +17,10 @@ class Qualification extends Component
 
     public function render(): View
     {
-        $this->tournament->load('groupPhase.groups.contestants');
+        $this->tournament->load([
+            'groupPhase.groups.phase',
+            'groupPhase.groups.contestants',
+        ]);
 
         return view('livewire.tournament.phase.qualification');
     }

@@ -24,19 +24,19 @@
                     </flux:table.columns>
 
                     <flux:table.rows>
-                        @foreach($group->getContestants() as $contestant)
+                        @foreach($group->getSortedContestants() as $contestant)
                             <flux:table.row>
                                 <flux:table.cell class="truncate">
                                     {{ $contestant->getName() }}
                                 </flux:table.cell>
                                 <flux:table.cell>
-                                    {{ 0 }}
+                                    {{ $contestant->getMatchesForGroup($group, \App\Enums\ResultOutcome::WIN)->count() }}
                                 </flux:table.cell>
                                 <flux:table.cell>
-                                    {{ 0 }}
+                                    {{ $contestant->getMatchesForGroup($group, \App\Enums\ResultOutcome::LOSS)->count() }}
                                 </flux:table.cell>
                                 <flux:table.cell>
-                                    {{ 0 }}
+                                    {{ $contestant->getMatchesForGroup($group, \App\Enums\ResultOutcome::TIE)->count() }}
                                 </flux:table.cell>
                                 @if($organizerMode)
                                     <flux:table.cell class="pt-[18px]" x-data="{loading: false}">

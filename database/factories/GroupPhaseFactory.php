@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
-use App\Events\PhaseCreated;
+use App\Jobs\GenerateGroups;
+use App\Jobs\StartTournament;
 use App\Models\GroupPhase;
+use App\Services\Generators\GroupsRoundsGenerator;
 
 /**
  * @extends PhaseFactory<GroupPhase>
@@ -21,10 +23,25 @@ class GroupPhaseFactory extends PhaseFactory
         ];
     }
 
-    public function withGroups(): static
+    public function withRounds(): static
     {
         return $this->afterCreating(function (GroupPhase $phase): void {
-            PhaseCreated::dispatch($phase->tournament);
+            new GroupsRoundsGenerator()->generate($phase);
+        });
+    }
+
+    public function withMatches(): static
+    {
+        return $this->afterCreating(function (GroupPhase $phase): void {
+            GenerateGroups::dispatchSync($phase);
+            StartTournament::dispatchSync($phase->tournament);
+        });
+    }
+
+    public function withFullGroups(): static
+    {
+        return $this->afterCreating(function (GroupPhase $phase): void {
+            GenerateGroups::dispatchSync($phase);
         });
     }
 }

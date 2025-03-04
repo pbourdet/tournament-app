@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Database\Factories;
 
 use App\Enums\TournamentStatus;
-use App\Events\PhaseCreated;
 use App\Jobs\GenerateTeams;
 use App\Jobs\StartTournament;
 use App\Models\EliminationPhase;
@@ -56,7 +55,6 @@ class TournamentFactory extends Factory
     {
         return $this->afterCreating(function (Tournament $tournament): void {
             EliminationPhase::factory()->forTournament($tournament)->create();
-            PhaseCreated::dispatch($tournament);
         });
     }
 
@@ -64,7 +62,6 @@ class TournamentFactory extends Factory
     {
         return $this->afterCreating(function (Tournament $tournament): void {
             GroupPhase::factory()->forTournament($tournament)->create();
-            PhaseCreated::dispatch($tournament);
         });
     }
 
@@ -80,7 +77,6 @@ class TournamentFactory extends Factory
     {
         return $this->full()->afterCreating(function (Tournament $tournament): void {
             EliminationPhase::factory()->forTournament($tournament)->create();
-            PhaseCreated::dispatch($tournament);
             StartTournament::dispatchSync($tournament);
             $tournament->refresh();
         });
@@ -89,7 +85,7 @@ class TournamentFactory extends Factory
     public function withFullTeams(): static
     {
         return $this->teamBased()->full()->afterCreating(function (Tournament $tournament): void {
-            new GenerateTeams($tournament)->handle();
+            GenerateTeams::dispatchSync($tournament);
             $tournament->refresh();
         });
     }

@@ -3,6 +3,7 @@
         <flux:tabs wire:model="tab">
             <flux:tab dusk="tab-settings" icon="cog-6-tooth" name="settings">{{ __('Settings') }}</flux:tab>
             <flux:tab dusk="tab-groups" icon="rectangle-group" name="groups">{{ __('Groups') }}</flux:tab>
+            <flux:tab dusk="tab-matches" icon="list-bullet" name="matches">{{ __('Matches') }}</flux:tab>
         </flux:tabs>
 
         <flux:tab.panel class="space-y-6" name="settings">
@@ -113,6 +114,28 @@
                 </div>
             @endif
             @include('livewire.tournament.partials.groups-grid')
+        </flux:tab.panel>
+        <flux:tab.panel class="space-y-6" name="matches">
+            @if(null === $tournament->groupPhase)
+                <flux:subheading>
+                    {{ __('Group phase has not been set up yet.') }}
+                </flux:subheading>
+            @elseif($tournament->isNotStarted())
+                <flux:subheading>
+                    {{ __('The matches will be displayed once the group phase has started.') }}
+                </flux:sub>
+            @else
+                @foreach($tournament->groupPhase->groups as $group)
+                    <div class="space-y-6">
+                        <flux:heading size="lg">{{ $group->name }}</flux:heading>
+                        <div class="space-y-6">
+                            @foreach($group->getMatches() as $match)
+                                <livewire:tournament.match-card :$match :key="$match->id"/>
+                            @endforeach
+                        </div>
+                    </div>
+                @endforeach
+            @endif
         </flux:tab.panel>
     </flux:tab.group>
 </div>

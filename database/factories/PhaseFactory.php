@@ -17,6 +17,10 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 abstract class PhaseFactory extends Factory
 {
+    abstract public function withRounds(): static;
+
+    abstract public function withMatches(): static;
+
     /** @return array<string, mixed> */
     public function definition(): array
     {

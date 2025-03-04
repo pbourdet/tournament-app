@@ -6,6 +6,7 @@ namespace Tests\Feature\Livewire\Tournament\Organize;
 
 use App\Jobs\GenerateGroups;
 use App\Livewire\Tournament\Organize\Groups;
+use App\Models\GroupPhase;
 use App\Models\Team;
 use App\Models\Tournament;
 use App\Models\User;
@@ -19,13 +20,39 @@ class GroupsTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function testRendersSuccessfully(): void
+    public function testRendersSuccessfullyWithoutGroupPhase(): void
     {
         $tournament = Tournament::factory()->create();
 
         Livewire::actingAs($tournament->organizer)
             ->test(Groups::class, ['tournament' => $tournament])
-            ->assertStatus(200);
+            ->assertStatus(200)
+            ->assertSee(__('Group phase has not been set up yet.'))
+        ;
+    }
+
+    public function testRendersSuccessfullyWithGroupPhase(): void
+    {
+        $tournament = Tournament::factory()->withGroupPhase()->create();
+
+        Livewire::actingAs($tournament->organizer)
+            ->test(Groups::class, ['tournament' => $tournament])
+            ->assertStatus(200)
+            ->assertSee(__('The matches will be displayed once the group phase has started.'))
+        ;
+    }
+
+    public function testRendersSuccessfullyWithStartedTournament(): void
+    {
+        $tournament = Tournament::factory()->full()->create();
+        GroupPhase::factory()->for($tournament)->withMatches()->create();
+        $tournament->refresh();
+
+        Livewire::actingAs($tournament->organizer)
+            ->test(Groups::class, ['tournament' => $tournament])
+            ->assertStatus(200)
+            ->assertSeeLivewire('tournament.match-card')
+        ;
     }
 
     public function testOrganizerCanCreateAGroupPhase(): void

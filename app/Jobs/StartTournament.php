@@ -5,11 +5,9 @@ declare(strict_types=1);
 namespace App\Jobs;
 
 use App\Events\TournamentUpdated;
-use App\Models\Phase;
 use App\Models\Tournament;
 use App\Notifications\TournamentStarted;
-use App\Services\Generators\Generator;
-use Illuminate\Container\Attributes\Tag;
+use App\Services\Generators\PhaseMatchesGenerator;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Foundation\Queue\Queueable;
@@ -39,30 +37,14 @@ class StartTournament implements ShouldQueue
         ];
     }
 
-    /**
-     * @param array<int, Generator<Phase>> $roundsGenerator
-     * @param array<int, Generator<Phase>> $matchesGenerators
-     */
-    public function handle(
-        #[Tag('rounds_generators')] iterable $roundsGenerator,
-        #[Tag('matches_generators')] iterable $matchesGenerators,
-    ): void {
+    public function handle(PhaseMatchesGenerator $generator): void
+    {
         try {
-            $phases = $this->tournament->getPhases();
+            $phase = $this->tournament->qualificationPhase() ?? $this->tournament->eliminationPhase;
 
-            foreach ($phases as $phase) {
-                foreach ($roundsGenerator as $generator) {
-                    if ($generator->supports($phase)) {
-                        $generator->generate($phase);
-                    }
-                }
+            if (null === $phase) return;
 
-                foreach ($matchesGenerators as $generator) {
-                    if ($generator->supports($phase)) {
-                        $generator->generate($phase);
-                    }
-                }
-            }
+            $generator->generate($phase);
 
             $this->tournament->start();
             Notification::send($this->tournament->players, new TournamentStarted($this->tournament));

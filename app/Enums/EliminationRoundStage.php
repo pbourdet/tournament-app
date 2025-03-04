@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Enums;
 
-enum RoundStage: string
+enum EliminationRoundStage: string
 {
     case R128 = 'W128';
     case R64 = 'W64';
@@ -14,7 +14,7 @@ enum RoundStage: string
     case SF = 'W4';
     case F = 'W2';
 
-    /** @return array<int, RoundStage> */
+    /** @return array<int, EliminationRoundStage> */
     public static function getRoundsForContestants(int $numberOfContestants): array
     {
         $rounds = [];
@@ -28,7 +28,7 @@ enum RoundStage: string
         return $rounds;
     }
 
-    public function getNextStage(): ?RoundStage
+    public function getNextStage(): ?EliminationRoundStage
     {
         return match ($this) {
             self::R128 => self::R64,
