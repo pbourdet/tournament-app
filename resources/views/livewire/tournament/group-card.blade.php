@@ -24,7 +24,7 @@
                     </flux:table.columns>
 
                     <flux:table.rows>
-                        @foreach($group->getContestants() as $contestant)
+                        @foreach($group->getSortedContestants() as $contestant)
                             <flux:table.row>
                                 <flux:table.cell class="truncate">
                                     {{ $contestant->getName() }}

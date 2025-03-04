@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\ResultOutcome;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -35,6 +36,15 @@ class Group extends Model
     public function getContestants(): Collection
     {
         return $this->contestants->map(fn (GroupContestant $pivot) => $pivot->contestant);
+    }
+
+    /** @return Collection<int, Contestant> */
+    public function getSortedContestants(): Collection
+    {
+        return $this->getContestants()->sortByDesc(fn (Contestant $contestant) => [
+            $contestant->getMatchesForGroup($this, ResultOutcome::WIN),
+            $contestant->getMatchesForGroup($this, ResultOutcome::TIE),
+        ]);
     }
 
     /** @param Collection<int, covariant Contestant>|array<int, covariant Contestant> $contestants */
