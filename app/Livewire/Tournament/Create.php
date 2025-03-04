@@ -69,17 +69,16 @@ class Create extends Component
 
     public function save(): void
     {
-        Gate::authorize('create', Tournament::class);
+        $this->authorize('create', Tournament::class);
 
         $this->form->validate();
 
-        $tournament = Tournament::create([
+        $tournament = $this->user()->managedTournaments()->create([
             'name' => $this->form->name,
             'description' => $this->form->description,
             'number_of_players' => $this->form->numberOfPlayers,
             'team_based' => $this->form->teamBased,
             'team_size' => $this->form->teamBased ? $this->form->teamSize : null,
-            'organizer_id' => auth()->id(),
         ]);
 
         $tournament->createInvitation();

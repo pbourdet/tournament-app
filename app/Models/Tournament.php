@@ -30,7 +30,6 @@ class Tournament extends Model
     protected $fillable = [
         'name',
         'description',
-        'organizer_id',
         'number_of_players',
         'team_based',
         'team_size',
