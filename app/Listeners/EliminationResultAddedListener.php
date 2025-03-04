@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Listeners;
 
-use App\Enums\TournamentStatus;
 use App\Events\ResultAdded;
 
 class EliminationResultAddedListener
@@ -22,7 +21,7 @@ class EliminationResultAddedListener
 
         if (null === $nextMatch) {
             $tournament = $phase->tournament;
-            $tournament->update(['status' => TournamentStatus::FINISHED]);
+            $tournament->finish();
 
             return;
         }

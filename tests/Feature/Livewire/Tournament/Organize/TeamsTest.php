@@ -93,8 +93,9 @@ class TeamsTest extends TestCase
 
     public function testOrganizerCantGenerateTeamsOnTournamentWithFullTeams(): void
     {
-        Queue::fake();
         $tournament = Tournament::factory()->withFullTeams()->create();
+
+        Queue::fake();
 
         Livewire::actingAs($tournament->organizer)
             ->test(Teams::class, ['tournament' => $tournament])

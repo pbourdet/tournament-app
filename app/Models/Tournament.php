@@ -96,6 +96,11 @@ class Tournament extends Model
         $this->addPlayers([$player]);
     }
 
+    public function qualificationPhase(): ?Phase
+    {
+        return $this->groupPhase;
+    }
+
     /** @return Collection<int, covariant Phase> */
     public function getPhases(): Collection
     {
@@ -200,6 +205,11 @@ class Tournament extends Model
     public function start(): void
     {
         $this->update(['status' => TournamentStatus::IN_PROGRESS]);
+    }
+
+    public function finish(): void
+    {
+        $this->update(['status' => TournamentStatus::FINISHED]);
     }
 
     public function isStarted(): bool

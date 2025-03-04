@@ -12,17 +12,17 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
 use Tests\TestCase;
 
-class MatchCardTest extends TestCase
+class EliminationMatchCardTest extends TestCase
 {
     use RefreshDatabase;
+
+    private Tournament $tournament;
 
     public function rendersSuccessfully(): void
     {
         Livewire::test(MatchCard::class)
             ->assertStatus(200);
     }
-
-    private Tournament $tournament;
 
     public function setUp(): void
     {

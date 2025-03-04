@@ -50,6 +50,11 @@ class Matchup extends Model
         return $this->hasMany(Result::class, 'match_id')->with('contestant');
     }
 
+    public function isPlayed(): bool
+    {
+        return $this->results->isNotEmpty();
+    }
+
     /** @return Collection<int, Contestant> */
     public function getContestants(): Collection
     {

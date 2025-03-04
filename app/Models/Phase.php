@@ -38,5 +38,10 @@ abstract class Phase extends Model
         return $this instanceof GroupPhase;
     }
 
+    public function isFinished(): bool
+    {
+        return $this->rounds->every(fn (Round $round) => $round->matches->every(fn (Matchup $match) => $match->isPlayed()));
+    }
+
     abstract public function getNextMatchOf(Matchup $match): ?Matchup;
 }
