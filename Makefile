@@ -1,5 +1,12 @@
 sail = ./vendor/bin/sail
 
+
+up:
+	$(sail) up -d
+
+seed:
+	$(sail) artisan migrate:fresh --seed
+
 .PHONY: tests
 tests:
 	$(sail) test --parallel

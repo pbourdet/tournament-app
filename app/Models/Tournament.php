@@ -185,9 +185,7 @@ class Tournament extends Model
 
     public function maxTeamsCount(): int
     {
-        if (!$this->team_based) {
-            return 0;
-        }
+        if (!$this->team_based) return 0;
 
         return intdiv($this->number_of_players, (int) $this->team_size);
     }
