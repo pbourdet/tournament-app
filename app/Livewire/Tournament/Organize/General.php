@@ -11,14 +11,13 @@ class General extends Component
 {
     public Tournament $tournament;
 
-    public string $name = '';
-
-    public function mount(Tournament $tournament): void
+    public function mount(): void
     {
-        $this->name = $tournament->name;
+        $this->tournament->load('teams.tournament', 'teams.members', 'groupPhase.groups.contestants');
     }
 
-    public function update(): void
+    public function start(): void
     {
+        $this->tournament->save();
     }
 }

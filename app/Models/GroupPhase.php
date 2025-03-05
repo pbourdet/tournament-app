@@ -47,4 +47,9 @@ class GroupPhase extends Phase
 
         return $this->tournament->contestants()->reject(fn (Contestant $contestant) => $contestantsWithGroup->contains($contestant->id));
     }
+
+    public function isReadyToStart(): bool
+    {
+        return !$this->canGenerateGroups();
+    }
 }

@@ -44,4 +44,9 @@ abstract class Phase extends Model
     }
 
     abstract public function getNextMatchOf(Matchup $match): ?Matchup;
+
+    public function isReadyToStart(): bool
+    {
+        return true;
+    }
 }
