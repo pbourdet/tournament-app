@@ -211,6 +211,11 @@ class Tournament extends Model
 
     public function isStarted(): bool
     {
+        return in_array($this->status, TournamentStatus::STARTED_STATUSES, true);
+    }
+
+    public function isInProgress(): bool
+    {
         return TournamentStatus::IN_PROGRESS === $this->status;
     }
 
