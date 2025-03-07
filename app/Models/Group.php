@@ -50,7 +50,9 @@ class Group extends Model
     /** @param Collection<int, covariant Contestant>|array<int, covariant Contestant> $contestants */
     public function addContestants(array|Collection $contestants): void
     {
-        if ($this->isFull() || $this->contestants->count() + count($contestants) > $this->size) {
+        if (0 === count($contestants)) return;
+
+        if ($this->contestants->count() + count($contestants) > $this->size) {
             throw new \DomainException('Group is full');
         }
 

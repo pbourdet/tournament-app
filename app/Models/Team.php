@@ -37,7 +37,9 @@ class Team extends Contestant
     /** @param Collection<int, string|User>|array<int, string|User> $users */
     public function addMembers(array|Collection $users): void
     {
-        if ($this->isFull() || $this->members->count() + count($users) > $this->tournament->team_size) {
+        if (0 === count($users)) return;
+
+        if ($this->members->count() + count($users) > $this->tournament->team_size) {
             throw new \DomainException('Team is full');
         }
 

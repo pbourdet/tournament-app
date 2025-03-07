@@ -83,7 +83,9 @@ class Tournament extends Model
     /** @param Collection<int, string|User>|array<int, string|User> $users */
     public function addPlayers(array|Collection $users): void
     {
-        if ($this->isFull() || $this->players->count() + count($users) > $this->number_of_players) {
+        if (0 === count($users)) return;
+
+        if ($this->players->count() + count($users) > $this->number_of_players) {
             throw new \DomainException('Tournament is full');
         }
 
