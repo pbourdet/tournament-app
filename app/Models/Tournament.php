@@ -191,6 +191,30 @@ class Tournament extends Model
         return intdiv($this->number_of_players, (int) $this->team_size);
     }
 
+    public function updateStatus(): void
+    {
+        if ($this->isStarted()) return;
+
+        if (!$this->isFull()) {
+            $this->update(['status' => TournamentStatus::WAITING_FOR_PLAYERS]);
+
+            return;
+        }
+
+        $this->load('groupPhase.groups.contestants', 'teams.members', 'teams.tournament');
+
+        if ($this->canGenerateTeams()
+            || $this->getPhases()->isEmpty()
+            || !$this->getPhases()->every(fn (Phase $phase) => $phase->isReadyToStart())
+        ) {
+            $this->update(['status' => TournamentStatus::SETUP_IN_PROGRESS]);
+
+            return;
+        }
+
+        $this->update(['status' => TournamentStatus::READY_TO_START]);
+    }
+
     public function isNotStarted(): bool
     {
         return in_array($this->status, TournamentStatus::EDITABLE_STATUSES, true);

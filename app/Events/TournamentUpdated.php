@@ -18,7 +18,9 @@ class TournamentUpdated implements ShouldBroadcast
     use SerializesModels;
 
     public function __construct(
-        readonly private Tournament $tournament,
+        readonly public Tournament $tournament,
+        readonly public bool $shouldBroadcast = true,
+        readonly public bool $shouldUpdateStatus = true,
     ) {
     }
 
@@ -28,5 +30,17 @@ class TournamentUpdated implements ShouldBroadcast
         return [
             new PrivateChannel(sprintf('App.Models.Tournament.%s', $this->tournament->id)),
         ];
+    }
+
+    // Without this method, the event broadcast all public properties of the class
+    /** @return array<string, string> */
+    public function broadcastWith(): array
+    {
+        return [];
+    }
+
+    public function broadcastWhen(): bool
+    {
+        return $this->shouldBroadcast;
     }
 }
