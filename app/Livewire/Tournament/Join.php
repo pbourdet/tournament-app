@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace App\Livewire\Tournament;
 
-use App\Events\TournamentFull;
+use App\Events\PlayerJoined;
+use App\Events\TournamentUpdated;
 use App\Livewire\Component;
 use App\Models\Tournament;
 use App\Models\TournamentInvitation;
@@ -26,10 +27,8 @@ class Join extends Component
 
         $tournament->addPlayer($this->user());
 
-        if ($tournament->isFull()) {
-            event(new TournamentFull($tournament));
-        }
-
+        event(new PlayerJoined($tournament));
+        event(new TournamentUpdated($tournament));
         $this->toastSuccess(__('You joined tournament :name', ['name' => $tournament->name]));
         $this->redirectRoute('tournaments.show', ['tournament' => $tournament], navigate: true);
     }
