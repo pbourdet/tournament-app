@@ -47,8 +47,8 @@ class StartTournament implements ShouldQueue
             $generator->generate($phase);
 
             $this->tournament->start();
-            Notification::send($this->tournament->players, new TournamentStarted($this->tournament));
             event(new TournamentUpdated($this->tournament));
+            Notification::send($this->tournament->players, new TournamentStarted($this->tournament));
         } finally {
             Cache::lock($this->tournament->getLockKey(), 20)->forceRelease();
         }

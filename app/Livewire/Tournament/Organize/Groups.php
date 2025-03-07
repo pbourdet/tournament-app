@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Livewire\Tournament\Organize;
 
 use App\Events\PhaseCreated;
+use App\Events\TournamentUpdated;
 use App\Jobs\GenerateGroups;
 use App\Livewire\Component;
 use App\Livewire\Forms\Tournament\Phase\CreateGroupsForm;
@@ -62,9 +63,9 @@ class Groups extends Component
             'qualifying_per_group' => $this->form->contestantsQualifying,
         ]);
 
-        PhaseCreated::dispatch($this->tournament->refresh());
-        $this->toastSuccess(__('Phase created !'));
+        event(new PhaseCreated($this->tournament->refresh()));
         $this->tab = 'groups';
+        $this->toastSuccess(__('Phase created !'));
     }
 
     public function addContestant(Group $group, string $contestantId): void
@@ -73,6 +74,7 @@ class Groups extends Component
         $this->authorize('addContestant', [$group, $contestant, $this->tournament]);
 
         $group->addContestant($contestant);
+        event(new TournamentUpdated($this->tournament));
         $this->toastSuccess(__(':contestant added to group !', ['contestant' => ucfirst($this->tournament->getContestantsTranslation())]));
     }
 
@@ -82,6 +84,7 @@ class Groups extends Component
         $this->authorize('removeContestant', [$group, $contestant, $this->tournament]);
 
         $group->contestants()->where('contestant_id', $contestant->id)->delete();
+        event(new TournamentUpdated($this->tournament));
         $this->toastSuccess(__(':contestant removed from group !', ['contestant' => ucfirst($this->tournament->getContestantsTranslation())]));
     }
 
@@ -92,7 +95,7 @@ class Groups extends Component
 
         $this->authorize('generateGroups', [$groupPhase, $this->tournament]);
 
-        GenerateGroups::dispatch($groupPhase);
+        dispatch(new GenerateGroups($groupPhase));
         $this->toast(__('Groups generation in progress...'));
     }
 }

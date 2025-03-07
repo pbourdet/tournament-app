@@ -27,7 +27,7 @@ class Join extends Component
         $tournament->addPlayer($this->user());
 
         if ($tournament->isFull()) {
-            TournamentFull::dispatch($tournament);
+            event(new TournamentFull($tournament));
         }
 
         $this->toastSuccess(__('You joined tournament :name', ['name' => $tournament->name]));

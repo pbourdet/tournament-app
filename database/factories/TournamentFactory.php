@@ -77,7 +77,7 @@ class TournamentFactory extends Factory
     {
         return $this->full()->afterCreating(function (Tournament $tournament): void {
             EliminationPhase::factory()->forTournament($tournament)->create();
-            StartTournament::dispatchSync($tournament);
+            dispatch_sync(new StartTournament($tournament));
             $tournament->refresh();
         });
     }
@@ -85,7 +85,7 @@ class TournamentFactory extends Factory
     public function withFullTeams(): static
     {
         return $this->teamBased()->full()->afterCreating(function (Tournament $tournament): void {
-            GenerateTeams::dispatchSync($tournament);
+            dispatch_sync(new GenerateTeams($tournament));
             $tournament->refresh();
         });
     }

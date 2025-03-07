@@ -33,15 +33,15 @@ class GroupPhaseFactory extends PhaseFactory
     public function withMatches(): static
     {
         return $this->afterCreating(function (GroupPhase $phase): void {
-            GenerateGroups::dispatchSync($phase);
-            StartTournament::dispatchSync($phase->tournament);
+            dispatch_sync(new GenerateGroups($phase));
+            dispatch_sync(new StartTournament($phase->tournament));
         });
     }
 
     public function withFullGroups(): static
     {
         return $this->afterCreating(function (GroupPhase $phase): void {
-            GenerateGroups::dispatchSync($phase);
+            dispatch_sync(new GenerateGroups($phase));
         });
     }
 }

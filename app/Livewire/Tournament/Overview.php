@@ -19,7 +19,7 @@ class Overview extends Component
         $this->checkLock();
         $this->authorize('start', $this->tournament);
 
-        StartTournament::dispatch($this->tournament);
+        dispatch(new StartTournament($this->tournament));
         $this->locked = true;
         $this->toast(__('The tournament will soon start ! Matches are being generated and players will be notified.'));
     }

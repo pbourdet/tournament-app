@@ -59,9 +59,9 @@ class MatchCard extends Component
             ]);
         }
 
-        ResultAdded::dispatch($this->match);
+        event(new ResultAdded($this->match));
+        event(new TournamentUpdated($tournament, shouldUpdateStatus: false));
         $this->toastSuccess(__('Result added !'));
         $this->modals()->close();
-        event(new TournamentUpdated($tournament));
     }
 }
