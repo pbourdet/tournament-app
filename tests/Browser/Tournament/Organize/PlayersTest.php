@@ -16,15 +16,16 @@ class PlayersTest extends DuskTestCase
     public function testRemovePlayerFromTournament(): void
     {
         $tournament = Tournament::factory()->full()->create(['number_of_players' => 4]);
+        $player = $tournament->players->first();
 
-        $this->browse(function (Browser $browser) use ($tournament) {
+        $this->browse(function (Browser $browser) use ($tournament, $player) {
             $browser
                 ->loginAs($tournament->organizer)
                 ->visit(route('tournaments.organize', ['tournament' => $tournament]))
                 ->click('@link-organize-players')
                 ->waitForRoute('tournaments.organize', ['tournament' => $tournament, 'page' => 'players'])
                 ->press('@remove-player-0')
-                ->waitForRoute('tournaments.organize', ['tournament' => $tournament, 'page' => 'players'])
+                ->waitForText(__('Player :name removed from tournament.', ['name' => $player->username]))
             ;
         });
 

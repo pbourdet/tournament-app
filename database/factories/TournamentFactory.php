@@ -115,6 +115,7 @@ class TournamentFactory extends Factory
             }
         })->afterCreating(function (Tournament $tournament): void {
             $tournament->createInvitation();
+            $tournament->updateStatus();
         })
         ;
     }
