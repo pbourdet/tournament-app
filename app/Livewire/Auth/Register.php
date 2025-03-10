@@ -32,6 +32,7 @@ class Register extends Component
             'email' => $this->form->email,
             'password' => Hash::make($this->form->password),
             'profile_picture' => $this->form->profilePicture?->store('profile_pictures', $disk),
+            'language' => app()->getLocale(),
         ]);
 
         event(new Registered($user));

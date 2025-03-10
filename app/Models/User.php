@@ -40,6 +40,7 @@ class User extends Contestant implements MustVerifyEmailContract, Authenticatabl
         'email',
         'password',
         'profile_picture',
+        'language',
     ];
 
     /** @var list<string> */
