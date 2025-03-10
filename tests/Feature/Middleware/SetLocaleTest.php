@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Middleware;
 
+use App\Models\User;
 use Illuminate\Support\Facades\App;
 use Tests\TestCase;
 
-class LocaleTest extends TestCase
+class SetLocaleTest extends TestCase
 {
     public function testLocaleIsSetBasedOnAcceptLanguageHeader(): void
     {
@@ -45,5 +46,17 @@ class LocaleTest extends TestCase
 
         $response->assertStatus(200);
         $this->assertSame(App::getLocale(), 'en');
+    }
+
+    public function testLocaleDefaultOnUserLanguageIfAuthenticated(): void
+    {
+        $user = User::factory()->create(['language' => 'fr']);
+
+        $response = $this->actingAs($user)
+            ->withHeader('Accept-Language', 'en-US,en;q=0.5')
+            ->get(route('dashboard'));
+
+        $response->assertStatus(200);
+        $this->assertSame(App::getLocale(), 'fr');
     }
 }
