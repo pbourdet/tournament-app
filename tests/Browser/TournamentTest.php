@@ -124,7 +124,7 @@ class TournamentTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($tournament) {
             $browser
                 ->loginAs($tournament->organizer)
-                ->visit(route('tournaments.show', ['tournament' => $tournament]))
+                ->visit(route('tournaments.organize', ['tournament' => $tournament]))
                 ->click('@start-tournament')
                 ->waitForText(__('The tournament will soon start ! Matches are being generated and players will be notified.'))
             ;

@@ -19,13 +19,5 @@
         {{ $tournament->invitation?->code }}
     </div>
 
-    @if($tournament->isNotStarted())
-        <div>
-            <flux:button dusk="start-tournament" variant="primary" :disabled="!$tournament->isReadyToStart() || $locked" wire:click="start">
-                {{ __('Start tournament') }}
-            </flux:button>
-        </div>
-    @endif
-
     <livewire:tournament.players-table :$organizerMode :$tournament :$locked/>
 </div>

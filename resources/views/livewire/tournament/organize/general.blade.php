@@ -25,7 +25,7 @@
                 ])
             @endif
         </ul>
-        <flux:button :disabled="!$tournament->isReadyToStart()" wire:click="start">
+        <flux:button dusk="start-tournament" :disabled="$this->user->cannot('start', $tournament)" wire:click="start">
             {{ __('Start tournament') }}
         </flux:button>
     </flux:card>
