@@ -31,7 +31,7 @@ class GroupsTest extends DuskTestCase
             ;
         });
 
-        $this->assertNotNull($tournament->groupPhase);
+        $this->assertNotNull($tournament->refresh()->groupPhase);
         $this->assertSame(2, $tournament->groupPhase->number_of_groups);
         $this->assertSame(2, $tournament->groupPhase->qualifying_per_group);
     }

@@ -39,7 +39,7 @@ abstract class PhaseFactory extends Factory
     public function configure(): static
     {
         return $this->afterCreating(function (Phase $phase): void {
-            PhaseCreated::dispatch($phase->tournament);
+            event(new PhaseCreated($phase->tournament));
         });
     }
 }

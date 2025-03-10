@@ -28,6 +28,6 @@ readonly class GroupPhaseResultAddedListener
             return;
         }
 
-        GenerateMatches::dispatch($tournament->eliminationPhase);
+        dispatch(new GenerateMatches($tournament->eliminationPhase));
     }
 }

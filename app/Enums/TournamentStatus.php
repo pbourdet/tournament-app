@@ -18,4 +18,10 @@ enum TournamentStatus: string
         self::WAITING_FOR_PLAYERS,
         self::SETUP_IN_PROGRESS,
     ];
+
+    /** @var array<int, TournamentStatus> */
+    public const array STARTED_STATUSES = [
+        self::IN_PROGRESS,
+        self::FINISHED,
+    ];
 }

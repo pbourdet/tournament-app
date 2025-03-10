@@ -1,5 +1,11 @@
 sail = ./vendor/bin/sail
 
+up:
+	$(sail) up -d
+
+seed:
+	$(sail) artisan migrate:fresh --seed
+
 .PHONY: tests
 tests:
 	$(sail) test --parallel
@@ -22,6 +28,15 @@ rector:
 dependencies:
 	$(sail) composer update
 	$(sail) npm update
+
+commit-dependencies:
+	make dependencies
+	git add composer.lock package-lock.json
+	@if git diff --name-only --cached | grep -qE '^(composer\.lock|package-lock\.json)$$'; then \
+		git commit composer.lock package-lock.json -m "Updated dependencies"; \
+	else \
+		echo "No changes in composer.lock or package-lock.json. Skipping commit."; \
+	fi
 
 checks:
 	make pint

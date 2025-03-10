@@ -12,7 +12,7 @@ trait WithTournamentLock
     #[Locked]
     public bool $locked = false;
 
-    public function boot(): void
+    public function bootWithTournamentLock(): void
     {
         $this->locked = $this->isLocked();
     }

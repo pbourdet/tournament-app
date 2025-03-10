@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Livewire\Tournament;
 
+use App\Events\PlayerLeft;
 use App\Events\TournamentUpdated;
 use App\Livewire\Component;
 use App\Models\Tournament;
@@ -34,11 +35,10 @@ class PlayersTable extends Component
             abort(409);
         }
 
-        $this->tournament->load('teams.members');
-        $this->tournament->teams->first(fn ($team) => $team->members->contains($player))?->delete();
+        event(new PlayerLeft($this->tournament, $player));
         $this->tournament->players()->detach($player);
+        event(new TournamentUpdated($this->tournament));
 
         $this->toastSuccess(__('Player :name removed from tournament.', ['name' => $player->username]));
-        event(new TournamentUpdated($this->tournament));
     }
 }

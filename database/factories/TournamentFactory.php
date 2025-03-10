@@ -35,10 +35,10 @@ class TournamentFactory extends Factory
         return $this->afterCreating(function (Tournament $tournament): void {
             while (!$tournament->isFull()) {
                 $tournament->addPlayer(User::factory()->create());
-                $tournament->refresh();
             }
 
-            $tournament->update(['status' => TournamentStatus::SETUP_IN_PROGRESS]);
+            $tournament->updateStatus();
+            $tournament->refresh();
         });
     }
 
@@ -55,6 +55,7 @@ class TournamentFactory extends Factory
     {
         return $this->afterCreating(function (Tournament $tournament): void {
             EliminationPhase::factory()->forTournament($tournament)->create();
+            $tournament->refresh()->updateStatus();
         });
     }
 
@@ -62,6 +63,7 @@ class TournamentFactory extends Factory
     {
         return $this->afterCreating(function (Tournament $tournament): void {
             GroupPhase::factory()->forTournament($tournament)->create();
+            $tournament->refresh()->updateStatus();
         });
     }
 
@@ -77,7 +79,7 @@ class TournamentFactory extends Factory
     {
         return $this->full()->afterCreating(function (Tournament $tournament): void {
             EliminationPhase::factory()->forTournament($tournament)->create();
-            StartTournament::dispatchSync($tournament);
+            dispatch_sync(new StartTournament($tournament));
             $tournament->refresh();
         });
     }
@@ -85,7 +87,7 @@ class TournamentFactory extends Factory
     public function withFullTeams(): static
     {
         return $this->teamBased()->full()->afterCreating(function (Tournament $tournament): void {
-            GenerateTeams::dispatchSync($tournament);
+            dispatch_sync(new GenerateTeams($tournament));
             $tournament->refresh();
         });
     }
@@ -104,6 +106,7 @@ class TournamentFactory extends Factory
             $tournament->team_size = $teamSize;
             $tournament->createTeams();
             $tournament->save();
+            $tournament->refresh();
         });
     }
 
@@ -115,6 +118,7 @@ class TournamentFactory extends Factory
             }
         })->afterCreating(function (Tournament $tournament): void {
             $tournament->createInvitation();
+            $tournament->updateStatus();
         })
         ;
     }

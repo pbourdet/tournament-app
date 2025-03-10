@@ -13,6 +13,6 @@ class MatchupPolicy
     {
         $tournament = $match->round->phase->tournament;
 
-        return $user->can('manage', $tournament) && $tournament->isStarted();
+        return $user->can('manage', $tournament) && $tournament->isInProgress();
     }
 }

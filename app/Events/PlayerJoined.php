@@ -8,7 +8,7 @@ use App\Models\Tournament;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-readonly class TournamentFull
+readonly class PlayerJoined
 {
     use Dispatchable;
     use SerializesModels;

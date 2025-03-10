@@ -41,7 +41,7 @@ class Teams extends Component
         $this->tournament->load(['teams.members', 'teams.tournament']);
         $this->authorize('generateTeams', $this->tournament);
 
-        GenerateTeams::dispatch($this->tournament);
+        dispatch(new GenerateTeams($this->tournament));
         $this->locked = true;
         $this->toast(__('Teams generation in progress...'));
     }

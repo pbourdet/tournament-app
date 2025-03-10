@@ -44,8 +44,8 @@ class Elimination extends Component
             'number_of_contestants' => $this->form->numberOfContestants,
         ]);
 
-        PhaseCreated::dispatch($this->tournament);
-        $this->toastSuccess(__('Elimination phase created successfully !'));
+        event(new PhaseCreated($this->tournament));
         event(new TournamentUpdated($this->tournament));
+        $this->toastSuccess(__('Elimination phase created successfully !'));
     }
 }
