@@ -7,7 +7,7 @@
             <ul class="text-sm space-y-2">
                 @include('livewire.tournament.partials.start-condition', [
                     'condition' => $tournament->isFull(),
-                    'text' => __('The tournament must have all its players')
+                    'text' => __('All the players must have joined the tournament')
                 ])
                 @include('livewire.tournament.partials.start-condition', [
                     'condition' => $tournament->getPhases()->isNotEmpty(),
@@ -22,7 +22,7 @@
                 @if($tournament->team_based)
                     @include('livewire.tournament.partials.start-condition', [
                         'condition' => $tournament->teams->every->isFull(),
-                        'text' => __('The teams must have all their members')
+                        'text' => __('Every player must be in a team')
                     ])
                 @endif
             </ul>

@@ -12,6 +12,7 @@ use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Contracts\Auth\MustVerifyEmail as MustVerifyEmailContract;
+use Illuminate\Contracts\Translation\HasLocalePreference;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -22,7 +23,7 @@ use Illuminate\Notifications\Notifiable;
 /**
  * @mixin IdeHelperUser
  */
-class User extends Contestant implements MustVerifyEmailContract, AuthenticatableContract, AuthorizableContract, CanResetPasswordContract
+class User extends Contestant implements MustVerifyEmailContract, AuthenticatableContract, AuthorizableContract, CanResetPasswordContract, HasLocalePreference
 {
     use Authenticatable;
     use Authorizable;
@@ -40,6 +41,7 @@ class User extends Contestant implements MustVerifyEmailContract, Authenticatabl
         'email',
         'password',
         'profile_picture',
+        'language',
     ];
 
     /** @var list<string> */
@@ -74,6 +76,11 @@ class User extends Contestant implements MustVerifyEmailContract, Authenticatabl
     public function getProfilePicture(): string
     {
         return $this->profile_picture ?? 'user-picture-placeholder.jpeg';
+    }
+
+    public function preferredLocale(): string
+    {
+        return $this->language;
     }
 
     /** @return array<string, string> */

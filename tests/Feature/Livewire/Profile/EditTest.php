@@ -120,4 +120,31 @@ class EditTest extends TestCase
 
         $this->assertAuthenticatedAs($user);
     }
+
+    public function testUserCanUpdateTheirLanguage(): void
+    {
+        $user = User::factory()->create();
+
+        Livewire::actingAs($user)
+            ->test(Edit::class)
+            ->set('language', 'fr')
+            ->assertSuccessful()
+            ->assertDispatched('toast-show')
+        ;
+
+        $this->assertSame('fr', $user->refresh()->language);
+    }
+
+    public function testUserCannotUpdateTheirLanguageWithUnsupportedLocale(): void
+    {
+        $user = User::factory()->create();
+
+        Livewire::actingAs($user)
+            ->test(Edit::class)
+            ->set('language', 'es')
+            ->assertHasErrors(['language'])
+        ;
+
+        $this->assertSame('en', $user->refresh()->language);
+    }
 }
