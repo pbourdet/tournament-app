@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Livewire\Profile;
 
+use App\Enums\SupportedLocale;
 use App\Livewire\Component;
 use App\Livewire\Forms\Profile\PasswordForm;
 use App\Livewire\Forms\Profile\UserDeletionForm;
@@ -11,7 +12,9 @@ use App\Livewire\Forms\Profile\UserInformationForm;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules\Enum;
 use Illuminate\Validation\ValidationException;
+use Livewire\Attributes\Validate;
 
 class Edit extends Component
 {
@@ -23,10 +26,25 @@ class Edit extends Component
 
     public UserDeletionForm $deletionForm;
 
+    #[Validate(new Enum(SupportedLocale::class))]
+    public string $language;
+
     public function mount(): void
     {
         $this->user = $this->user();
         $this->informationForm->hydrate($this->user);
+        $this->language = $this->user->language;
+    }
+
+    public function updatedLanguage(): void
+    {
+        $this->validateOnly('language');
+
+        $this->user->update(['language' => $this->language]);
+
+        app()->setLocale($this->language);
+
+        $this->toastSuccess(__('Your language preference has been updated.'));
     }
 
     public function updateInformation(): void

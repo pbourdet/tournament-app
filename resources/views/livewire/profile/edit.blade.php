@@ -1,6 +1,6 @@
 <x-slot name="title">{{ __('Profile') }} - {{ config('app.name', 'Laravel') }}</x-slot>
 
-<flux:main class="max-w-xl space-y-6">
+<flux:main class="max-w-3xl space-y-6">
     <flux:card class="space-y-6 shadow-md">
         <div>
             <flux:heading>{{ __('Profile Information') }}</flux:heading>
@@ -22,6 +22,29 @@
                 <p class="text-sm text-gray-500" wire:dirty wire:target="informationForm">{{ __('Unsaved changes...') }}</p>
             </div>
         </form>
+    </flux:card>
+
+    <flux:card class="space-y-6 shadow-md">
+        <div>
+            <flux:heading>{{ __('Language') }}</flux:heading>
+            <flux:subheading>{{ __('Set your preferred language') }}</flux:subheading>
+        </div>
+
+        <div>
+            <div class="flex items-center space-x-2">
+                <div class="w-1/3">
+                    <flux:select wire:model.live="language" variant="listbox">
+                        @foreach(\App\Enums\SupportedLocale::cases() as $locale)
+                            <flux:select.option value="{{ $locale->value }}">
+                                {{ $locale->getLabel() }}
+                            </flux:select.option>
+                        @endforeach
+                    </flux:select>
+                </div>
+                <flux:icon.loading wire:loading wire:target="language"/>
+            </div>
+            <flux:error name="language" />
+        </div>
     </flux:card>
 
     <flux:card class="space-y-6 shadow-md">
