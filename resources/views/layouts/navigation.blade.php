@@ -15,7 +15,7 @@
         <flux:button variant="ghost" icon-variant="outline" icon="bell">
             {{ __('Notifications') }}
             @if(Auth::user()->unreadNotifications->isNotEmpty())
-                <flux:badge size="sm" inset variant="pill" color="red">{{ Auth::user()->unreadNotifications->count() }}</flux:badge>
+                <flux:badge size="sm" variant="pill" color="red">{{ Auth::user()->unreadNotifications->count() }}</flux:badge>
             @endif
         </flux:button>
     </flux:modal.trigger>
@@ -77,33 +77,5 @@
     </flux:navbar>
 </flux:header>
 
-<flux:modal variant="flyout" name="notifications" class="space-y-6">
-    <div>
-        <flux:heading size="lg">{{ __('Notifications') }}</flux:heading>
-    </div>
-
-    <div class="flex items-center">
-        <flux:button variant="primary" icon="check" dusk="mark-all-as-read">
-            {{ __('Mark all as read') }}
-        </flux:button>
-        <flux:button icon="trash" dusk="delete-all">
-            {{ __('Delete all') }}
-        </flux:button>
-    </div>
-
-    <div class="space-y-3">
-        @foreach(Auth::user()->notifications as $notification)
-            <div class="flex items-center space-x-3 rounded-lg">
-                <div class="max-lg:w-3/4">
-                    <p class="text-sm">{{ $notification->data['message'] }}</p>
-                    <p class="text-xs text-zinc-400">{{ $notification->created_at->diffForHumans() }}</p>
-                </div>
-                <flux:separator vertical />
-                <flux:button size="sm" icon="check" variant="primary"/>
-                <flux:button size="sm" icon="trash" variant="danger"/>
-            </div>
-        @endforeach
-    </div>
-</flux:modal>
-
+<livewire:notifications :key="Auth::user()->notifications->count()"/>
 <livewire:tournament.join/>
