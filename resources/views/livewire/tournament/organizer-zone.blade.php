@@ -48,15 +48,12 @@
         <livewire:is :component="sprintf('tournament.organize.%s', $page)" :$organizerMode :$tournament />
     </flux:main>
 
-    @script
-    <script>
-        window.Echo.private('App.Models.Tournament.{{ $tournament->id }}')
-            .listen('TournamentUpdated', function() {
-                let parentComponent = Livewire.getByName('tournament.organizer-zone')[0];
-                if (parentComponent === undefined) return;
-                let childComponent = Livewire.getByName('tournament.organize.'+ parentComponent.page)[0];
-                childComponent.$refresh();
-            });
+    <script data-navigate-once>
+        document.addEventListener('livewire:navigated', () => {
+            window.Echo.private('App.Models.Tournament.{{ $tournament->id }}')
+                .listen('TournamentUpdated', function() {
+                    Livewire.navigate(window.location.pathname + window.location.search + window.location.hash)
+                });
+        }, { once: true });
     </script>
-    @endscript
 </div>
