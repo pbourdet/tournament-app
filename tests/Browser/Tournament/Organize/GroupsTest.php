@@ -47,7 +47,7 @@ class GroupsTest extends DuskTestCase
                 ->click('@tab-groups')
                 ->click('@select-contestants')
                 ->click(sprintf('@select-contestant-%d', 0))
-                ->waitForText(__(':contestant added to group !', ['contestant' => ucfirst($tournament->getContestantsTranslation())]))
+                ->waitForText(__(':contestant added to group !', ['contestant' => mb_ucfirst($tournament->getContestantsTranslation())]))
             ;
         });
     }
@@ -64,7 +64,7 @@ class GroupsTest extends DuskTestCase
                 ->visit(route('tournaments.organize', ['tournament' => $tournament, 'page' => 'groups']))
                 ->click('@tab-groups')
                 ->click(sprintf('@remove-contestant-%d', 0))
-                ->waitForText(__(':contestant removed from group !', ['contestant' => ucfirst($tournament->getContestantsTranslation())]))
+                ->waitForText(__(':contestant removed from group !', ['contestant' => mb_ucfirst($tournament->getContestantsTranslation())]))
             ;
         });
     }
