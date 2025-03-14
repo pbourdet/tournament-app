@@ -21,7 +21,11 @@ class TournamentUpdated implements ShouldBroadcast
         readonly public Tournament $tournament,
         readonly public bool $shouldBroadcast = true,
         readonly public bool $shouldUpdateStatus = true,
+        bool $broadcastToCurrentUser = true,
     ) {
+        if (!$broadcastToCurrentUser) {
+            $this->dontBroadcastToCurrentUser();
+        }
     }
 
     /** @return array<int, PrivateChannel> */
