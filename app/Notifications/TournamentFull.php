@@ -22,7 +22,7 @@ class TournamentFull extends Notification
     /** @return array<int, string> */
     public function via(object $notifiable): array
     {
-        return ['broadcast'];
+        return ['broadcast', 'database'];
     }
 
     public function toBroadcast(object $notifiable): BroadcastMessage
@@ -33,5 +33,14 @@ class TournamentFull extends Notification
                 'tournament' => $this->tournament->name,
             ]),
         ]);
+    }
+
+    /** @return array<string, mixed> */
+    public function toDatabase(object $notifiable): array
+    {
+        return [
+            'translationKey' => __('Your tournament :tournament is full ! You can start it once the tournaments phases are set up.', locale: 'en'),
+            'translationParams' => ['tournament' => $this->tournament->name],
+        ];
     }
 }

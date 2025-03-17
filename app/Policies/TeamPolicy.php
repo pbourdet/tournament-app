@@ -30,12 +30,13 @@ class TeamPolicy
         $tournament = $team->tournament;
 
         return null !== $tournament->playersWithoutTeams->firstWhere('id', $playerId)
-            && !$team->isFull();
+                && $tournament->isNotStarted()
+                && !$team->isFull();
     }
 
     public function removeMember(User $user, Team $team, User $player): bool
     {
-        return $team->members->contains($player);
+        return $team->members->contains($player) && $team->tournament->isNotStarted();
     }
 
     public function updateName(User $user, Team $team): bool

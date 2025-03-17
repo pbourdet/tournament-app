@@ -32,7 +32,7 @@
 
         <div>
             <div class="flex items-center space-x-2">
-                <div class="w-1/3">
+                <div class="md:w-1/3">
                     <flux:select wire:model.live="language" variant="listbox">
                         @foreach(\App\Enums\SupportedLocale::cases() as $locale)
                             <flux:select.option value="{{ $locale->value }}">

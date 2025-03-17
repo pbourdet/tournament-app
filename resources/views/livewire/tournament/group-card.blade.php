@@ -14,7 +14,7 @@
             <div class="mx-2">
                 <flux:table class="w-full">
                     <flux:table.columns>
-                        <flux:table.column class="w-1/2">{{ ucfirst($tournament->getContestantsTranslation()) }}</flux:table.column>
+                        <flux:table.column class="w-1/2">{{ mb_ucfirst($tournament->getContestantsTranslation()) }}</flux:table.column>
                         <flux:table.column>{{ __('Win') }}</flux:table.column>
                         <flux:table.column>{{ __('Loss') }}</flux:table.column>
                         <flux:table.column>{{ __('Tie') }}</flux:table.column>

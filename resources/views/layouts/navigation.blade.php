@@ -10,6 +10,16 @@
         <flux:radio value="light" icon="sun"/>
         <flux:radio value="dark" icon="moon"/>
     </flux:radio.group>
+
+    <flux:modal.trigger name="notifications" class="max-lg:hidden">
+        <flux:button variant="ghost" icon-variant="outline" icon="bell">
+            {{ __('Notifications') }}
+            @if(Auth::user()->unreadNotifications->isNotEmpty())
+                <flux:badge size="sm" variant="pill" color="red">{{ Auth::user()->unreadNotifications->count() }}</flux:badge>
+            @endif
+        </flux:button>
+    </flux:modal.trigger>
+
     <flux:modal.trigger name="new-tournament">
         <flux:button variant="primary" class="w-full" icon="plus-circle" dusk="new-tournament">
             {{ __('New tournament') }}
@@ -38,12 +48,20 @@
         <flux:sidebar.toggle class="lg:hidden" icon="bars-2" inset="left"/>
 
         <flux:modal.trigger name="new-tournament">
-            <flux:button class="ml-4" variant="primary" icon="plus-circle">
+            <flux:button variant="primary" icon="plus-circle">
                 {{ __('New tournament') }}
             </flux:button>
         </flux:modal.trigger>
 
         <flux:spacer/>
+        <div class="relative">
+            <flux:modal.trigger name="notifications">
+                <flux:button variant="ghost" icon-variant="outline" icon="bell"/>
+            </flux:modal.trigger>
+            @if(Auth::user()->unreadNotifications->isNotEmpty())
+                <flux:badge size="sm" class="absolute -top-1 -right-1 transform scale-75" variant="pill" color="red">{{ Auth::user()->unreadNotifications->count() }}</flux:badge>
+            @endif
+        </div>
 
         <flux:dropdown position="top" align="start">
             <flux:profile avatar="{{ Storage::url(Auth::user()->getProfilePicture()) }}"/>
@@ -59,4 +77,5 @@
     </flux:navbar>
 </flux:header>
 
+<livewire:notifications :key="Auth::user()->notifications->count()"/>
 <livewire:tournament.join/>

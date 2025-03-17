@@ -5,11 +5,14 @@ declare(strict_types=1);
 namespace Tests\Feature\Middleware;
 
 use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\App;
 use Tests\TestCase;
 
 class SetLocaleTest extends TestCase
 {
+    use RefreshDatabase;
+
     public function testLocaleIsSetBasedOnAcceptLanguageHeader(): void
     {
         $response = $this

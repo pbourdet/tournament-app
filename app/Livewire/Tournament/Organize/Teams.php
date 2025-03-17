@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Livewire\Tournament\Organize;
 
+use App\Events\TournamentUpdated;
 use App\Jobs\GenerateTeams;
 use App\Livewire\Component;
 use App\Livewire\Tournament\WithTournamentLock;
@@ -52,6 +53,7 @@ class Teams extends Component
         $this->authorize('addMember', [$team, $playerId]);
 
         $team->addMember($playerId);
+        event(new TournamentUpdated($this->tournament, broadcastToCurrentUser: false));
         $this->toastSuccess(__('Player added to team !'));
     }
 
@@ -61,6 +63,7 @@ class Teams extends Component
         $this->authorize('removeMember', [$team, $user]);
 
         $team->members()->detach($user);
+        event(new TournamentUpdated($this->tournament, broadcastToCurrentUser: false));
         $this->toastSuccess(__('Player removed from team !'));
     }
 }

@@ -33,7 +33,7 @@ class TournamentPolicy
 
     public function generateTeams(User $user, Tournament $tournament): bool
     {
-        return $user->can('manage', $tournament) && $tournament->canGenerateTeams();
+        return $user->can('manage', $tournament) && $tournament->canGenerateTeams() && $tournament->isNotStarted();
     }
 
     public function removePlayer(User $user, Tournament $tournament, User $player): bool

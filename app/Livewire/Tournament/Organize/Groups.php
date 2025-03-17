@@ -74,8 +74,8 @@ class Groups extends Component
         $this->authorize('addContestant', [$group, $contestant, $this->tournament]);
 
         $group->addContestant($contestant);
-        event(new TournamentUpdated($this->tournament));
-        $this->toastSuccess(__(':contestant added to group !', ['contestant' => ucfirst($this->tournament->getContestantsTranslation())]));
+        event(new TournamentUpdated($this->tournament, broadcastToCurrentUser: false));
+        $this->toastSuccess(__(':contestant added to group !', ['contestant' => mb_ucfirst($this->tournament->getContestantsTranslation())]));
     }
 
     public function removeContestant(Group $group, string $contestantId): void
@@ -84,8 +84,8 @@ class Groups extends Component
         $this->authorize('removeContestant', [$group, $contestant, $this->tournament]);
 
         $group->contestants()->where('contestant_id', $contestant->id)->delete();
-        event(new TournamentUpdated($this->tournament));
-        $this->toastSuccess(__(':contestant removed from group !', ['contestant' => ucfirst($this->tournament->getContestantsTranslation())]));
+        event(new TournamentUpdated($this->tournament, broadcastToCurrentUser: false));
+        $this->toastSuccess(__(':contestant removed from group !', ['contestant' => mb_ucfirst($this->tournament->getContestantsTranslation())]));
     }
 
     public function generateGroups(): void
