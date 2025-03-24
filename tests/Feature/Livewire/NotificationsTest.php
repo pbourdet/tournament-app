@@ -8,11 +8,14 @@ use App\Livewire\Notifications;
 use App\Models\Tournament;
 use App\Models\User;
 use App\Notifications\TournamentStarted;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
 use Tests\TestCase;
 
 class NotificationsTest extends TestCase
 {
+    use RefreshDatabase;
+
     public function testRendersSuccessfully(): void
     {
         Livewire::actingAs(User::factory()->create())

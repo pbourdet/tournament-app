@@ -400,4 +400,55 @@ class GroupsTest extends TestCase
 
         Queue::assertNotPushed(GenerateGroups::class);
     }
+
+    public function testOrganizerCanDeleteGroupPhase(): void
+    {
+        $tournament = Tournament::factory()->withGroupPhase()->create();
+
+        Livewire::actingAs($tournament->organizer)
+            ->test(Groups::class, ['tournament' => $tournament])
+            ->call('deletePhase', $tournament->groupPhase->id)
+            ->assertSuccessful();
+
+        $this->assertDatabaseCount('group_phases', 0);
+    }
+
+    public function testNonOrganizerCantDeleteGroupPhase(): void
+    {
+        $tournament = Tournament::factory()->full()->withGroupPhase()->create();
+
+        Livewire::actingAs($tournament->players->first())
+            ->test(Groups::class, ['tournament' => $tournament])
+            ->call('deletePhase', $tournament->groupPhase->id)
+            ->assertForbidden();
+
+        $this->assertDatabaseCount('group_phases', 1);
+    }
+
+    public function testOrganizerCantDeletePhaseFromOtherTournament(): void
+    {
+        $tournament = Tournament::factory()->withGroupPhase()->create();
+        $otherTournament = Tournament::factory()->withGroupPhase()->create();
+
+        $this->expectException(ItemNotFoundException::class);
+
+        Livewire::actingAs($tournament->organizer)
+            ->test(Groups::class, ['tournament' => $tournament])
+            ->call('deletePhase', $otherTournament->groupPhase->id);
+
+        $this->assertDatabaseCount('group_phases', 1);
+    }
+
+    public function testOrganizerCannotDeletePhaseIfTournamentStarted(): void
+    {
+        $tournament = Tournament::factory()->withGroupPhase()->create();
+        $tournament->start();
+
+        Livewire::actingAs($tournament->organizer)
+            ->test(Groups::class, ['tournament' => $tournament])
+            ->call('deletePhase', $tournament->groupPhase->id)
+            ->assertForbidden();
+
+        $this->assertDatabaseCount('group_phases', 1);
+    }
 }

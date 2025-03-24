@@ -33,7 +33,7 @@ class GroupPhaseCreatedListener
         $extra = $numberOfContestants % $numberOfGroups;
 
         return array_map(
-            fn ($i) => $i < $extra ? $baseSize + 1 : $baseSize,
+            fn (int $i) => $i < $extra ? $baseSize + 1 : $baseSize,
             range(0, $numberOfGroups - 1)
         );
     }

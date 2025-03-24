@@ -7,7 +7,7 @@
 
         <flux:tab.panel name="settings">
             @if(null === $eliminationPhase)
-                <form class="space-y-6" wire:submit="create">
+                <div class="space-y-6">
                     <flux:field>
                         <flux:label>{{ __('How many :contestants will compete in this phase ?', ['contestants' => $tournament->getContestantsTranslation(true)]) }}</flux:label>
                         <flux:select class="w-20!" dusk="number-of-contestants" wire:model="form.numberOfContestants">
@@ -19,13 +19,16 @@
                         </flux:select>
                     </flux:field>
 
-                    <flux:button :disabled="$this->user->cannot('create', [\App\Models\EliminationPhase::class, $tournament])" variant="primary" dusk="create-elimination" type="submit">
+                    <flux:button wire:click="create" :disabled="$this->user->cannot('create', [\App\Models\EliminationPhase::class, $tournament])" variant="primary" dusk="create-elimination">
                         {{ __('Confirm') }}
                     </flux:button>
-                </form>
+                </div>
             @else
                 <!-- TODO: Add the ability to edit the elimination phase settings -->
                 <flux:icon.check-circle/>
+                <flux:button variant="danger" dusk="delete-elimination-phase" wire:click="deletePhase('{{ $eliminationPhase->id }}')">
+                    {{ __('Remove phase') }}
+                </flux:button>
             @endif
         </flux:tab.panel>
         <flux:tab.panel name="matches">

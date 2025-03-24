@@ -85,4 +85,21 @@ class GroupsTest extends DuskTestCase
 
         $this->assertDatabaseCount('group_contestant', 8);
     }
+
+    public function testOrganizerCanDeleteAGroupPhase(): void
+    {
+        $tournament = Tournament::factory()->withGroupPhase()->create();
+
+        $this->browse(function (Browser $browser) use ($tournament) {
+            $browser
+                ->loginAs($tournament->organizer)
+                ->visit(route('tournaments.organize', ['tournament' => $tournament, 'page' => 'groups']))
+                ->click('@delete-group-phase')
+                ->waitForText(__('Phase deleted !'))
+            ;
+        });
+
+        $this->assertDatabaseCount('group_phases', 0);
+        $this->assertNull($tournament->refresh()->groupPhase);
+    }
 }

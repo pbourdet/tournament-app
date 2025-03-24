@@ -31,4 +31,21 @@ class EliminationTest extends DuskTestCase
 
         $this->assertDatabaseCount('elimination_phases', 1);
     }
+
+    public function testDeleteAnEliminationPhase(): void
+    {
+        $tournament = Tournament::factory()->teamBased()->withEliminationPhase()->create();
+
+        $this->browse(function (Browser $browser) use ($tournament) {
+            $browser
+                ->loginAs($tournament->organizer)
+                ->visit(route('tournaments.organize', ['tournament' => $tournament, 'page' => 'elimination']))
+                ->click('@delete-elimination-phase')
+                ->waitForText(__('Phase deleted !'))
+            ;
+        });
+
+        $this->assertDatabaseCount('elimination_phases', 0);
+        $this->assertNull($tournament->refresh()->eliminationPhase);
+    }
 }
