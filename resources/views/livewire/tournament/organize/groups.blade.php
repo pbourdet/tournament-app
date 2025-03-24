@@ -59,6 +59,11 @@
                                  variant="primary" dusk="create-group-phase" wire:click="create">
                         {{ __('Save') }}
                     </flux:button>
+                    @if(null !== $tournament->groupPhase)
+                        <flux:button variant="danger" dusk="delete-group-phase" wire:click="deletePhase('{{ $tournament->groupPhase->id }}')">
+                            {{ __('Remove phase') }}
+                        </flux:button>
+                    @endif
                 </flux:card>
 
                 <script>

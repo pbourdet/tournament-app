@@ -47,4 +47,9 @@ class TournamentPolicy
     {
         return $user->can('manage', $tournament) && $tournament->isReadyToStart();
     }
+
+    public function deletePhase(User $user, Tournament $tournament): bool
+    {
+        return $user->can('manage', $tournament) && $tournament->isNotStarted();
+    }
 }

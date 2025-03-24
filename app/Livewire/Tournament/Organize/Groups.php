@@ -9,6 +9,7 @@ use App\Events\TournamentUpdated;
 use App\Jobs\GenerateGroups;
 use App\Livewire\Component;
 use App\Livewire\Forms\Tournament\Phase\CreateGroupsForm;
+use App\Livewire\Tournament\WithDeletePhaseAction;
 use App\Models\Contestant;
 use App\Models\Group;
 use App\Models\GroupPhase;
@@ -20,6 +21,8 @@ use Livewire\Attributes\Url;
 
 class Groups extends Component
 {
+    use WithDeletePhaseAction;
+
     public Tournament $tournament;
 
     #[Url]

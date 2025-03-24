@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 /**
  * @property Tournament $tournament
  * @property string $tournament_id
+ * @property string $id
  */
 abstract class Phase extends Model
 {

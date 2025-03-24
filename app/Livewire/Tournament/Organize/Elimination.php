@@ -8,6 +8,7 @@ use App\Events\PhaseCreated;
 use App\Events\TournamentUpdated;
 use App\Livewire\Component;
 use App\Livewire\Forms\Tournament\Phase\CreateEliminationForm;
+use App\Livewire\Tournament\WithDeletePhaseAction;
 use App\Models\EliminationPhase;
 use App\Models\Tournament;
 use Illuminate\View\View;
@@ -15,6 +16,8 @@ use Livewire\Attributes\Url;
 
 class Elimination extends Component
 {
+    use WithDeletePhaseAction;
+
     public Tournament $tournament;
 
     #[Url]
@@ -45,7 +48,7 @@ class Elimination extends Component
         ]);
 
         event(new PhaseCreated($this->tournament));
-        event(new TournamentUpdated($this->tournament));
+        event(new TournamentUpdated($this->tournament, broadcastToCurrentUser: false));
         $this->toastSuccess(__('Elimination phase created successfully !'));
     }
 }

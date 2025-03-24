@@ -9,6 +9,7 @@ use App\Livewire\Tournament\Organize\Elimination;
 use App\Models\Tournament;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\ItemNotFoundException;
 use Livewire\Livewire;
 use Tests\TestCase;
 
@@ -122,5 +123,56 @@ class EliminationTest extends TestCase
             ->assertForbidden();
 
         $this->assertDatabaseCount('elimination_phases', 0);
+    }
+
+    public function testUserCanDeleteAnEliminationPhase(): void
+    {
+        $tournament = Tournament::factory()->withEliminationPhase()->create();
+
+        Livewire::actingAs($tournament->organizer)
+            ->test(Elimination::class, ['tournament' => $tournament])
+            ->call('deletePhase', $tournament->eliminationPhase->id)
+            ->assertSuccessful();
+
+        $this->assertDatabaseCount('elimination_phases', 0);
+    }
+
+    public function testNonOrganizerCantDeleteAnEliminationPhase(): void
+    {
+        $tournament = Tournament::factory()->full()->withEliminationPhase()->create();
+
+        Livewire::actingAs($tournament->players->first())
+            ->test(Elimination::class, ['tournament' => $tournament])
+            ->call('deletePhase', $tournament->eliminationPhase->id)
+            ->assertForbidden();
+
+        $this->assertDatabaseCount('elimination_phases', 1);
+    }
+
+    public function testOrganizerCannotDeleteEliminationPhaseFromOtherTournament(): void
+    {
+        $tournament = Tournament::factory()->withEliminationPhase()->create();
+        $otherTournament = Tournament::factory()->withEliminationPhase()->create();
+
+        $this->expectException(ItemNotFoundException::class);
+        Livewire::actingAs($tournament->organizer)
+            ->test(Elimination::class, ['tournament' => $tournament])
+            ->call('deletePhase', $otherTournament->eliminationPhase->id)
+            ->assertForbidden();
+
+        $this->assertDatabaseCount('elimination_phases', 1);
+    }
+
+    public function testUserCantDeleteAnEliminationPhaseIfTournamentStarted(): void
+    {
+        $tournament = Tournament::factory()->withEliminationPhase()->create();
+        $tournament->start();
+
+        Livewire::actingAs($tournament->organizer)
+            ->test(Elimination::class, ['tournament' => $tournament])
+            ->call('deletePhase', $tournament->eliminationPhase->id)
+            ->assertForbidden();
+
+        $this->assertDatabaseCount('elimination_phases', 1);
     }
 }
