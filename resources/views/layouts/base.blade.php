@@ -21,6 +21,10 @@
 
         <style>
             [x-cloak] {display: none;}
+            [data-flux-button] {cursor: pointer;}
+            [data-flux-button]:disabled {opacity: 50%; cursor: not-allowed; pointer-events: all;}
+            [data-flux-radio-segmented][aria-checked="false"] {cursor: pointer;}
+            [data-flux-radio-segmented][aria-checked="true"] {cursor: not-allowed;}
         </style>
     </head>
     <body class="min-h-screen bg-white dark:bg-zinc-800">
