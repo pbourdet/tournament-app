@@ -2,11 +2,11 @@
     <div class="px-4 py-3 border-b border-zinc-200 dark:border-zinc-900 bg-zinc-50 dark:bg-zinc-700 flex items-center justify-between">
         <flux:heading size="lg" class="bg-zinc-50 dark:bg-zinc-700">
             <span>{{ $group->name  }}</span>
-            <span class="ml-2 text-xs">({{ $group->contestants->count() }}/{{ $group->size }})</span>
+            <span class="ml-2 text-xs">({{ $this->sortedContestants->count() }}/{{ $group->size }})</span>
         </flux:heading>
     </div>
     <div class="dark:bg-zinc-900">
-        @if($group->contestants->isEmpty())
+        @if($this->sortedContestants->isEmpty())
             <flux:subheading class="p-4 text-center">
                 {{ __('No :contestants in this group.', ['contestants' => $tournament->getContestantsTranslation(true)]) }}
             </flux:subheading>
@@ -24,19 +24,19 @@
                     </flux:table.columns>
 
                     <flux:table.rows>
-                        @foreach($group->getSortedContestants() as $contestant)
+                        @foreach($this->sortedContestants as $contestant)
                             <flux:table.row>
                                 <flux:table.cell class="truncate">
                                     {{ $contestant->getName() }}
                                 </flux:table.cell>
                                 <flux:table.cell>
-                                    {{ $contestant->getMatchesForGroup($group, \App\Enums\ResultOutcome::WIN)->count() }}
+                                    {{ $this->matchesByContestants[$contestant->id]['win'] }}
                                 </flux:table.cell>
                                 <flux:table.cell>
-                                    {{ $contestant->getMatchesForGroup($group, \App\Enums\ResultOutcome::LOSS)->count() }}
+                                    {{ $this->matchesByContestants[$contestant->id]['tie'] }}
                                 </flux:table.cell>
                                 <flux:table.cell>
-                                    {{ $contestant->getMatchesForGroup($group, \App\Enums\ResultOutcome::TIE)->count() }}
+                                    {{ $this->matchesByContestants[$contestant->id]['loss'] }}
                                 </flux:table.cell>
                                 @if($organizerMode)
                                     <flux:table.cell class="pt-[18px]" x-data="{loading: false}">
@@ -53,7 +53,7 @@
                 </flux:table>
             </div>
         @endif
-        @if($organizerMode && $group->contestants->count() < $group->size)
+        @if($organizerMode && $this->sortedContestants->count() < $group->size)
             <div class="p-2" x-data="{ loading: false }">
                 <flux:icon.loading x-cloak class="m-auto" x-show="loading"/>
                 <flux:select variant="listbox" searchable size="sm"

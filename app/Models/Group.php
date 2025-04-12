@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Enums\ResultOutcome;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -35,16 +34,20 @@ class Group extends Model
     /** @return Collection<int, Contestant> */
     public function getContestants(): Collection
     {
-        return $this->contestants->map(fn (GroupContestant $pivot) => $pivot->contestant);
+        return $this->contestants->pluck('contestant'); // @phpstan-ignore-line
     }
 
     /** @return Collection<int, Contestant> */
     public function getSortedContestants(): Collection
     {
-        return $this->getContestants()->sortByDesc(fn (Contestant $contestant) => [
-            $contestant->getMatchesForGroup($this, ResultOutcome::WIN),
-            $contestant->getMatchesForGroup($this, ResultOutcome::TIE),
-        ]);
+        return $this->getContestants()->sortByDesc(function (Contestant $contestant) {
+            $matches = $contestant->getMatchesForGroup($this);
+
+            return [
+                $matches->filter(fn (Matchup $match) => $contestant->won($match))->count(),
+                $matches->filter(fn (Matchup $match) => $contestant->tied($match))->count(),
+            ];
+        });
     }
 
     /** @param Collection<int, covariant Contestant>|array<int, covariant Contestant> $contestants */
@@ -80,11 +83,10 @@ class Group extends Model
 
         if (null === $round) return Collection::empty();
 
-        return $round->matches->filter(function (Matchup $match) {
-            $matchContestants = $match->getContestants();
-            $groupContestants = $this->getContestants();
+        $groupContestants = $this->getContestants();
 
-            return $matchContestants->every(fn (Contestant $contestant) => $groupContestants->contains($contestant));
+        return $round->matches->filter(function (Matchup $match) use ($groupContestants) {
+            return $match->getContestants()->every(fn (Contestant $contestant) => $groupContestants->contains($contestant));
         });
     }
 

@@ -39,7 +39,9 @@ class Groups extends Component
     {
         $this->tournament->refresh();
 
-        return view('livewire.tournament.organize.groups');
+        return view('livewire.tournament.organize.groups', [
+            'groupPhase' => $this->tournament->groupPhase,
+        ]);
     }
 
     /** @return Collection<int, covariant Contestant> */
