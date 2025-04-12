@@ -9,7 +9,7 @@
         <form wire:submit="updateInformation" class="space-y-4">
             <flux:input autocomplete id="username" label="{{ __('Username') }}" wire:model="informationForm.username" placeholder="{{ __('Your username') }}" required/>
             <flux:input autocomplete id="email" type="email" label="{{ __('Email') }}" wire:model="informationForm.email" placeholder="{{ __('Your email address') }}" required/>
-            @if ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && !$user->hasVerifiedEmail())
+            @if ($this->user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && !$this->user->hasVerifiedEmail())
                 <div>
                     <p class="text-xs mt-2 text-gray-800">
                         {{ __('Your email address is unverified.') }}

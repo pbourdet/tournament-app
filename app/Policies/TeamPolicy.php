@@ -29,7 +29,7 @@ class TeamPolicy
     {
         $tournament = $team->tournament;
 
-        return null !== $tournament->playersWithoutTeams->firstWhere('id', $playerId)
+        return null !== $tournament->playersWithoutTeams()->firstWhere('id', $playerId)
                 && $tournament->isNotStarted()
                 && !$team->isFull();
     }

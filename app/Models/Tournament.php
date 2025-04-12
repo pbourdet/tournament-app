@@ -6,7 +6,6 @@ namespace App\Models;
 
 use App\Enums\TournamentStatus;
 use Database\Factories\TournamentFactory;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -50,12 +49,6 @@ class Tournament extends Model
             ->withTimestamps();
     }
 
-    /** @return BelongsToMany<User, $this> */
-    public function playersWithoutTeams(): BelongsToMany
-    {
-        return $this->players()->whereDoesntHave('teams', fn (Builder $teamQuery) => $teamQuery->where('tournament_id', $this->id));
-    }
-
     /** @return HasOne<TournamentInvitation, $this> */
     public function invitation(): HasOne
     {
@@ -78,6 +71,12 @@ class Tournament extends Model
     public function groupPhase(): HasOne
     {
         return $this->hasOne(GroupPhase::class);
+    }
+
+    /** @return Collection<int, User> */
+    public function playersWithoutTeams(): Collection
+    {
+        return $this->players->filter(fn (User $player) => $player->teams->intersect($this->teams)->isEmpty());
     }
 
     /** @param Collection<int, string|User>|array<int, string|User> $users */
@@ -200,8 +199,6 @@ class Tournament extends Model
 
             return;
         }
-
-        $this->load('groupPhase.groups.contestants', 'teams.members', 'teams.tournament');
 
         if ($this->canGenerateTeams()
             || $this->getPhases()->isEmpty()

@@ -24,7 +24,7 @@ class EliminationPhase extends Phase
 
     public function getNextMatchOf(Matchup $match): ?Matchup
     {
-        return $this->rounds->load('matches')
+        return $this->rounds
             ->first(fn ($round) => EliminationRoundStage::from($round->stage) === EliminationRoundStage::from($match->round->stage)->getNextStage())
             ?->matches->first(fn ($nextMatch) => $nextMatch->index === intval($match->index / 2))
         ;

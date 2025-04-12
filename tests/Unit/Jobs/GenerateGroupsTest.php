@@ -42,7 +42,7 @@ class GenerateGroupsTest extends TestCase
         Notification::fake();
         Event::fake();
 
-        new GenerateGroups($tournament->groupPhase)->handle();
+        new GenerateGroups($tournament->groupPhase->refresh())->handle();
 
         $tournament = $tournament->refresh();
         $this->assertTrue($tournament->groupPhase->groups->every(fn (Group $group) => $group->isFull()));

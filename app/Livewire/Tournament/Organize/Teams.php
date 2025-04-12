@@ -11,7 +11,6 @@ use App\Livewire\Tournament\WithTournamentLock;
 use App\Models\Team;
 use App\Models\Tournament;
 use App\Models\User;
-use Illuminate\View\View;
 use Livewire\Attributes\Computed;
 
 class Teams extends Component
@@ -20,26 +19,18 @@ class Teams extends Component
 
     public Tournament $tournament;
 
-    public function render(): View
-    {
-        $this->tournament->load(['teams.members', 'teams.tournament']);
-
-        return view('livewire.tournament.organize.teams');
-    }
-
     /** @return array<string, string> */
     #[Computed]
     public function selectablePlayers(): array
     {
         /* @phpstan-ignore-next-line */
-        return $this->tournament->playersWithoutTeams->pluck('username', 'id')->toArray();
+        return $this->tournament->playersWithoutTeams()->pluck('username', 'id')->toArray();
     }
 
     public function generate(): void
     {
         $this->checkLock();
 
-        $this->tournament->load(['teams.members', 'teams.tournament']);
         $this->authorize('generateTeams', $this->tournament);
 
         dispatch(new GenerateTeams($this->tournament));

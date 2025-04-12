@@ -11,6 +11,9 @@ use Livewire\Attributes\Computed;
 use Livewire\Attributes\Locked;
 use Livewire\Component as BaseComponent;
 
+/**
+ * @property User $user
+ */
 class Component extends BaseComponent
 {
     use InteractsWithComponents;

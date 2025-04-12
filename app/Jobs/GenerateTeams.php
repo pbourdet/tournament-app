@@ -26,7 +26,7 @@ class GenerateTeams implements ShouldQueue
 
     public function __construct(Tournament $tournament)
     {
-        $this->tournament = $tournament->load(['teams.members', 'teams.tournament']);
+        $this->tournament = $tournament;
     }
 
     /** @return array<int, object> */
@@ -44,7 +44,7 @@ class GenerateTeams implements ShouldQueue
                 return;
             }
 
-            $playersWithoutTeam = $this->tournament->playersWithoutTeams->shuffle();
+            $playersWithoutTeam = $this->tournament->playersWithoutTeams()->shuffle();
 
             foreach ($this->tournament->teams as $team) {
                 $currentCount = $team->members->count();

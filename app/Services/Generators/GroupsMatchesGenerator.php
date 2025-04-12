@@ -20,7 +20,6 @@ class GroupsMatchesGenerator implements Generator
 
     public function generate(Phase $phase): void
     {
-        $phase->load('groups.contestants');
         $round = $phase->rounds->firstOrFail(); // Group phase supports only one round for now
 
         foreach ($phase->groups as $group) {

@@ -14,8 +14,6 @@ readonly class GroupPhaseResultAddedListener
         $match = $event->match;
         $phase = $match->round->phase;
 
-        $phase->load('rounds.matches.results');
-
         if (!$phase->isGroup() || !$phase->isFinished()) {
             return;
         }

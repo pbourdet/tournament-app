@@ -73,7 +73,7 @@ class Create extends Component
 
         $this->form->validate();
 
-        $tournament = $this->user()->managedTournaments()->create([
+        $tournament = $this->user->managedTournaments()->create([
             'name' => $this->form->name,
             'description' => $this->form->description,
             'number_of_players' => $this->form->numberOfPlayers,
@@ -85,7 +85,7 @@ class Create extends Component
         $tournament->createTeams();
 
         if ($this->form->joinTournament) {
-            $tournament->addPlayer($this->user());
+            $tournament->addPlayer($this->user);
         }
 
         $this->toastSuccess(__('Tournament :name created !', ['name' => $tournament->name]));

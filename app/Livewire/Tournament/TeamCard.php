@@ -26,7 +26,6 @@ class TeamCard extends Component
 
     public function mount(): void
     {
-        $this->team->load('tournament');
         $this->newName = $this->team->name;
     }
 

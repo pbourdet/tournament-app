@@ -80,12 +80,12 @@ class Group extends Model
 
         if (null === $round) return Collection::empty();
 
-        return $round->matches->load('contestants')->filter(function (Matchup $match) {
+        return $round->matches->filter(function (Matchup $match) {
             $matchContestants = $match->getContestants();
             $groupContestants = $this->getContestants();
 
             return $matchContestants->every(fn (Contestant $contestant) => $groupContestants->contains($contestant));
-        })->load('results');
+        });
     }
 
     public function isFull(): bool

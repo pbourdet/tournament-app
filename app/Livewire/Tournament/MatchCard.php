@@ -23,8 +23,6 @@ class MatchCard extends Component
 
     public function mount(Matchup $match): void
     {
-        $match->load(['round.phase.tournament', 'results']);
-
         /** @var contestantsArray $contestantsArray */
         $contestantsArray = $this->match->getContestants()->mapWithKeys(
             function (Contestant $contestant): array {
