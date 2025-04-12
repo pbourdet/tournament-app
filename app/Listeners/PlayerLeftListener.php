@@ -18,7 +18,7 @@ class PlayerLeftListener
 
     public function handle(PlayerLeft $event): void
     {
-        $this->tournament = $event->tournament->load('teams.members', 'groupPhase.groups.contestants');
+        $this->tournament = $event->tournament;
         $this->player = $event->player;
 
         $this->removePlayerFromTeam();

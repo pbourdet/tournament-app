@@ -24,7 +24,7 @@ class GenerateGroups implements ShouldQueue
 
     public function __construct(GroupPhase $groupPhase)
     {
-        $this->groupPhase = $groupPhase->load('groups.contestants');
+        $this->groupPhase = $groupPhase;
     }
 
     public function handle(): void

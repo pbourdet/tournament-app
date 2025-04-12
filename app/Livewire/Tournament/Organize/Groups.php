@@ -14,8 +14,8 @@ use App\Models\Contestant;
 use App\Models\Group;
 use App\Models\GroupPhase;
 use App\Models\Tournament;
+use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
-use Illuminate\View\View;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Url;
 
@@ -32,18 +32,12 @@ class Groups extends Component
 
     public function boot(): void
     {
-        $this->tournament->load('groupPhase.groups.contestants');
         $this->form->setTournament($this->tournament);
     }
 
     public function render(): View
     {
-        $this->tournament->load([
-            'groupPhase.groups.contestants',
-            'groupPhase.groups.phase',
-            'groupPhase.rounds.matches.results',
-            'groupPhase.rounds.matches.contestants',
-        ]);
+        $this->tournament->refresh();
 
         return view('livewire.tournament.organize.groups');
     }

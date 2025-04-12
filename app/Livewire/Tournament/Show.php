@@ -6,7 +6,6 @@ namespace App\Livewire\Tournament;
 
 use App\Livewire\Component;
 use App\Models\Tournament;
-use Illuminate\Contracts\View\View;
 
 class Show extends Component
 {
@@ -32,13 +31,6 @@ class Show extends Component
 
         $this->title = self::SUPPORTED_PAGES[$page];
         $this->page = 'tournament.'.str_replace('-', '.', $page);
-    }
-
-    public function render(): View
-    {
-        $this->tournament->load('teams.members');
-
-        return view('livewire.tournament.show');
     }
 
     private function sanitizePage(?string $page): string

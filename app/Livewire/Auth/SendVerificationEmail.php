@@ -24,15 +24,13 @@ class SendVerificationEmail extends Component
             return;
         }
 
-        $user = $this->user();
-
-        if ($user->hasVerifiedEmail()) {
+        if ($this->user->hasVerifiedEmail()) {
             $this->toastError(__('Your email address is already verified.'));
 
             return;
         }
 
-        $user->sendEmailVerificationNotification();
+        $this->user->sendEmailVerificationNotification();
 
         $this->toast(__('A new verification link has been sent to the email address you provided during registration.'));
     }

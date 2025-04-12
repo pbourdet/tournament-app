@@ -25,7 +25,7 @@ class Join extends Component
     {
         $this->authorize('join', $tournament);
 
-        $tournament->addPlayer($this->user());
+        $tournament->addPlayer($this->user);
 
         event(new PlayerJoined($tournament));
         event(new TournamentUpdated($tournament));

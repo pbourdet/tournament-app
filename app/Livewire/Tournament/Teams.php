@@ -16,8 +16,6 @@ class Teams extends Component
 
     public function render(): View
     {
-        $this->tournament->load('teams.members');
-
         return view('livewire.tournament.teams', [
             'selectablePlayers' => [],
         ]);

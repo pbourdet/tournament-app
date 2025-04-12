@@ -9,17 +9,13 @@ use App\Livewire\Component;
 use App\Livewire\Forms\Profile\PasswordForm;
 use App\Livewire\Forms\Profile\UserDeletionForm;
 use App\Livewire\Forms\Profile\UserInformationForm;
-use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Enum;
-use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\Validate;
 
 class Edit extends Component
 {
-    public User $user;
-
     public UserInformationForm $informationForm;
 
     public PasswordForm $passwordForm;
@@ -31,7 +27,6 @@ class Edit extends Component
 
     public function mount(): void
     {
-        $this->user = $this->user();
         $this->informationForm->hydrate($this->user);
         $this->language = $this->user->language;
     }
@@ -69,8 +64,6 @@ class Edit extends Component
 
             $this->user->update(['password' => Hash::make($this->passwordForm->password)]);
             $this->toastSuccess(__('Your password was successfully updated !'));
-        } catch (ValidationException $e) {
-            throw $e;
         } finally {
             $this->passwordForm->reset();
         }
@@ -79,10 +72,11 @@ class Edit extends Component
     public function deleteAccount(): void
     {
         $this->deletionForm->validate();
+        $user = $this->user;
 
         Auth::logout();
 
-        $this->user->delete();
+        $user->delete();
 
         session()->invalidate();
         session()->regenerateToken();
